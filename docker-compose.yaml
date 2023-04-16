@@ -1,0 +1,53 @@
+version: '3'
+services:
+
+  wtf_rocket:
+    container_name: wtf_rocket
+    # depends_on:
+    #   - wtf_backend_postgres
+    build:
+      context: ./backend
+    networks:
+      traefik:
+      wtf_backend_postgres_net:
+        ipv4_address: 172.222.0.11
+    env_file:
+      - ./.env
+    volumes:
+      - ./backend/src:/app/src
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.wtf_rocket.rule=Host(`api.wtf.danielc.us`)
+      - traefik.http.routers.wtf_rocket.entrypoints=https
+      - traefik.http.routers.wtf_rocket.tls.certresolver=simple-resolver
+      - traefik.http.services.wtf_rocket.loadbalancer.server.port=8910
+      - traefik.http.routers.wtf_rocket.middlewares=wtf_auth
+      # echo $(htpasswd -nB user) | sed -e s/\\$/\\$\\$/g
+      - traefik.http.middlewares.wtf_auth.basicauth.users=${BASIC_AUTH}
+
+  # wtf_sveltekit:
+  #   container_name: wtf_sveltekit
+  #   build:
+  #     context: ./frontend
+  #   networks:
+  #     traefik:
+  #   # env_file:
+  #   #   - ./.env
+  #   volumes:
+  #     - ./frontend/src:/app/src
+  #     - ./frontend/static:/app/static
+  #     - ./frontend/.svelte-kit:/app/.svelte-kit
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.docker.network=traefik
+  #     - traefik.http.routers.wtf_sveltekit.rule=Host(`wtf.danielc.us`)
+  #     - traefik.http.routers.wtf_sveltekit.entrypoints=https
+  #     - traefik.http.routers.wtf_sveltekit.tls.certresolver=simple-resolver
+  #     - traefik.http.services.wtf_sveltekit.loadbalancer.server.port=5173
+
+networks:
+  traefik:
+    external: true
+  wtf_backend_postgres_net:
+    external: true

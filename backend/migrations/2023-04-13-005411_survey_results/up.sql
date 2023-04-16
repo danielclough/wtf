@@ -1,0 +1,19 @@
+CREATE TABLE survey_results (
+  id UUID PRIMARY KEY,
+  aesthetics Text[] NOT NULL,
+  cognitive Text[] NOT NULL,
+  cosmology Text[] NOT NULL,
+  environmental Text[] NOT NULL,
+  epistemology Text[] NOT NULL,
+  ethics Text[] NOT NULL,
+  history Text[] NOT NULL,
+  isms Text[] NOT NULL,
+  law Text[] NOT NULL,
+  logic Text[] NOT NULL,
+  maths Text[] NOT NULL,
+  ontology Text[] NOT NULL,
+  political Text[] NOT NULL,
+  rhetoric Text[] NOT NULL,
+  science Text[] NOT NULL,
+  theology Text[] NOT NULL
+)

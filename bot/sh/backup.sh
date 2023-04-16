@@ -1,0 +1,1 @@
+rsync -avh admin@vps.blackcoin.nl:/home/daniel/legacyBot/BlackcoinDiscordBot /daniel/ENV/legacyBot
