@@ -129,11 +129,7 @@
 
 {#each data as point, i}
     <text class="draggable"
-    x={i*(viewBoxW*.025) < (viewBoxW) && i%2==0
-        ? i*(viewBoxW*.025)
-        : (i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0
-            ? i*(viewBoxW*.025)
-            : i*(viewBoxW*.025))} 
+    x={i*(viewBoxW* (desktop ? .025 : .018))+50}
     y="{i%2==0 ? (
         i%16==0 ? (viewBoxH-((desktop ? 30 : 20) *1))
         : (i%22==0 ? (viewBoxH-((desktop ? 30 : 20) *4)) 

@@ -45,19 +45,27 @@
 </div>
 
 <div class="svg">
+  <div class="left-bar">
+    <p>
+      Like
+    </p>
+    <p>
+      Dislike
+    </p>
+  </div>
   <Grid />
   <div class="overlayed">
   </div>
   <div class="overlayed">
     <Draggable {data} />
   </div>
-{desktop}
 </div>
 
 
 
 <style>
   .svg {
+    display: flex;
     position: absolute;
     left: 0;
     right: 0;
@@ -70,5 +78,16 @@
     right: 0;
     top: 0;
     bottom: 0;
+  }
+  .left-bar {
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    height: 98%;
+  }
+  p {
+    margin:0;
   }
 </style>
