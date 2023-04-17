@@ -66,7 +66,7 @@
     function mouseDown(evt) {
         if (evt.button == 0) {
             startDrag(evt)
-        } else if (evt.explicitOriginalTarget.length > 0) {
+        } else {
             delTarget(evt)
         }
         return false
