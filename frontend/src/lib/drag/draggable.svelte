@@ -36,7 +36,6 @@
 <script type="text/javascript"><![CDATA[
     function makeDraggable(evt) {
     var svg = evt.target;
-    svg.addEventListener('oncontextmenu', delTarget);
     svg.addEventListener('mousedown', mouseDown);
     svg.addEventListener('mousemove', drag);
     svg.addEventListener('mouseup', endDrag);
