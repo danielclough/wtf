@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-
-  export let wW: number;
-  let viewBoxW: number;
-  export let wH: number;
-  let viewBoxH: number;
+  import {shuffle} from "$lib/utils/shuffle"
   const politicalPeople = {
     "democrat": ["Joe Biden", "Stacey Abrams", "Eric Adams", "Michael Bennet", "Andy Beshear", "Cory Booker", "Sherrod Brown", "Pete Buttigieg", "Hillary Clinton", "Roy Cooper", "Andrew Cuomo", "Kamala Harris", "Jay Inslee", "Joe Kennedy", "Ro Khanna", "Amy Klobuchar", "Mitch Landrieu", "Michelle Lujan Grisham", "Joe Manchin", "Chris Murphy", "Phil Murphy", "Gavin Newsom", "Alexandria Ocasio-Cortez", "J.B. Pritzker", "Gina Raimondo", "Nina Turner", "Elizabeth Warren", "Gretchen Whitmer", "Bernie Sanders", "Joe Sanberg", "Oprah Winfrey", "Andrew Yang", "Michelle Obama"],
     "republican": ["Greg Abbott", "Liz Cheney", "Chris Christie", "Bob Corker", "Tom Cotton", "Daniel Crenshaw", "Ted Cruz", "Ron DeSantis", "Doug Ducey", "Mike DeWine", "Joni Ernst", "Larry Elder", "Josh Hawley", "Adam Kinzinger", "Mike Lee", "Kristi Noem", "Rand Paul", "Mike Pence", "Mike Pompeo", "Mitt Romney", "Marco Rubio", "Ben Sasse", "Rick Scott", "Tim Scott", "Elise Stefanik", "Chris Sununu", "Glenn Youngkin", "Tucker Carlson", "Candace Owens", "Donald Trump Jr.", "Ivanka Trump", "Larry Hogan", "Mike Pompeo"]
   }
   const {democrat, republican} = politicalPeople;
   $: people = republican;
+
+
+
+  export let wW: number;
+  let viewBoxW: number;
+  export let wH: number;
+  let viewBoxH: number;
 
   onMount(()=> {
     viewBoxW = wW*.9
@@ -22,7 +25,15 @@
 
 
   <h1>
-    Politics... WTF?!?
+    Drag from 
+    <strong>
+      random order
+    </strong>
+     to
+     
+    <strong>
+      preferred order.
+    </strong>
   </h1>
 <div class="svg">
 
@@ -57,6 +68,7 @@
         var boundaryX2 = 30;
         var boundaryY1 = 2.2;
         var boundaryY2 = 19.2;
+
         function getMousePosition(evt) {
           var CTM = svg.getScreenCTM();
           if (evt.touches) { evt = evt.touches[0]; }
@@ -65,6 +77,7 @@
             y: (evt.clientY - CTM.f) / CTM.d
           };
         }
+
         function startDrag(evt) {
           if (evt.target.classList.contains('draggable')) {
             selectedElement = evt.target;
@@ -81,7 +94,7 @@
             transform = transforms.getItem(0);
             offset.x -= transform.matrix.e;
             offset.y -= transform.matrix.f;
-  
+
             confined = evt.target.classList.contains('confine');
             if (confined) {
                 bbox = selectedElement.getBBox();
@@ -115,7 +128,7 @@
       }
     ]]> </script>
     
-    {#each people as person, i}
+    {#each shuffle(people) as person, i}
       <text class="draggable"
         x={i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : (i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : i*(viewBoxW*.025))} 
         y="{i%2==0 ? (
@@ -142,6 +155,7 @@
     {/each}
   </svg>
 </div>
+
 
 
 <style>
