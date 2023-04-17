@@ -1,6 +1,6 @@
 <script lang="ts">
-    export let viewBoxW: Number;
-    export let viewBoxH: Number;
+    export let viewBoxW: number;
+    export let viewBoxH: number;
     export let data: any;
     let desktop = viewBoxW > viewBoxH
   import {shuffle} from "$lib/utils/shuffle"
@@ -23,7 +23,7 @@
 <script type="text/javascript"><![CDATA[
     function makeDraggable(evt) {
     var svg = evt.target;
-    svg.addEventListener('mousedown', startDrag);
+    svg.addEventListener('mousedown', mouseDown);
     svg.addEventListener('mousemove', drag);
     svg.addEventListener('mouseup', endDrag);
     svg.addEventListener('mouseleave', endDrag);
@@ -46,6 +46,15 @@
         x: (evt.clientX - CTM.e) / CTM.a,
         y: (evt.clientY - CTM.f) / CTM.d
         };
+    }
+
+    function mouseDown(evt) {
+        if (EventTarget.button == 0) {
+            startDrag(evt)
+        } else {
+            evt.target.remove()
+        }
+
     }
 
     function startDrag(evt) {
@@ -98,7 +107,7 @@
     }
 ]]> </script>
 
-{#each shuffle(data) as point, i}
+{#each data as point, i}
     <text class="draggable"
     x={i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : (i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : i*(viewBoxW*.025))} 
     y="{i%2==0 ? (

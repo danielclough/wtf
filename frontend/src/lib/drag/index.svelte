@@ -24,18 +24,29 @@
 
 <svelte:window bind:innerWidth={wW} bind:innerHeight={wH} />
 
-
-<h1>
-  Drag from 
-  <strong>
-    random order
-  </strong>
+<div class="info">
+  <h1>
+    Drag from 
+    <strong>
+      random order
+    </strong>
+      to
+      
+    <strong>
+      preferred order.
+    </strong>
+  </h1>
+  <h2>
+    <strong>
+      Right Click
+    </strong>
     to
-    
-  <strong>
-    preferred order.
-  </strong>
-</h1>
+    <strong>
+      Delete Item.
+    </strong>
+  </h2>
+</div>
+
 <div class="svg">
   <Grid />
   <div class="overlayed">
@@ -52,7 +63,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: 6rem;
+    top: 10rem;
     bottom: 0;
   }
   .overlayed {
