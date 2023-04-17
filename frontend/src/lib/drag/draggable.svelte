@@ -1,23 +1,10 @@
 <script lang="ts">
-    export let wW: number;
-    let viewBoxW: number;
-    export let wH: number;
-    let viewBoxH: number;
+    export let viewBoxW: number;
+    export let viewBoxH: number;
     export let data: any;
-
-    let desktop: boolean;
-
-    onMount(()=> {
-        viewBoxW = wW*.9
-        viewBoxH = wH*.60
-        desktop = viewBoxW > viewBoxH
-    })
-
-    import {shuffle} from "$lib/utils/shuffle"
-	import { onMount } from "svelte";
+    let desktop = viewBoxW > viewBoxH
+  import {shuffle} from "$lib/utils/shuffle"
 </script>
-
-<svelte:window bind:innerWidth={wW} bind:innerHeight={wH} />
 
 <svg xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 {viewBoxW} {viewBoxH}"
@@ -45,7 +32,11 @@
     svg.addEventListener('touchend', endDrag);
     svg.addEventListener('touchleave', endDrag);
     svg.addEventListener('touchcancel', endDrag);
-    svg.addEventListener('oncontextmenu', delTarget);
+    if (!desktop) {
+        svg.addEventListener('contextmenu', delTarget, false);
+    } else {
+        return false
+    }
     
     var selectedElement, offset, transform,
         bbox, minX, maxX, minY, maxY, confined;
@@ -66,10 +57,11 @@
     function mouseDown(evt) {
         if (evt.button == 0) {
             startDrag(evt)
-        } else {
+        } else if (evt.explicitOriginalTarget.length > 0) {
+            console.log(evt)
             delTarget(evt)
+            return false
         }
-        return false
     }
 
     function delTarget(evt) {
@@ -128,33 +120,27 @@
 
 {#each data as point, i}
     <text class="draggable"
-    x={i*(viewBoxW* (desktop ? .025 : .018))+50}
+    x={i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : (i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : i*(viewBoxW*.025))} 
     y="{i%2==0 ? (
-        i%16==0 ? (viewBoxH-((desktop ? 30 : 20) *1))
-        : (i%22==0 ? (viewBoxH-((desktop ? 30 : 20) *4)) 
+        i%16==0 ? (viewBoxH-((desktop ? 30 : 20) *1)) 
         : (i%12==0 ? (viewBoxH-((desktop ? 30 : 20) *2)) 
         : (i%10==0 ? (viewBoxH-((desktop ? 30 : 20) *3))
         : (i%8==0 ? (viewBoxH-((desktop ? 30 : 20) *4))
         : (i%6==0 ? (viewBoxH-((desktop ? 30 : 20) *5))
         : i%4==0 ? (viewBoxH-((desktop ? 30 : 20) *6))
-        : (viewBoxH-((desktop ? 30 : 20) *7)))))) )
+        : (viewBoxH-((desktop ? 30 : 20) *7)))))) 
     )
-        : i%21==0 ? (viewBoxH-((desktop ? 30 : 20) *10))
-        : i%27==0 ? (viewBoxH-((desktop ? 30 : 20) *11))
-        : i%9==0 ? (viewBoxH-((desktop ? 30 : 20) *15))
-        : i%3==0 ? (viewBoxH-((desktop ? 30 : 20) *8))
-        : i%5==0 ? (viewBoxH-((desktop ? 30 : 20) *9))
-        : i%7==0 ? (viewBoxH-((desktop ? 30 : 20) *10))
-        : i%11==0 ? (viewBoxH-((desktop ? 30 : 20) *11))
-        : i%13==0 ? (viewBoxH-((desktop ? 30 : 20) *12))
-        : i%17==0 ? (viewBoxH-((desktop ? 30 : 20) *13))
-        : i%19==0 ? (viewBoxH-((desktop ? 30 : 20) *14))
-        : i%23==0 ? (viewBoxH-((desktop ? 30 : 20) *15))
-        : i%29==0 ? (viewBoxH-((desktop ? 30 : 20) *14))
-        : i%31==0 ? (viewBoxH-((desktop ? 30 : 20) *16))
-        : (viewBoxH-((desktop ? 30 : 20) *13))}"
-    text-anchor="left" fill="white" font-size="{desktop
-        ? viewBoxW/50
-        : viewBoxW/30}px" alignment-baseline="middle">{point}</text>
+        : i%3==0 ? (viewBoxH-((desktop ? 30 : 20) *8)) 
+        : i%5==0 ? (viewBoxH-((desktop ? 30 : 20) *9)) 
+        : i%7==0 ? (viewBoxH-((desktop ? 30 : 20) *10)) 
+        : i%11==0 ? (viewBoxH-((desktop ? 30 : 20) *11)) 
+        : i%13==0 ? (viewBoxH-((desktop ? 30 : 20) *12)) 
+        : i%17==0 ? (viewBoxH-((desktop ? 30 : 20) *13)) 
+        : i%19==0 ? (viewBoxH-((desktop ? 30 : 20) *14)) 
+        : i%23==0 ? (viewBoxH-((desktop ? 30 : 20) *15)) 
+        : i%29==0 ? (viewBoxH-((desktop ? 30 : 20) *16)) 
+        : i%31==0 ? (viewBoxH-((desktop ? 30 : 20) *17))
+        : (viewBoxH-((desktop ? 30 : 20) *18))}"
+    text-anchor="left" fill="white" font-size="{desktop ? viewBoxW/50 : viewBoxW/30}px" alignment-baseline="middle">{point}</text>
 {/each}
 </svg>
