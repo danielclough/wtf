@@ -1,8 +1,8 @@
 <script>
     let links = [
-        ["/ontology","What Exists?"],
-        ["/epistemology","How Do We Know?"],
-        ["/ism","*-ism Schism Game"],
+        ["/survey/ontology","What Exists?"],
+        ["/survey/epistemology","How Do We Know?"],
+        ["/survey/ism","*-ism Schism Game"],
     ]
 </script>
 
@@ -20,6 +20,7 @@
     <a href={link[0]}> {link[1]} </a>
     {/each}
 </section>
+
 
 <style>
     img {

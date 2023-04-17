@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Survey } from "../types";
+	import type { Survey } from "./types";
 
 	export let subject: Survey;
 

@@ -1,19 +1,18 @@
 <script>
 // @ts-nocheck
 
-	import epistemology from "$lib/surveys/epistemology/se-v1";
-	import ontology from "$lib/surveys/ontology/wtf-v1";
-	import ism from "$lib/surveys/ism/wtf-v1";
-	import Survey from "$lib/surveys/index.svelte"
-	import { page } from '$app/stores';
+	import Drag from "$lib/drag/index.svelte"
+	// // import ontology from "$lib/drag/ontology/wtf-v1";
+	// // // import politics from "$lib/drag/politics/wtf-v1";
+	// import { page } from '$app/stores';
     
-    const subject = $page.params.subject;
+    // const subject = $page.params.subject;
 </script>
 
-{#if subject === 'epistemology' }
-	<Survey subject={epistemology} />
-{:else if subject === 'ontology' }
-	<Survey subject={ontology} />
-{:else if subject === 'ism' }
-	<Survey subject={ism} />
-{/if}
+<!-- {#if subject === 'ontology' }
+	<Drag subject={ontology} />
+{:else }
+	<Drag subject={politics} />
+{/if} -->
+
+<Drag />
