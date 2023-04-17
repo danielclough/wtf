@@ -2,6 +2,7 @@
     export let viewBoxW: Number;
     export let viewBoxH: Number;
     export let data: any;
+    let desktop = viewBoxW > viewBoxH
   import {shuffle} from "$lib/utils/shuffle"
 </script>
 
@@ -101,25 +102,25 @@
     <text class="draggable"
     x={i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : (i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : i*(viewBoxW*.025))} 
     y="{i%2==0 ? (
-        i%16==0 ? (viewBoxH-(30*1)) 
-        : (i%12==0 ? (viewBoxH-(30*2)) 
-        : (i%10==0 ? (viewBoxH-(30*3))
-        : (i%8==0 ? (viewBoxH-(30*4))
-        : (i%6==0 ? (viewBoxH-(30*5))
-        : i%4==0 ? (viewBoxH-(30*6))
-        : (viewBoxH-(30*7)))))) 
+        i%16==0 ? (viewBoxH-((desktop ? 30 : 20) *1)) 
+        : (i%12==0 ? (viewBoxH-((desktop ? 30 : 20) *2)) 
+        : (i%10==0 ? (viewBoxH-((desktop ? 30 : 20) *3))
+        : (i%8==0 ? (viewBoxH-((desktop ? 30 : 20) *4))
+        : (i%6==0 ? (viewBoxH-((desktop ? 30 : 20) *5))
+        : i%4==0 ? (viewBoxH-((desktop ? 30 : 20) *6))
+        : (viewBoxH-((desktop ? 30 : 20) *7)))))) 
     )
-        : i%3==0 ? (viewBoxH-(30*8)) 
-        : i%5==0 ? (viewBoxH-(30*9)) 
-        : i%7==0 ? (viewBoxH-(30*10)) 
-        : i%11==0 ? (viewBoxH-(30*11)) 
-        : i%13==0 ? (viewBoxH-(30*12)) 
-        : i%17==0 ? (viewBoxH-(30*13)) 
-        : i%19==0 ? (viewBoxH-(30*14)) 
-        : i%23==0 ? (viewBoxH-(30*15)) 
-        : i%29==0 ? (viewBoxH-(30*16)) 
-        : i%31==0 ? (viewBoxH-(30*17))
-        : (viewBoxH-(30*18))}"
-    text-anchor="left" fill="white" font-size="{viewBoxW > viewBoxH ? viewBoxW/50 : viewBoxW/30}px" alignment-baseline="middle">{point}</text>
+        : i%3==0 ? (viewBoxH-((desktop ? 30 : 20) *8)) 
+        : i%5==0 ? (viewBoxH-((desktop ? 30 : 20) *9)) 
+        : i%7==0 ? (viewBoxH-((desktop ? 30 : 20) *10)) 
+        : i%11==0 ? (viewBoxH-((desktop ? 30 : 20) *11)) 
+        : i%13==0 ? (viewBoxH-((desktop ? 30 : 20) *12)) 
+        : i%17==0 ? (viewBoxH-((desktop ? 30 : 20) *13)) 
+        : i%19==0 ? (viewBoxH-((desktop ? 30 : 20) *14)) 
+        : i%23==0 ? (viewBoxH-((desktop ? 30 : 20) *15)) 
+        : i%29==0 ? (viewBoxH-((desktop ? 30 : 20) *16)) 
+        : i%31==0 ? (viewBoxH-((desktop ? 30 : 20) *17))
+        : (viewBoxH-((desktop ? 30 : 20) *18))}"
+    text-anchor="left" fill="white" font-size="{desktop ? viewBoxW/50 : viewBoxW/30}px" alignment-baseline="middle">{point}</text>
 {/each}
 </svg>
