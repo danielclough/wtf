@@ -7,6 +7,7 @@
 
 <svg xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 {viewBoxW} {viewBoxH}"
+    width="100%" height="100%"
     onload="makeDraggable(evt)">
 
 <style>
@@ -100,25 +101,25 @@
     <text class="draggable"
     x={i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : (i*(viewBoxW*.025) < (viewBoxW*.95) && i%2==0 ? i*(viewBoxW*.025) : i*(viewBoxW*.025))} 
     y="{i%2==0 ? (
-        i%16==0 ? (viewBoxH-2) 
-        : (i%12==0 ? (viewBoxH-20) 
-        : (i%10==0 ? (viewBoxH-280) 
-        : (i%8==0 ? (viewBoxH-40) 
-        : (i%6==0 ? (viewBoxH-60) 
-        : i%4==0 ? (viewBoxH-80) 
-        : (viewBoxH-100))))) 
+        i%16==0 ? (viewBoxH-(30*1)) 
+        : (i%12==0 ? (viewBoxH-(30*2)) 
+        : (i%10==0 ? (viewBoxH-(30*3))
+        : (i%8==0 ? (viewBoxH-(30*4))
+        : (i%6==0 ? (viewBoxH-(30*5))
+        : i%4==0 ? (viewBoxH-(30*6))
+        : (viewBoxH-(30*7)))))) 
     )
-        : i%3==0 ? (viewBoxH-120) 
-        : i%5==0 ? (viewBoxH-140) 
-        : i%7==0 ? (viewBoxH-160) 
-        : i%11==0 ? (viewBoxH-180) 
-        : i%13==0 ? (viewBoxH-200) 
-        : i%17==0 ? (viewBoxH-220) 
-        : i%19==0 ? (viewBoxH-240) 
-        : i%23==0 ? (viewBoxH-260) 
-        : i%29==0 ? (viewBoxH-240) 
-        : i%31==0 ? (viewBoxH-260)
-        : (viewBoxH-240)}"
-    text-anchor="left" fill="white" font-size="{viewBoxW > viewBoxH ? viewBoxW/60 : viewBoxW/45}px" alignment-baseline="middle">{point}</text>
+        : i%3==0 ? (viewBoxH-(30*8)) 
+        : i%5==0 ? (viewBoxH-(30*9)) 
+        : i%7==0 ? (viewBoxH-(30*10)) 
+        : i%11==0 ? (viewBoxH-(30*11)) 
+        : i%13==0 ? (viewBoxH-(30*12)) 
+        : i%17==0 ? (viewBoxH-(30*13)) 
+        : i%19==0 ? (viewBoxH-(30*14)) 
+        : i%23==0 ? (viewBoxH-(30*15)) 
+        : i%29==0 ? (viewBoxH-(30*16)) 
+        : i%31==0 ? (viewBoxH-(30*17))
+        : (viewBoxH-(30*18))}"
+    text-anchor="left" fill="white" font-size="{viewBoxW > viewBoxH ? viewBoxW/50 : viewBoxW/30}px" alignment-baseline="middle">{point}</text>
 {/each}
 </svg>
