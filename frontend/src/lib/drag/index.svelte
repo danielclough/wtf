@@ -12,14 +12,10 @@
   let desktop: boolean;
   
   export let wW: number;
-  let viewBoxW: number;
   export let wH: number;
-  let viewBoxH: number;
   
   onMount(()=> {
-    viewBoxW = wW*.9
-    viewBoxH = wH*.60
-    desktop = viewBoxW > viewBoxH
+    desktop = wW > 800
   })
 </script>
 
@@ -53,8 +49,9 @@
   <div class="overlayed">
   </div>
   <div class="overlayed">
-    <Draggable {viewBoxW} {viewBoxH} {data} />
+    <Draggable {data} />
   </div>
+{desktop}
 </div>
 
 
