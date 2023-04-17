@@ -9,16 +9,17 @@
   const {democrat, republican} = politicalPeople;
   $: data = republican;
 
-
-
+  let desktop: boolean;
+  
   export let wW: number;
   let viewBoxW: number;
   export let wH: number;
   let viewBoxH: number;
-
+  
   onMount(()=> {
     viewBoxW = wW*.9
     viewBoxH = wH*.60
+    desktop = viewBoxW > viewBoxH
   })
 </script>
 
@@ -38,7 +39,7 @@
   </h1>
   <h2>
     <strong>
-      Right Click
+      {desktop ? "Right Click" : "Long Press"}
     </strong>
     to
     <strong>

@@ -2,8 +2,10 @@
     export let viewBoxW: number;
     export let viewBoxH: number;
     export let data: any;
+
     let desktop = viewBoxW > viewBoxH
-  import {shuffle} from "$lib/utils/shuffle"
+
+    import {shuffle} from "$lib/utils/shuffle"
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg"
@@ -23,6 +25,7 @@
 <script type="text/javascript"><![CDATA[
     function makeDraggable(evt) {
     var svg = evt.target;
+    svg.addEventListener('oncontextmenu', delTarget);
     svg.addEventListener('mousedown', mouseDown);
     svg.addEventListener('mousemove', drag);
     svg.addEventListener('mouseup', endDrag);
@@ -32,7 +35,6 @@
     svg.addEventListener('touchend', endDrag);
     svg.addEventListener('touchleave', endDrag);
     svg.addEventListener('touchcancel', endDrag);
-    svg.addEventListener('contextmenu', delTarget);
     
     var selectedElement, offset, transform,
         bbox, minX, maxX, minY, maxY, confined;
@@ -51,7 +53,13 @@
     }
 
     function mouseDown(evt) {
-        startDrag(evt)
+        if (evt.button == 0) {
+            startDrag(evt)
+        } else if (evt.explicitOriginalTarget.length > 0) {
+            console.log(evt)
+            delTarget(evt)
+        }
+        return false
     }
 
     function delTarget(evt) {
@@ -131,6 +139,8 @@
         : i%29==0 ? (viewBoxH-((desktop ? 30 : 20) *16)) 
         : i%31==0 ? (viewBoxH-((desktop ? 30 : 20) *17))
         : (viewBoxH-((desktop ? 30 : 20) *18))}"
-    text-anchor="left" fill="white" font-size="{desktop ? viewBoxW/50 : viewBoxW/30}px" alignment-baseline="middle">{point}</text>
+    text-anchor="left" fill="white" font-size="{desktop
+        ? viewBoxW/60
+        : viewBoxW/30}px" alignment-baseline="middle">{point}</text>
 {/each}
 </svg>
