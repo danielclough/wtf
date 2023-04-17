@@ -32,7 +32,7 @@
     svg.addEventListener('touchend', endDrag);
     svg.addEventListener('touchleave', endDrag);
     svg.addEventListener('touchcancel', endDrag);
-    svg.addEventListener('contextmenu', endDrag);
+    svg.addEventListener('contextmenu', delTarget);
     
     var selectedElement, offset, transform,
         bbox, minX, maxX, minY, maxY, confined;
@@ -51,11 +51,7 @@
     }
 
     function mouseDown(evt) {
-        if (EventTarget.button == 0) {
-            startDrag(evt)
-        } else {
-            delTarget(evt)
-        }
+        startDrag(evt)
     }
 
     function delTarget(evt) {
