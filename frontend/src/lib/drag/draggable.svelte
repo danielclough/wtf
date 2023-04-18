@@ -16,6 +16,7 @@
 
     import {shuffle} from "$lib/utils/shuffle"
 	import { onMount } from "svelte";
+	import { prevent_default } from "svelte/internal";
 </script>
 
 <svelte:window bind:innerWidth={wW} bind:innerHeight={wH} />
@@ -46,7 +47,7 @@
     svg.addEventListener('touchend', endDrag);
     svg.addEventListener('touchleave', endDrag);
     svg.addEventListener('touchcancel', endDrag);
-    svg.addEventListener('contextmenu', delIfNotDesktop);
+    svg.addEventListener('contextmenu', delTarget);
     
     var selectedElement, offset, transform,
         bbox, minX, maxX, minY, maxY, confined;
@@ -54,13 +55,6 @@
     var boundaryX2 = 30;
     var boundaryY1 = 2.2;
     var boundaryY2 = 19.2;
-
-    function delIfNotDesktop(evt) {
-        if ({checkDesktop}) {
-            delTarget(evt)
-        }
-        // console.log(evt)
-    }
 
     function getMousePosition(evt) {
         var CTM = svg.getScreenCTM();
@@ -74,15 +68,16 @@
     function mouseDown(evt) {
         if (evt.button == 0) {
             startDrag(evt)
-        } else if (evt.explicitOriginalTarget.length > 0) {
-            // console.log(evt)
-            delTarget(evt)
         }
-        return false
     }
 
     function delTarget(evt) {
-        evt.target.remove()
+        evt.preventDefault()
+        if (evt.explicitOriginalTarget.length > 0) {
+            // console.log(evt)
+            evt.target.remove()
+        }
+        return false
     }
 
     function startDrag(evt) {
