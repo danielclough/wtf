@@ -3,8 +3,8 @@
   import Draggable from "./draggable.svelte";
   import Grid from "./grid.svelte";
   const dataObj = {
+    "republican": ["Greg Abbott", "Liz Cheney", "Chris Christie", "Bob Corker", "Tom Cotton", "Daniel Crenshaw", "Ted Cruz", "Ron DeSantis", "Doug Ducey", "Mike DeWine", "Joni Ernst", "Larry Elder", "Josh Hawley", "Adam Kinzinger", "Mike Lee", "Kristi Noem", "Rand Paul", "Mike Pence", "Mike Pompeo", "Mitt Romney", "Marco Rubio", "Ben Sasse", "Rick Scott", "Tim Scott", "Elise Stefanik", "Chris Sununu", "Glenn Youngkin", "Tucker Carlson", "Candace Owens", "Donald Trump Jr.", "Ivanka Trump", "Larry Hogan", "Mike Pompeo"],
     "democrat": ["Joe Biden", "Stacey Abrams", "Eric Adams", "Michael Bennet", "Andy Beshear", "Cory Booker", "Sherrod Brown", "Pete Buttigieg", "Hillary Clinton", "Roy Cooper", "Andrew Cuomo", "Kamala Harris", "Jay Inslee", "Joe Kennedy", "Ro Khanna", "Amy Klobuchar", "Mitch Landrieu", "Michelle Lujan Grisham", "Joe Manchin", "Chris Murphy", "Phil Murphy", "Gavin Newsom", "Alexandria Ocasio-Cortez", "J.B. Pritzker", "Gina Raimondo", "Nina Turner", "Elizabeth Warren", "Gretchen Whitmer", "Bernie Sanders", "Joe Sanberg", "Oprah Winfrey", "Andrew Yang", "Michelle Obama"],
-    "republican": ["Greg Abbott", "Liz Cheney", "Chris Christie", "Bob Corker", "Tom Cotton", "Daniel Crenshaw", "Ted Cruz", "Ron DeSantis", "Doug Ducey", "Mike DeWine", "Joni Ernst", "Larry Elder", "Josh Hawley", "Adam Kinzinger", "Mike Lee", "Kristi Noem", "Rand Paul", "Mike Pence", "Mike Pompeo", "Mitt Romney", "Marco Rubio", "Ben Sasse", "Rick Scott", "Tim Scott", "Elise Stefanik", "Chris Sununu", "Glenn Youngkin", "Tucker Carlson", "Candace Owens", "Donald Trump Jr.", "Ivanka Trump", "Larry Hogan", "Mike Pompeo"]
   }
   $: data = dataObj[Object.keys(dataObj)[0]];
 
@@ -91,14 +91,19 @@
   .left-bar {
     writing-mode: vertical-lr;
     text-orientation: upright;
-    font-size: 1.5rem;
+    font-size: 1rem;
     display: flex;
     justify-content: space-between;
-    height: 98%;
+    height: 48%;
   }
   p {
     padding: 0;
     margin:0;
     line-height:2rem;
+  }
+  @media (min-width: 900px) {
+    .left-bar {
+      font-size: 1.5rem;
+    }
   }
 </style>

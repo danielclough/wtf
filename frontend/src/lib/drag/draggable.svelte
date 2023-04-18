@@ -16,7 +16,6 @@
 
     import {shuffle} from "$lib/utils/shuffle"
 	import { onMount } from "svelte";
-	import { prevent_default } from "svelte/internal";
 </script>
 
 <svelte:window bind:innerWidth={wW} bind:innerHeight={wH} />
@@ -129,9 +128,57 @@
     }
 ]]> </script>
 
-{#each data as point, i}
+{#each shuffle(data) as point, i}
     <text class="draggable"
-    x={i*(viewBoxW* (checkDesktop ? .025 : .018))+50}
+    x={i%31==0
+        ? 30
+        : i%28==0
+            ? 30
+            : i%29==0
+                ? 125
+                    : i%24==0
+                        ? 220
+                        : i%23==0
+                            ? 220
+                            : i%18==0
+                                ? 125
+                                : i%19==0
+                                    ? 30
+                                    : i%17==0
+            ? 125
+            : i%13==0
+                ? 220
+                : i%11==0
+                    ? 125
+                    : i%21==0
+                        ? 30
+                        : i%14==0
+                            ? 125
+                            : i%7==0
+                                ? 125
+                                : i%15==0
+                                    ? 125
+                                    : i%20==0
+                                        ? 30
+                                        : i%25==0
+            ? 125
+            : i%5==0
+                ? 220
+                : i%3==0
+                    ? 30
+                    : i%32==0
+                        ? 125
+                        : i%8==0
+                            ? 220
+                            : i%6==0
+                                ? 125
+                                : i%4==0
+                                    ? 125
+                                    : i%2==0
+                                        ? 30
+                                        : 30
+
+        }
     y="{i%2==0 ? (
         i%16==0 ? (viewBoxH-(calcFontHeight *1))
         : (i%22==0 ? (viewBoxH-(calcFontHeight *4)) 
