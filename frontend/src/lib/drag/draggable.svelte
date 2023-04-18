@@ -72,9 +72,9 @@
     }
 
     function delTarget(evt) {
-        {checkDesktop && evt.preventDefault()}
-        if (evt.explicitOriginalTarget.length > 0) {
-            // console.log(evt)
+        evt.preventDefault()
+        // console.log(evt)
+        if (evt.explicitOriginalTarget.nodeName == "#text") {
             evt.target.remove()
         }
         return false
