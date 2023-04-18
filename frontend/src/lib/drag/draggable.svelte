@@ -72,7 +72,12 @@
     }
 
     function delTarget(evt) {
-        evt.target.remove()
+        {checkDesktop && evt.preventDefault()}
+        if (evt.explicitOriginalTarget.length > 0) {
+            // console.log(evt)
+            evt.target.remove()
+        }
+        return false
     }
 
     function startDrag(evt) {
