@@ -1,10 +1,14 @@
 <script lang="ts">
     export let wW: number;
-    let viewBoxW: number;
+    let viewBoxW = 0;
     export let wH: number;
-    let viewBoxH: number;
+    let viewBoxH = 0;
     export let data: any;
 
+    $: checkDesktop = viewBoxW > viewBoxH;
+    $: desktopFontSize = viewBoxW / 80;
+    $: mobileFontSize = viewBoxW / 30;
+    $: calcFontHeight = checkDesktop ? desktopFontSize : mobileFontSize
     onMount(()=> {
         viewBoxW = wW*.9
         viewBoxH = wH*.60
@@ -52,9 +56,10 @@
     var boundaryY2 = 19.2;
 
     function delIfNotDesktop(evt) {
-        if (viewBoxW < viewBoxH) {
+        if ({checkDesktop}) {
             delTarget(evt)
         }
+        // console.log(evt)
     }
 
     function getMousePosition(evt) {
@@ -132,33 +137,33 @@
 
 {#each data as point, i}
     <text class="draggable"
-    x={i*(viewBoxW* (viewBoxW > viewBoxH ? .025 : .018))+50}
+    x={i*(viewBoxW* (checkDesktop ? .025 : .018))+50}
     y="{i%2==0 ? (
-        i%16==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *1))
-        : (i%22==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *4)) 
-        : (i%12==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *2)) 
-        : (i%10==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *3))
-        : (i%8==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *4))
-        : (i%6==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *5))
-        : i%4==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *6))
-        : (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *7)))))) )
+        i%16==0 ? (viewBoxH-(calcFontHeight *1))
+        : (i%22==0 ? (viewBoxH-(calcFontHeight *4)) 
+        : (i%12==0 ? (viewBoxH-(calcFontHeight *2)) 
+        : (i%10==0 ? (viewBoxH-(calcFontHeight *3))
+        : (i%8==0 ? (viewBoxH-(calcFontHeight *4))
+        : (i%6==0 ? (viewBoxH-(calcFontHeight *5))
+        : i%4==0 ? (viewBoxH-(calcFontHeight *6))
+        : (viewBoxH-(calcFontHeight *7)))))) )
     )
-        : i%21==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *10))
-        : i%27==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *11))
-        : i%9==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *15))
-        : i%3==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *8))
-        : i%5==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *9))
-        : i%7==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *10))
-        : i%11==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *11))
-        : i%13==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *12))
-        : i%17==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *13))
-        : i%19==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *14))
-        : i%23==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *15))
-        : i%29==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *14))
-        : i%31==0 ? (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *16))
-        : (viewBoxH-((viewBoxW > viewBoxH ? 30 : 20) *13))}"
-    text-anchor="left" fill="white" font-size="{viewBoxW > viewBoxH
-        ? viewBoxW/50
-        : viewBoxW/30}px" alignment-baseline="middle">{point}</text>
+        : i%21==0 ? (viewBoxH-(calcFontHeight *10))
+        : i%27==0 ? (viewBoxH-(calcFontHeight *11))
+        : i%9==0 ? (viewBoxH-(calcFontHeight *15))
+        : i%3==0 ? (viewBoxH-(calcFontHeight *8))
+        : i%5==0 ? (viewBoxH-(calcFontHeight *9))
+        : i%7==0 ? (viewBoxH-(calcFontHeight *10))
+        : i%11==0 ? (viewBoxH-(calcFontHeight *11))
+        : i%13==0 ? (viewBoxH-(calcFontHeight *12))
+        : i%17==0 ? (viewBoxH-(calcFontHeight *13))
+        : i%19==0 ? (viewBoxH-(calcFontHeight *14))
+        : i%23==0 ? (viewBoxH-(calcFontHeight *15))
+        : i%29==0 ? (viewBoxH-(calcFontHeight *14))
+        : i%31==0 ? (viewBoxH-(calcFontHeight *16))
+        : (viewBoxH-(calcFontHeight *13))}"
+    text-anchor="left" fill="white" font-size="{checkDesktop
+        ? desktopFontSize
+        : mobileFontSize}px" alignment-baseline="middle">{point}</text>
 {/each}
 </svg>
