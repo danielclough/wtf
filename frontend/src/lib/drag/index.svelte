@@ -49,6 +49,9 @@
     <p>
       Like
     </p>
+    <p style="font-size:4rem;">
+      ↕
+    </p>
     <p>
       Dislike
     </p>
@@ -88,6 +91,8 @@
     height: 98%;
   }
   p {
+    padding: 0;
     margin:0;
+    line-height:2rem;
   }
 </style>
