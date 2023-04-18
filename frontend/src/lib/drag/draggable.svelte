@@ -72,12 +72,7 @@
     }
 
     function delTarget(evt) {
-        evt.preventDefault()
-        if (evt.explicitOriginalTarget.length > 0) {
-            // console.log(evt)
-            evt.target.remove()
-        }
-        return false
+        evt.target.remove()
     }
 
     function startDrag(evt) {
