@@ -1,7 +1,7 @@
 <script>
 // @ts-nocheck
 
-	import epistemology from "$lib/survey/epistemology/se-v1";
+	import epistemology from "$lib/survey/epistemology/wtf-v1";
 	import ontology from "$lib/survey/ontology/wtf-v1";
 	import ism from "$lib/survey/ism/wtf-v1";
 	import Survey from "$lib/survey/index.svelte"

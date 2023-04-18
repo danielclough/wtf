@@ -34,7 +34,6 @@
     cursor: move;
     }
 </style>
-
 <script type="text/javascript"><![CDATA[
     function makeDraggable(evt) {
     var svg = evt.target;
