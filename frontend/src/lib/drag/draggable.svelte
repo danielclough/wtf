@@ -38,6 +38,7 @@
 <script type="text/javascript"><![CDATA[
     function makeDraggable(evt) {
     var svg = evt.target;
+    svg.addEventListener('contextmenu', delTarget);
     svg.addEventListener('mousedown', mouseDown);
     svg.addEventListener('mousemove', drag);
     svg.addEventListener('mouseup', endDrag);
@@ -47,7 +48,6 @@
     svg.addEventListener('touchend', endDrag);
     svg.addEventListener('touchleave', endDrag);
     svg.addEventListener('touchcancel', endDrag);
-    svg.addEventListener('contextmenu', delTarget);
     
     var selectedElement, offset, transform,
         bbox, minX, maxX, minY, maxY, confined;
@@ -74,7 +74,7 @@
     function delTarget(evt) {
         evt.preventDefault()
         // console.log(evt)
-        if (evt.explicitOriginalTarget.nodeName == "#text") {
+        if (evt.explicitOriginalTarget.nodeName !== "svg") {
             evt.target.remove()
         }
         return false
