@@ -5,6 +5,8 @@
     let viewBoxH = 0;
     export let data: any;
 
+    $: pointList = [];
+
     $: checkDesktop = viewBoxW > viewBoxH;
     $: desktopFontSize = viewBoxW / 80;
     $: mobileFontSize = viewBoxW / 30;
@@ -23,188 +25,193 @@
 <svg xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 {viewBoxW} {viewBoxH}"
     width="100%" height="100%"
-    onload="makeDraggable(evt)">
+    onload="makeDraggable(evt)"
+    id="dragBox">
 
-<style>
-    .static {
-    cursor: not-allowed;
-    }
-    .draggable {
-    cursor: move;
-    }
-</style>
-<script type="text/javascript"><![CDATA[
-    function makeDraggable(evt) {
-    var svg = evt.target;
-    svg.addEventListener('contextmenu', delTarget);
-    svg.addEventListener('mousedown', mouseDown);
-    svg.addEventListener('mousemove', drag);
-    svg.addEventListener('mouseup', endDrag);
-    svg.addEventListener('mouseleave', endDrag);
-    svg.addEventListener('touchstart', startDrag);
-    svg.addEventListener('touchmove', drag);
-    svg.addEventListener('touchend', endDrag);
-    svg.addEventListener('touchleave', endDrag);
-    svg.addEventListener('touchcancel', endDrag);
-    
-    var selectedElement, offset, transform,
-        bbox, minX, maxX, minY, maxY, confined;
-    var boundaryX1 = 10.5;
-    var boundaryX2 = 30;
-    var boundaryY1 = 2.2;
-    var boundaryY2 = 19.2;
+    <style>
+        .static {
+        cursor: not-allowed;
+        }
+        .draggable {
+        cursor: move;
+        }
+    </style>
+    <script type="text/javascript"><![CDATA[
+        function makeDraggable(evt) {
+            let svg = evt.target;
+            svg.addEventListener('contextmenu', delTarget);
+            svg.addEventListener('mousedown', mouseDown);
+            svg.addEventListener('mousemove', drag);
+            svg.addEventListener('mouseup', endDrag);
+            svg.addEventListener('mouseleave', endDrag);
+            svg.addEventListener('touchstart', startDrag);
+            svg.addEventListener('touchmove', drag);
+            svg.addEventListener('touchend', endDrag);
+            svg.addEventListener('touchleave', endDrag);
+            svg.addEventListener('touchcancel', endDrag);
 
-    function getMousePosition(evt) {
-        var CTM = svg.getScreenCTM();
-        if (evt.touches) { evt = evt.touches[0]; }
-        return {
-        x: (evt.clientX - CTM.e) / CTM.a,
-        y: (evt.clientY - CTM.f) / CTM.d
-        };
-    }
+            let selectedElement, offset, transform,
+                bbox, minX, maxX, minY, maxY, confined;
+            let boundaryX1 = 10.5;
+            let boundaryX2 = 30;
+            let boundaryY1 = 2.2;
+            let boundaryY2 = 19.2;
 
-    function mouseDown(evt) {
-        if (evt.button == 0) {
-            startDrag(evt)
-        }
-    }
+            function getMousePosition(evt) {
+                let CTM = svg.getScreenCTM();
+                if (evt.touches) { evt = evt.touches[0]; }
+                return {
+                x: (evt.clientX - CTM.e) / CTM.a,
+                y: (evt.clientY - CTM.f) / CTM.d
+                };
+            }
 
-    function delTarget(evt) {
-        evt.preventDefault()
-        // console.log(evt)
-        if (evt.explicitOriginalTarget.nodeName !== "svg") {
-            evt.target.remove()
-        }
-        return false
-    }
+            function mouseDown(evt) {
+                if (evt.button == 0) {
+                    startDrag(evt)
+                }
+            }
 
-    function startDrag(evt) {
-        if (evt.target.classList.contains('draggable')) {
-        selectedElement = evt.target;
-        offset = getMousePosition(evt);
-        // Make sure the first transform on the element is a translate transform
-        var transforms = selectedElement.transform.baseVal;
-        if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
-            // Create an transform that translates by (0, 0)
-            var translate = svg.createSVGTransform();
-            translate.setTranslate(0, 0);
-            selectedElement.transform.baseVal.insertItemBefore(translate, 0);
-        }
-        // Get initial translation
-        transform = transforms.getItem(0);
-        offset.x -= transform.matrix.e;
-        offset.y -= transform.matrix.f;
+            function delTarget(evt) {
+                evt.preventDefault()
+                // console.log(evt)
+                if (evt.explicitOriginalTarget.nodeName !== "svg") {
+                    evt.target.remove()
+                }
+                return false
+            }
 
-        confined = evt.target.classList.contains('confine');
-        if (confined) {
-            bbox = selectedElement.getBBox();
-            minX = boundaryX1 - bbox.x;
-            maxX = boundaryX2 - bbox.x - bbox.width;
-            minY = boundaryY1 - bbox.y;
-            maxY = boundaryY2 - bbox.y - bbox.height;
-        }
-        }
-    }
-    function drag(evt) {
-        if (selectedElement) {
-        evt.preventDefault();
-        var coord = getMousePosition(evt);
-        var dx = coord.x - offset.x;
-        var dy = coord.y - offset.y;
-        if (confined) {
-            if (dx < minX) { dx = minX; }
-            else if (dx > maxX) { dx = maxX; }
-            if (dy < minY) { dy = minY; }
-            else if (dy > maxY) { dy = maxY; }
-        }
-        transform.setTranslate(dx, dy);
-        console.log(offset.x, offset.y, dx, dy)
-        }
-        
-    }
-    function endDrag(evt) {
-        selectedElement = false;
-    }
-    }
-]]> </script>
+            function startDrag(evt) {
+                if (evt.target.classList.contains('draggable')) {
+                selectedElement = evt.target;
+                offset = getMousePosition(evt);
+                // Make sure the first transform on the element is a translate transform
+                let transforms = selectedElement.transform.baseVal;
+                if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
+                    // Create an transform that translates by (0, 0)
+                    let translate = svg.createSVGTransform();
+                    translate.setTranslate(0, 0);
+                    selectedElement.transform.baseVal.insertItemBefore(translate, 0);
+                }
+                // Get initial translation
+                transform = transforms.getItem(0);
+                offset.x -= transform.matrix.e;
+                offset.y -= transform.matrix.f;
 
-{#each shuffle(data) as point, i}
-    <text class="draggable"
-    x={i%31==0
-        ? 30
-        : i%28==0
+                confined = evt.target.classList.contains('confine');
+                if (confined) {
+                    bbox = selectedElement.getBBox();
+                    minX = boundaryX1 - bbox.x;
+                    maxX = boundaryX2 - bbox.x - bbox.width;
+                    minY = boundaryY1 - bbox.y;
+                    maxY = boundaryY2 - bbox.y - bbox.height;
+                }
+                }
+            }
+
+            function drag(evt) {
+                if (selectedElement) {
+                    evt.preventDefault();
+                    let coord = getMousePosition(evt);
+                    let dx = coord.x - offset.x;
+                    let dy = coord.y - offset.y;
+                    if (confined) {
+                        if (dx < minX) { dx = minX; }
+                        else if (dx > maxX) { dx = maxX; }
+                        if (dy < minY) { dy = minY; }
+                        else if (dy > maxY) { dy = maxY; }
+                    }
+                    transform.setTranslate(dx, dy);
+
+                    let text = selectedElement.id
+                    selectedElement.innerHTML = `${text} (${-(15-coord.y).toFixed() >0 ? -(15-coord.y).toFixed() : 1})`
+                }
+                
+            }
+            function endDrag(evt) {
+                selectedElement = false;
+            }
+        }
+    ]]> </script>
+
+                {console.log("pointList")}
+    {#each shuffle(data) as point, i}
+        <text class="draggable" id="{point}"
+        x={i%31==0
             ? 30
-            : i%29==0
-                ? 125
-                    : i%24==0
-                        ? 220
-                        : i%23==0
-                            ? 220
-                            : i%18==0
-                                ? 125
-                                : i%19==0
-                                    ? 30
-                                    : i%17==0
-            ? 125
-            : i%13==0
-                ? 220
-                : i%11==0
+            : i%28==0
+                ? 30
+                : i%29==0
                     ? 125
-                    : i%21==0
-                        ? 30
-                        : i%14==0
-                            ? 125
-                            : i%7==0
-                                ? 125
-                                : i%15==0
-                                    ? 125
-                                    : i%20==0
-                                        ? 30
-                                        : i%25==0
-            ? 125
-            : i%5==0
-                ? 220
-                : i%3==0
-                    ? 30
-                    : i%32==0
-                        ? 125
-                        : i%8==0
+                        : i%24==0
                             ? 220
-                            : i%6==0
-                                ? 125
-                                : i%4==0
+                            : i%23==0
+                                ? 220
+                                : i%18==0
                                     ? 125
-                                    : i%2==0
+                                    : i%19==0
                                         ? 30
-                                        : 30
+                                        : i%17==0
+                ? 125
+                : i%13==0
+                    ? 220
+                    : i%11==0
+                        ? 125
+                        : i%21==0
+                            ? 30
+                            : i%14==0
+                                ? 125
+                                : i%7==0
+                                    ? 125
+                                    : i%15==0
+                                        ? 125
+                                        : i%20==0
+                                            ? 30
+                                            : i%25==0
+                ? 125
+                : i%5==0
+                    ? 220
+                    : i%3==0
+                        ? 30
+                        : i%32==0
+                            ? 125
+                            : i%8==0
+                                ? 220
+                                : i%6==0
+                                    ? 125
+                                    : i%4==0
+                                        ? 125
+                                        : i%2==0
+                                            ? 30
+                                            : 30
 
-        }
-    y="{i%2==0 ? (
-        i%16==0 ? (viewBoxH-(calcFontHeight *1))
-        : (i%22==0 ? (viewBoxH-(calcFontHeight *4)) 
-        : (i%12==0 ? (viewBoxH-(calcFontHeight *2)) 
-        : (i%10==0 ? (viewBoxH-(calcFontHeight *3))
-        : (i%8==0 ? (viewBoxH-(calcFontHeight *4))
-        : (i%6==0 ? (viewBoxH-(calcFontHeight *5))
-        : i%4==0 ? (viewBoxH-(calcFontHeight *6))
-        : (viewBoxH-(calcFontHeight *7)))))) )
-    )
-        : i%21==0 ? (viewBoxH-(calcFontHeight *10))
-        : i%27==0 ? (viewBoxH-(calcFontHeight *11))
-        : i%9==0 ? (viewBoxH-(calcFontHeight *15))
-        : i%3==0 ? (viewBoxH-(calcFontHeight *8))
-        : i%5==0 ? (viewBoxH-(calcFontHeight *9))
-        : i%7==0 ? (viewBoxH-(calcFontHeight *10))
-        : i%11==0 ? (viewBoxH-(calcFontHeight *11))
-        : i%13==0 ? (viewBoxH-(calcFontHeight *12))
-        : i%17==0 ? (viewBoxH-(calcFontHeight *13))
-        : i%19==0 ? (viewBoxH-(calcFontHeight *14))
-        : i%23==0 ? (viewBoxH-(calcFontHeight *15))
-        : i%29==0 ? (viewBoxH-(calcFontHeight *14))
-        : i%31==0 ? (viewBoxH-(calcFontHeight *16))
-        : (viewBoxH-(calcFontHeight *13))}"
-    text-anchor="left" fill="white" font-size="{checkDesktop
-        ? desktopFontSize
-        : mobileFontSize}px" alignment-baseline="middle">{point}</text>
-{/each}
+            }
+        y="{i%2==0 ? (
+            i%16==0 ? (viewBoxH-(calcFontHeight *1))
+            : (i%22==0 ? (viewBoxH-(calcFontHeight *4)) 
+            : (i%12==0 ? (viewBoxH-(calcFontHeight *2)) 
+            : (i%10==0 ? (viewBoxH-(calcFontHeight *3))
+            : (i%8==0 ? (viewBoxH-(calcFontHeight *4))
+            : (i%6==0 ? (viewBoxH-(calcFontHeight *5))
+            : i%4==0 ? (viewBoxH-(calcFontHeight *6))
+            : (viewBoxH-(calcFontHeight *7)))))) )
+        )
+            : i%21==0 ? (viewBoxH-(calcFontHeight *10))
+            : i%27==0 ? (viewBoxH-(calcFontHeight *11))
+            : i%9==0 ? (viewBoxH-(calcFontHeight *15))
+            : i%3==0 ? (viewBoxH-(calcFontHeight *8))
+            : i%5==0 ? (viewBoxH-(calcFontHeight *9))
+            : i%7==0 ? (viewBoxH-(calcFontHeight *10))
+            : i%11==0 ? (viewBoxH-(calcFontHeight *11))
+            : i%13==0 ? (viewBoxH-(calcFontHeight *12))
+            : i%17==0 ? (viewBoxH-(calcFontHeight *13))
+            : i%19==0 ? (viewBoxH-(calcFontHeight *14))
+            : i%23==0 ? (viewBoxH-(calcFontHeight *15))
+            : i%29==0 ? (viewBoxH-(calcFontHeight *14))
+            : i%31==0 ? (viewBoxH-(calcFontHeight *16))
+            : (viewBoxH-(calcFontHeight *13))}"
+        text-anchor="left" fill="white" font-size="{checkDesktop
+            ? desktopFontSize
+            : mobileFontSize}px" alignment-baseline="middle">{point}</text>
+    {/each}
 </svg>
