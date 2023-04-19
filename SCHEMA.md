@@ -2,7 +2,7 @@
 
 Events my be hosted by WTF or a 3rd party.
 
-```mermaid:
+```mermaid
 classDiagram
     class Account{
         🔑 id: Uuid
