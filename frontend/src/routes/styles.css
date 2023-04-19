@@ -29,6 +29,7 @@ body {
 
 main {
 	min-height: 95vh;
+	margin: 0 1rem;
 }
 
 section {
@@ -73,22 +74,12 @@ a:hover {
 	color: var(--color-theme-1);
 }
 
-ul {
-	position: relative;
-	padding: 0;
-	margin: 0;
-	height: 3em;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	list-style: none;
-	background: var(--background);
-	background-size: contain;
-}
-
 li {
 	position: relative;
+	line-height: 1.5rem;
 	height: 100%;
+	width: fit-content;
+	list-style: upper-roman;
 }
 
 li[aria-current='page']::before {
@@ -186,6 +177,16 @@ nav {
 	display: flex;
 	justify-content: center;
 }
+nav ul {
+	position: relative;
+	height: 3em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	list-style: none;
+	background: var(--background);
+	background-size: contain;
+}
 
 nav a {
 	display: flex;
@@ -199,6 +200,10 @@ nav a {
 	letter-spacing: 0.1em;
 	text-decoration: none;
 	transition: color 0.2s linear;
+}
+
+nav li {
+	list-style: none;
 }
 
 /* FOOTER */
