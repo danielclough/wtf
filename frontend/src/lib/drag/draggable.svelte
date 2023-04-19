@@ -5,7 +5,7 @@
     let viewBoxH = 0;
     export let data: any;
 
-    $: pointList = [];
+    $: ranking = [];
 
     $: checkDesktop = viewBoxW > viewBoxH;
     $: desktopFontSize = viewBoxW / 80;
@@ -13,11 +13,12 @@
     $: calcFontHeight = checkDesktop ? desktopFontSize : mobileFontSize
     onMount(()=> {
         viewBoxW = wW*.9
-        viewBoxH = wH*.60
+        viewBoxH = wH*.80
     })
 
     import {shuffle} from "$lib/utils/shuffle"
 	import { onMount } from "svelte";
+	import { calcX, calcY } from "./utils";
 </script>
 
 <svelte:window bind:innerWidth={wW} bind:innerHeight={wH} />
@@ -124,7 +125,7 @@
                     transform.setTranslate(dx, dy);
 
                     let text = selectedElement.id
-                    selectedElement.innerHTML = `${text} (${-(15-coord.y).toFixed() >0 ? -(15-coord.y).toFixed() : 1})`
+                    selectedElement.innerHTML = `${-(50-coord.y).toFixed() >0 ? -(50-coord.y).toFixed() : 1} - ${text}`
                 }
                 
             }
@@ -134,84 +135,29 @@
         }
     ]]> </script>
 
-                {console.log("pointList")}
+    <!-- {#each data as point, i} -->
     {#each shuffle(data) as point, i}
         <text class="draggable" id="{point}"
-        x={i%31==0
-            ? 30
-            : i%28==0
-                ? 30
-                : i%29==0
-                    ? 125
-                        : i%24==0
-                            ? 220
-                            : i%23==0
-                                ? 220
-                                : i%18==0
-                                    ? 125
-                                    : i%19==0
-                                        ? 30
-                                        : i%17==0
-                ? 125
-                : i%13==0
-                    ? 220
-                    : i%11==0
-                        ? 125
-                        : i%21==0
-                            ? 30
-                            : i%14==0
-                                ? 125
-                                : i%7==0
-                                    ? 125
-                                    : i%15==0
-                                        ? 125
-                                        : i%20==0
-                                            ? 30
-                                            : i%25==0
-                ? 125
-                : i%5==0
-                    ? 220
-                    : i%3==0
-                        ? 30
-                        : i%32==0
-                            ? 125
-                            : i%8==0
-                                ? 220
-                                : i%6==0
-                                    ? 125
-                                    : i%4==0
-                                        ? 125
-                                        : i%2==0
-                                            ? 30
-                                            : 30
-
-            }
-        y="{i%2==0 ? (
-            i%16==0 ? (viewBoxH-(calcFontHeight *1))
-            : (i%22==0 ? (viewBoxH-(calcFontHeight *4)) 
-            : (i%12==0 ? (viewBoxH-(calcFontHeight *2)) 
-            : (i%10==0 ? (viewBoxH-(calcFontHeight *3))
-            : (i%8==0 ? (viewBoxH-(calcFontHeight *4))
-            : (i%6==0 ? (viewBoxH-(calcFontHeight *5))
-            : i%4==0 ? (viewBoxH-(calcFontHeight *6))
-            : (viewBoxH-(calcFontHeight *7)))))) )
-        )
-            : i%21==0 ? (viewBoxH-(calcFontHeight *10))
-            : i%27==0 ? (viewBoxH-(calcFontHeight *11))
-            : i%9==0 ? (viewBoxH-(calcFontHeight *15))
-            : i%3==0 ? (viewBoxH-(calcFontHeight *8))
-            : i%5==0 ? (viewBoxH-(calcFontHeight *9))
-            : i%7==0 ? (viewBoxH-(calcFontHeight *10))
-            : i%11==0 ? (viewBoxH-(calcFontHeight *11))
-            : i%13==0 ? (viewBoxH-(calcFontHeight *12))
-            : i%17==0 ? (viewBoxH-(calcFontHeight *13))
-            : i%19==0 ? (viewBoxH-(calcFontHeight *14))
-            : i%23==0 ? (viewBoxH-(calcFontHeight *15))
-            : i%29==0 ? (viewBoxH-(calcFontHeight *14))
-            : i%31==0 ? (viewBoxH-(calcFontHeight *16))
-            : (viewBoxH-(calcFontHeight *13))}"
+        x={calcX(i, viewBoxW)}
+        y={calcY(i, viewBoxH, calcFontHeight)}
         text-anchor="left" fill="white" font-size="{checkDesktop
             ? desktopFontSize
             : mobileFontSize}px" alignment-baseline="middle">{point}</text>
     {/each}
 </svg>
+
+<button style="float:right;font-size:1rem;padding:1rem;" on:click={()=> {
+    let svg = document.getElementById("dragBox")
+    let children = svg?.children
+    if (children != undefined) {
+        for (let child of children) {
+            if (child.nodeName == "text") {
+                let content  = child.innerHTML;
+                let split = content.split(" - ")
+                console.log(split)
+            }
+        }
+    }
+}}>
+    Done
+</button>

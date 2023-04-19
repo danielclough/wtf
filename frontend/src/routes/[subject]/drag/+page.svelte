@@ -1,13 +1,8 @@
 <script>
     let links = [
-        ["/ontology/survey","What Exists?"],
-        ["/epistemology/survey","How Do We Know?"],
-        ["/ism/survey","*-ism Schism Game"],
-        ["/politics/drag","Rate Political People"],
+        ["/politics/drag/republicans","Rate Republicans"],
+        ["/politics/drag/democrats","Rate Democrats"],
     ]
-
-	import { page } from '$app/stores';
-    const subject = $page.params.subject;
 </script>
 
 <section>
@@ -20,7 +15,7 @@
     <h2>
         Tell me what you think!
     </h2>
-    {#each links.filter((x)=> x[0].includes(subject)) as link}
+    {#each links as link}
     	<a href={link[0]}> {link[1]} </a>
     {/each}
 </section>
