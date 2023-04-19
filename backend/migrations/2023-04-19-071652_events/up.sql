@@ -8,14 +8,10 @@ CREATE TABLE events (
   location Text[] NOT NULL,
   directions Text[] NOT NULL,
   map_images Text[] NOT NULL,
-  start_time Timestamp NOT NULL,
-  end_time Timestamp NOT NULL,
+  start_time VARCHAR NOT NULL,
+  end_time VARCHAR NOT NULL,
   conduct_code_ids UUID[] NOT NULL,
-  dress_code_ids UUID[] NOT NULL,
   other_expectations Text[] NOT NULL,
   account_ids UUID[] NOT NULL,
-  diet_ids UUID[] NOT NULL,
-  tasting_session_ids UUID[] NOT NULL,
-  env_feature_ids UUID[] NOT NULL,
   sensitivity_ids UUID[] NOT NULL
 )

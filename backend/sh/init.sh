@@ -14,6 +14,20 @@ EOF
 diesel migration run
 sleep 1
 
+diesel migration generate arguments
+dir=`find ./migrations -name "*arguments"`
+cat > ${dir}/up.sql << EOF
+CREATE TABLE arguments (
+  id UUID PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  description Text[] NOT NULL,
+  proposition_ids UUID[] NOT NULL,
+  relationship VARCHAR NOT NULL
+)
+EOF
+diesel migration run
+sleep 1
+
 diesel migration generate conduct_codes
 dir=`find ./migrations -name "*conduct_codes"`
 cat > ${dir}/up.sql << EOF
@@ -23,23 +37,6 @@ CREATE TABLE conduct_codes (
   description Text[] NOT NULL,
   qualifications Text[] NOT NULL,
   restrictions Text[] NOT NULL,
-  examples Text[] NOT NULL,
-  sensitivity_ids UUID[] NOT NULL
-)
-EOF
-diesel migration run
-sleep 1
-
-diesel migration generate dress_codes
-dir=`find ./migrations -name "*dress_codes"`
-cat > ${dir}/up.sql << EOF
-CREATE TABLE dress_codes (
-  id UUID PRIMARY KEY,
-  name VARCHAR NOT NULL,
-  description Text[] NOT NULL,
-  qualifications Text[] NOT NULL,
-  restrictions Text[] NOT NULL,
-  links Text[] NOT NULL,
   examples Text[] NOT NULL,
   sensitivity_ids UUID[] NOT NULL
 )
@@ -60,15 +57,11 @@ CREATE TABLE events (
   location Text[] NOT NULL,
   directions Text[] NOT NULL,
   map_images Text[] NOT NULL,
-  start_time Timestamp,
-  end_time Timestamp,
+  start_time VARCHAR NOT NULL,
+  end_time VARCHAR NOT NULL,
   conduct_code_ids UUID[] NOT NULL,
-  dress_code_ids UUID[] NOT NULL,
   other_expectations Text[] NOT NULL,
   account_ids UUID[] NOT NULL,
-  diet_ids UUID[] NOT NULL,
-  tasting_session_ids UUID[] NOT NULL,
-  env_feature_ids UUID[] NOT NULL,
   sensitivity_ids UUID[] NOT NULL
 )
 EOF
@@ -98,6 +91,22 @@ CREATE TABLE preferences (
   browser_theme VARCHAR NOT NULL,
   display_name VARCHAR NOT NULL,
   pronouns VARCHAR NOT NULL
+)
+EOF
+diesel migration run
+sleep 1
+
+diesel migration generate propositions
+dir=`find ./migrations -name "*propositions"`
+cat > ${dir}/up.sql << EOF
+CREATE TABLE propositions (
+  id UUID PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  credence REAL NOT NULL,
+  description Text[] NOT NULL,
+  links Text[] NOT NULL,
+  qualifications Text[] NOT NULL,
+  restrictions Text[] NOT NULL
 )
 EOF
 diesel migration run

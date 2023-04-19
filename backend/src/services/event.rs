@@ -3,7 +3,6 @@ use crate::{
     schema,
     utils::pg::establish_connection_pg
 };
-use chrono::NaiveDateTime;
 use diesel::prelude::*;
 
 use rocket::serde::json::{json, Value};
@@ -77,8 +76,8 @@ pub fn create(event: Form<NewEvent>) -> Option<Value> {
             location: event.location.to_owned(),
             directions: event.directions.to_owned(),
             map_images: event.map_images.to_owned(),
-            start_time: Some(NaiveDateTime::parse_from_str(&event.start_time.expect("some"), "%Y-%m-%d %H:%M:%S").expect("datetime")),
-            end_time: Some(NaiveDateTime::parse_from_str(&event.end_time.expect("some"), "%Y-%m-%d %H:%M:%S").expect("datetime")),
+            start_time: event.start_time.to_owned(),
+            end_time: event.end_time.to_owned(),
             conduct_code_ids: event.conduct_code_ids.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some")).expect("uuid"))).collect(),
             other_expectations: event.other_expectations.to_owned(),
             account_ids: event.account_ids.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some")).expect("uuid"))).collect(),

@@ -13,6 +13,16 @@ diesel::table! {
 }
 
 diesel::table! {
+    arguments (id) {
+        id -> Uuid,
+        name -> Varchar,
+        description -> Array<Nullable<Text>>,
+        proposition_ids -> Array<Nullable<Uuid>>,
+        relationship -> Varchar,
+    }
+}
+
+diesel::table! {
     conduct_codes (id) {
         id -> Uuid,
         name -> Varchar,
@@ -48,15 +58,11 @@ diesel::table! {
         location -> Array<Nullable<Text>>,
         directions -> Array<Nullable<Text>>,
         map_images -> Array<Nullable<Text>>,
-        start_time -> Timestamp,
-        end_time -> Timestamp,
+        start_time -> Varchar,
+        end_time -> Varchar,
         conduct_code_ids -> Array<Nullable<Uuid>>,
-        dress_code_ids -> Array<Nullable<Uuid>>,
         other_expectations -> Array<Nullable<Text>>,
         account_ids -> Array<Nullable<Uuid>>,
-        diet_ids -> Array<Nullable<Uuid>>,
-        tasting_session_ids -> Array<Nullable<Uuid>>,
-        env_feature_ids -> Array<Nullable<Uuid>>,
         sensitivity_ids -> Array<Nullable<Uuid>>,
     }
 }
@@ -78,6 +84,18 @@ diesel::table! {
         browser_theme -> Varchar,
         display_name -> Varchar,
         pronouns -> Varchar,
+    }
+}
+
+diesel::table! {
+    propositions (id) {
+        id -> Uuid,
+        name -> Varchar,
+        credence -> Float4,
+        description -> Array<Nullable<Text>>,
+        links -> Array<Nullable<Text>>,
+        qualifications -> Array<Nullable<Text>>,
+        restrictions -> Array<Nullable<Text>>,
     }
 }
 
@@ -147,11 +165,13 @@ diesel::table! {
 
 diesel::allow_tables_to_appear_in_same_query!(
     accounts,
+    arguments,
     conduct_codes,
     dress_codes,
     events,
     logins,
     preferences,
+    propositions,
     roles,
     sensitivities,
     survey_results,

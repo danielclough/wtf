@@ -21,6 +21,18 @@ classDiagram
     }
     Account --|> Event
 
+    class Argument{
+        🔑 id: Uuid
+        name: String
+        description: String[]
+        🏷️ proposition_ids: Uuid[]
+        find_all() -> Account[]
+        find_by_id(id) -> Account
+        create(account) -> Account
+        update(id, new_account) -> Account
+        delete(id, account) -> bool
+    }
+
     class ConductCode{
         🔑 id: Uuid
         name: String
@@ -90,6 +102,24 @@ classDiagram
         delete(id, preference) -> bool
     }
     Preference --|> Account
+
+    class Proposition{
+        🔑 id: Uuid
+        name: String
+        credence: f32
+        description: String[]
+        links: url[]
+        qualifications: String[]
+        restrictions: String[]
+        find_all() -> Preference[]
+        find_by_id(id) -> Preference
+        pronouns(id) -> String[]
+        is_called(id) -> String
+        create(preference) -> Preference
+        update(id, new_preference) -> Preference
+        delete(id, preference) -> bool
+    }
+    Proposition --|> Argument
 
     class Role{
         🔑 id: Uuid

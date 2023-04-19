@@ -8,9 +8,9 @@ use rocket::FromForm;
 use diesel::{prelude::*};
 use serde::{Serialize, Deserialize};
 use uuid::Uuid;
-use chrono::NaiveDateTime;
 
-#[derive(Queryable, Serialize, Deserialize, FromForm, Debug)]
+#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, FromForm, Debug)]
+#[diesel(table_name = events)]
 pub struct NewEvent {
     pub name: String,
     pub description: Vec<Option<String>>,
@@ -20,8 +20,8 @@ pub struct NewEvent {
     pub location: Vec<Option<String>>,
     pub directions: Vec<Option<String>>,
     pub map_images: Vec<Option<String>>,
-    pub start_time: Vec<Option<String>>,
-    pub end_time: Vec<Option<String>>,
+    pub start_time: String,
+    pub end_time: String,
     pub conduct_code_ids: Vec<Option<String>>,
     pub other_expectations: Vec<Option<String>>,
     pub account_ids: Vec<Option<String>>,
@@ -41,8 +41,8 @@ pub struct Event {
     pub location: Vec<Option<String>>,
     pub directions: Vec<Option<String>>,
     pub map_images: Vec<Option<String>>,
-    pub start_time: Vec<Option<String>>,
-    pub end_time: Vec<Option<String>>,
+    pub start_time: String,
+    pub end_time: String,
     pub conduct_code_ids: Vec<Option<Uuid>>,
     pub other_expectations: Vec<Option<String>>,
     pub account_ids: Vec<Option<Uuid>>,
