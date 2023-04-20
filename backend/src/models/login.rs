@@ -1,17 +1,22 @@
 use crate::{schema::logins, utils::{pg::establish_connection_pg, uuid::new_random_uuid_v4}};
 use diesel::{prelude::*};
-use rocket::FromForm;
+// use rocket::data::FromData;
+use rocket::{request::{self, Request}, serde::json::serde_json};
+use rocket::data::{self, Data, FromData, ToByteUnit};
+use rocket::http::{Status, ContentType};
 use serde::{Serialize, Deserialize};
 use uuid::Uuid;
 
-#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, FromForm, Debug)]
+use super::_common::Error;
+
+#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
 #[diesel(table_name = logins)]
-pub struct NewLogin {
-    pub email: String,
-    pub pw_salt: String,
-    pub pw_hash: String,
-    pub mfa_salt: String,
-    pub mfa_hash: String,
+pub struct NewLogin<'r> {
+    pub email: &'r str,
+    pub pw_salt: &'r str,
+    pub pw_hash: &'r str,
+    pub mfa_salt: &'r str,
+    pub mfa_hash: &'r str,
 }
 
 #[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
@@ -65,16 +70,51 @@ impl Login {
         res
     }
 }
-impl NewLogin {
+
+impl NewLogin<'_> {
     fn from(login: NewLogin) -> Login {
         let uuid = new_random_uuid_v4();
         Login {
             id: uuid,
-            email: login.email,
-            pw_salt: login.pw_salt,
-            pw_hash: login.pw_hash,
-            mfa_salt: login.mfa_salt,
-            mfa_hash: login.mfa_hash,
+            email: login.email.to_string(),
+            pw_salt: login.pw_salt.to_string(),
+            pw_hash: login.pw_hash.to_string(),
+            mfa_salt: login.mfa_salt.to_string(),
+            mfa_hash: login.mfa_hash.to_string(),
         }
+    }
+}
+
+#[rocket::async_trait]
+impl<'r> FromData<'r> for NewLogin<'r> {
+    type Error = Error;
+
+    async fn from_data(req: &'r Request<'_>, data: Data<'r>) -> data::Outcome<'r, Self> {
+        use Error::*;
+        use rocket::outcome::Outcome::*;
+
+        // Ensure the content type is correct before opening the data.
+        let new_login_ct = ContentType::new("application", "x-new_login");
+        if req.content_type() != Some(&new_login_ct) {
+            return Forward(data);
+        }
+
+        // Use a configured limit with name 'new_login' or fallback to default.
+        let limit = req.limits().get("new_login").unwrap_or(256.bytes());
+
+        // Read the data into a string.
+        let string = match data.open(limit).into_string().await {
+            Ok(string) if string.is_complete() => string.into_inner(),
+            Ok(_) => return Failure((Status::PayloadTooLarge, TooLarge)),
+            Err(e) => return Failure((Status::InternalServerError, Io(e))),
+        };
+
+        // We store `string` in request-local cache for long-lived borrows.
+        let string = request::local_cache!(req, string);
+        println!("{}", string);
+
+        let data: NewLogin = serde_json::from_str(string).expect("works");
+        
+        Success(data)
     }
 }

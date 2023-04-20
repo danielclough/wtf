@@ -35,19 +35,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    dress_codes (id) {
-        id -> Uuid,
-        name -> Varchar,
-        description -> Array<Nullable<Text>>,
-        qualifications -> Array<Nullable<Text>>,
-        restrictions -> Array<Nullable<Text>>,
-        links -> Array<Nullable<Text>>,
-        examples -> Array<Nullable<Text>>,
-        sensitivity_ids -> Array<Nullable<Uuid>>,
-    }
-}
-
-diesel::table! {
     events (id) {
         id -> Uuid,
         name -> Varchar,
@@ -167,7 +154,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     accounts,
     arguments,
     conduct_codes,
-    dress_codes,
     events,
     logins,
     preferences,

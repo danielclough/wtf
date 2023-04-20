@@ -50,6 +50,15 @@
 </h3>
 <ul>
     <li>
+        Implication:
+        <br />
+        - IF I am near the Earth THEN gravity pulls me down == TRUE
+        <br />
+        - IF I am near the Earth THEN gravity pushes me up == FALSE
+        <br />
+        - BECAUSE (E = mc2) THEREFORE tiny particles can make big explosions == TRUE
+    </li>
+    <li>
         Biconditional Equality:
         <br />
         - It is daytime IF AND ONLY IF the sun is above the horizon == TRUE
@@ -57,24 +66,6 @@
         - It is daytime IF AND ONLY IF I can see the sun == FALSE
         <br />
         - Energy IS Mass multiplied by the speed of light squared == TRUE
-    </li>
-    <li>
-        Implication:
-        <br />
-        - IF I am near the Earth THAN gravity pulls me down == TRUE
-        <br />
-        - IF I am near the Earth THAN gravity pushes me up == FALSE
-        <br />
-        - BECAUSE (E = mc2) THEREFORE tiny particles can make big explosions == TRUE
-    </li>
-    <li>
-        Conjunction:
-        <br />
-        - I am human AND I live on the Earth == TRUE
-        <br />
-        - I am human AND I live in the Andromeda Galaxy == FALSE
-        <br />
-        - The United States HAPPENED TO make the first atomic bomb == TRUE
     </li>
     <li>
         Negation:

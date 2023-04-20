@@ -17,6 +17,11 @@ init: db_up
 	cd backend && bash sh/init.sh
 	cd backend && cargo run -- --init
 
+rebuild:
+	docker image rm wtf-wtf_rocket:latest -f
+	docker system prune
+	make up
+
 clean:
 	docker container stop wtf_backend_postgres
 	docker compose down

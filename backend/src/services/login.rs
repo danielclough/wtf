@@ -1,22 +1,18 @@
 use crate::{
     models::login::{NewLogin, Login},
 };
+
 use rocket::serde::json::{json, Value};
-use rocket::{form::Form, delete};
+use rocket::{delete};
 use rocket::{post, get};
 use uuid::Uuid;
 
-#[post("/create", data = "<user_input>")]
-pub fn create(user_input: Form<NewLogin>) -> Option<Value> {
-    if user_input.pw_salt != "".to_string() {
+#[post("/create", data = "<body>")]
+pub fn create(body: NewLogin<'_>) -> Option<Value> {
+    if body.pw_salt != "".to_string() {
 
-        let new_login = NewLogin {
-            email: user_input.email.to_string(),
-            pw_salt: user_input.pw_salt.to_string(),
-            pw_hash: user_input.pw_hash.to_string(),
-            mfa_salt: user_input.mfa_salt.to_string(),
-            mfa_hash: user_input.mfa_hash.to_string(),
-        };
+        let new_login = body;
+
         let login = Login::create(new_login);
 
         Some(json!(login))
@@ -30,7 +26,7 @@ pub fn list() -> Option<Value> {
     let logins = Login::find_all();
 
     if &logins.len() > &0 {
-        let login = &logins[0];
+        let login = &logins;
         Some(json!(login))
     } else {
         None
