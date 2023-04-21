@@ -4,17 +4,20 @@ use crate::{
         pg::establish_connection_pg, uuid::new_random_uuid_v4
     }
 };
-use rocket::FromForm;
+use rocket::{request::{self, Request}, serde::json::serde_json};
+use rocket::data::{self, Data, FromData, ToByteUnit};
+use rocket::http::{Status, ContentType};
 use diesel::{prelude::*};
 use serde::{Serialize, Deserialize};
 use uuid::Uuid;
 
+use super::_common::Error;
 
-#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, FromForm, Debug)]
+#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
 #[diesel(table_name = propositions)]
 #[diesel(belongs_to(Argument))]
-pub struct NewProposition {
-    pub name: String,
+pub struct NewProposition<'r> {
+    pub name: &'r str,
     pub credence: f32,
     pub description: Vec<Option<String>>,
     pub links: Vec<Option<String>>,
@@ -73,17 +76,51 @@ impl Proposition {
         res
     }
 }
-impl NewProposition {
+impl NewProposition<'_> {
     fn from(proposition: NewProposition) -> Proposition {
         let uuid = new_random_uuid_v4();
         Proposition {
             id: uuid,
-            name: proposition.name,
+            name: proposition.name.to_string(),
             credence: proposition.credence,
             description: proposition.description,
             links: proposition.links,
             qualifications: proposition.qualifications,
             restrictions: proposition.restrictions,
         }
+    }
+}
+
+#[rocket::async_trait]
+impl<'r> FromData<'r> for NewProposition<'r> {
+    type Error = Error;
+
+    async fn from_data(req: &'r Request<'_>, data: Data<'r>) -> data::Outcome<'r, Self> {
+        use Error::*;
+        use rocket::outcome::Outcome::*;
+
+        // Ensure the content type is correct before opening the data.
+        let new_proposition_ct = ContentType::new("application", "x-new_proposition");
+        if req.content_type() != Some(&new_proposition_ct) {
+            return Forward(data);
+        }
+
+        // Use a configured limit with name 'new_proposition' or fallback to default.
+        let limit = req.limits().get("new_proposition").unwrap_or(256.bytes());
+
+        // Read the data into a string.
+        let string = match data.open(limit).into_string().await {
+            Ok(string) if string.is_complete() => string.into_inner(),
+            Ok(_) => return Failure((Status::PayloadTooLarge, TooLarge)),
+            Err(e) => return Failure((Status::InternalServerError, Io(e))),
+        };
+
+        // We store `string` in request-local cache for long-lived borrows.
+        let string = request::local_cache!(req, string);
+        println!("{}", string);
+
+        let data: NewProposition = serde_json::from_str(string).expect("works");
+        
+        Success(data)
     }
 }

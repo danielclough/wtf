@@ -5,10 +5,11 @@ CREATE TABLE accounts (
   id UUID PRIMARY KEY,
   avatar VARCHAR NOT NULL,
   level VARCHAR NOT NULL,
-  preference_id UUID NOT NULL,
+  preference_ids UUID[] NOT NULL,
   role_ids UUID[] NOT NULL,
   sensitivity_ids UUID[] NOT NULL,
-  survey_results_id UUID NOT NULL
+  survey_results_ids UUID[] NOT NULL,
+  user_ids UUID[] NOT NULL
 )
 EOF
 diesel migration run
@@ -151,6 +152,7 @@ dir=`find ./migrations -name "*survey_results"`
 cat > ${dir}/up.sql << EOF
 CREATE TABLE survey_results (
   id UUID PRIMARY KEY,
+  timestamp VARCHAR NOT NULL,
   aesthetics Text[] NOT NULL,
   cognitive Text[] NOT NULL,
   cosmology Text[] NOT NULL,
@@ -184,7 +186,7 @@ CREATE TABLE users (
   address_verified BOOLEAN[] NOT NULL,
   email Text[] NOT NULL UNIQUE,
   email_verified BOOLEAN[] NOT NULL,
-  phone Text[] NOT NULL UNIQUE,
+  phone Text[] NOT NULL,
   phone_verified BOOLEAN[] NOT NULL,
   taint VARCHAR NOT NULL,
   login_ids UUID[] NOT NULL

@@ -4,16 +4,19 @@ use crate::{
         pg::establish_connection_pg, uuid::new_random_uuid_v4
     }
 };
-use rocket::FromForm;
+use rocket::{request::{self, Request}, serde::json::serde_json};
+use rocket::data::{self, Data, FromData, ToByteUnit};
+use rocket::http::{Status, ContentType};
 use diesel::{prelude::*};
 use serde::{Serialize, Deserialize};
 use uuid::Uuid;
 
+use super::_common::Error;
 
-#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, FromForm, Debug)]
+#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
 #[diesel(table_name = sensitivities)]
-pub struct NewSensitivity {
-    pub name: String,
+pub struct NewSensitivity<'r> {
+    pub name: &'r str,
     pub description: Vec<Option<String>>,
     pub links: Vec<Option<String>>,
     pub precautions: Vec<Option<String>>,
@@ -80,12 +83,12 @@ impl Sensitivity {
         res
     }
 }
-impl NewSensitivity {
+impl NewSensitivity<'_> {
     fn from(sensitivity: NewSensitivity) -> Sensitivity {
         let uuid = new_random_uuid_v4();
         Sensitivity {
             id: uuid,
-            name: sensitivity.name,
+            name: sensitivity.name.to_string(),
             description: sensitivity.description,
             links: sensitivity.links,
             precautions: sensitivity.precautions,
@@ -95,5 +98,39 @@ impl NewSensitivity {
             environmental: sensitivity.environmental,
             social: sensitivity.social,
         }
+    }
+}
+
+#[rocket::async_trait]
+impl<'r> FromData<'r> for NewSensitivity<'r> {
+    type Error = Error;
+
+    async fn from_data(req: &'r Request<'_>, data: Data<'r>) -> data::Outcome<'r, Self> {
+        use Error::*;
+        use rocket::outcome::Outcome::*;
+
+        // Ensure the content type is correct before opening the data.
+        let new_sensitivity_ct = ContentType::new("application", "x-new_sensitivity");
+        if req.content_type() != Some(&new_sensitivity_ct) {
+            return Forward(data);
+        }
+
+        // Use a configured limit with name 'new_sensitivity' or fallback to default.
+        let limit = req.limits().get("new_sensitivity").unwrap_or(256.bytes());
+
+        // Read the data into a string.
+        let string = match data.open(limit).into_string().await {
+            Ok(string) if string.is_complete() => string.into_inner(),
+            Ok(_) => return Failure((Status::PayloadTooLarge, TooLarge)),
+            Err(e) => return Failure((Status::InternalServerError, Io(e))),
+        };
+
+        // We store `string` in request-local cache for long-lived borrows.
+        let string = request::local_cache!(req, string);
+        println!("{}", string);
+
+        let data: NewSensitivity = serde_json::from_str(string).expect("works");
+        
+        Success(data)
     }
 }

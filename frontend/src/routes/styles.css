@@ -231,3 +231,8 @@ footer a {
 		padding: 12px 0;
 	}
 }
+
+iframe {
+	float: left;
+	padding-right: .5rem;
+}

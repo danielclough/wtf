@@ -4,15 +4,19 @@ use crate::{
         pg::establish_connection_pg, uuid::new_random_uuid_v4
     }
 };
-use rocket::FromForm;
+use rocket::{request::{self, Request}, serde::json::serde_json};
+use rocket::data::{self, Data, FromData, ToByteUnit};
+use rocket::http::{Status, ContentType};
 use diesel::{prelude::*};
 use serde::{Serialize, Deserialize};
 use uuid::Uuid;
 
+use super::_common::Error;
 
-#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, FromForm, Debug)]
+#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
 #[diesel(table_name = survey_results)]
-pub struct NewSurveyResult {
+pub struct NewSurveyResult<'r> {
+    pub timestamp:  &'r str,
     pub aesthetics: Vec<Option<String>>,
     pub cognitive: Vec<Option<String>>,
     pub cosmology: Vec<Option<String>>,
@@ -36,6 +40,7 @@ pub struct NewSurveyResult {
 #[diesel(table_name = survey_results)]
 pub struct SurveyResult {
     pub id: Uuid,
+    pub timestamp: String,
     pub aesthetics: Vec<Option<String>>,
     pub cognitive: Vec<Option<String>>,
     pub cosmology: Vec<Option<String>>,
@@ -87,11 +92,12 @@ impl SurveyResult {
         res
     }
 }
-impl NewSurveyResult {
+impl NewSurveyResult<'_> {
     fn from(survey_results: NewSurveyResult) -> SurveyResult {
         let uuid = new_random_uuid_v4();
         SurveyResult {
             id: uuid,
+            timestamp: survey_results.timestamp.to_string(),
             aesthetics: survey_results.aesthetics,
             cognitive: survey_results.cognitive,
             cosmology: survey_results.cosmology,
@@ -109,5 +115,39 @@ impl NewSurveyResult {
             science: survey_results.science,
             theology: survey_results.theology,
         }
+    }
+}
+
+#[rocket::async_trait]
+impl<'r> FromData<'r> for NewSurveyResult<'r> {
+    type Error = Error;
+
+    async fn from_data(req: &'r Request<'_>, data: Data<'r>) -> data::Outcome<'r, Self> {
+        use Error::*;
+        use rocket::outcome::Outcome::*;
+
+        // Ensure the content type is correct before opening the data.
+        let new_survey_results_ct = ContentType::new("application", "x-new_survey_results");
+        if req.content_type() != Some(&new_survey_results_ct) {
+            return Forward(data);
+        }
+
+        // Use a configured limit with name 'new_survey_results' or fallback to default.
+        let limit = req.limits().get("new_survey_results").unwrap_or(256.bytes());
+
+        // Read the data into a string.
+        let string = match data.open(limit).into_string().await {
+            Ok(string) if string.is_complete() => string.into_inner(),
+            Ok(_) => return Failure((Status::PayloadTooLarge, TooLarge)),
+            Err(e) => return Failure((Status::InternalServerError, Io(e))),
+        };
+
+        // We store `string` in request-local cache for long-lived borrows.
+        let string = request::local_cache!(req, string);
+        println!("{}", string);
+
+        let data: NewSurveyResult = serde_json::from_str(string).expect("works");
+        
+        Success(data)
     }
 }

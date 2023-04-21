@@ -26,3 +26,12 @@
 		</a>
 	</div>
 </header>
+
+<div style="align-self:center;margin-right:1rem;font-size:1.5rem;">
+	{#if $page.data.user}
+		Welcome {$page.data.user.first_name || "Stranger"}!
+	{/if}
+	{#if $page.data.avatar}
+		<img src={$page.data.user.avatar} alt="avatar">
+	{/if}
+</div>

@@ -58,32 +58,14 @@ pub fn delete(id: &str) -> Option<Value> {
 // }
 
 
-#[post("/create", data = "<proposition>")]
-pub fn create(proposition: Form<NewProposition>) -> Option<Value> {
-    if proposition.name != "" {
-        let connection = &mut establish_connection_pg();
-        
-        let mut data = [0u8; 16];
-        rand::thread_rng().fill_bytes(&mut data);
-    
-        let uuid = Builder::from_random_bytes(data).into_uuid();
-        
-        let new_proposition = Proposition {
-            id: uuid,
-            name: proposition.name.to_owned(),
-            credence: proposition.credence.to_owned(),
-            description: proposition.description.to_owned(),
-            links: proposition.links.to_owned(),
-            qualifications: proposition.qualifications.to_owned(),
-            restrictions: proposition.restrictions.to_owned(),
-        };
+#[post("/create", data = "<body>")]
+pub fn create(body: NewProposition<'_>) -> Option<Value> {
+    if body.name != "" {
+        let new_proposition = body;
 
-        diesel::insert_into(self::schema::propositions::dsl::propositions)
-            .values(&new_proposition)
-            .execute(connection)
-            .expect("Error saving new proposition");
+        let proposition = Proposition::create(new_proposition);
 
-        Some(json!(new_proposition))
+        Some(json!(proposition))
     } else {
         None
     }

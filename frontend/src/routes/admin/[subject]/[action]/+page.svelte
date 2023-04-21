@@ -4,4 +4,4 @@
     export let data
 </script>
 
-{data}
+{JSON.stringify(data)}

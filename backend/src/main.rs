@@ -20,6 +20,7 @@ fn rocket() -> _ {
         .mount("/account", routes![services::account::list])
         .mount("/account", routes![services::account::create])
         .mount("/account", routes![services::account::find_by_id])
+        .mount("/account", routes![services::account::find_by_user])
         .mount("/account", routes![services::account::delete])
 
         .mount("/argument", routes![services::argument::list])
@@ -40,8 +41,8 @@ fn rocket() -> _ {
         .mount("/login", routes![services::login::list])
         .mount("/login", routes![services::login::create])
         .mount("/login", routes![services::login::find_by_id])
-        .mount("/login", routes![services::login::delete])
         .mount("/login", routes![services::login::find_by_email])
+        .mount("/login", routes![services::login::delete])
 
         .mount("/preference", routes![services::preference::list])
         .mount("/preference", routes![services::preference::create])
@@ -68,8 +69,9 @@ fn rocket() -> _ {
         .mount("/survey_result", routes![services::survey_result::find_by_id])
         .mount("/survey_result", routes![services::survey_result::delete])
 
+        .mount("/user", routes![services::user::list])
         .mount("/user", routes![services::user::create])
         .mount("/user", routes![services::user::find_by_id])
+        .mount("/user", routes![services::user::find_by_login])
         .mount("/user", routes![services::user::delete])
-        .mount("/user", routes![services::user::list])
 }

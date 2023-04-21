@@ -58,32 +58,14 @@ pub fn delete(id: &str) -> Option<Value> {
 // }
 
 
-#[post("/create", data = "<conduct_code>")]
-pub fn create(conduct_code: Form<NewConductCode>) -> Option<Value> {
-    if conduct_code.name != "" {
-        let connection = &mut establish_connection_pg();
-        
-        let mut data = [0u8; 16];
-        rand::thread_rng().fill_bytes(&mut data);
-    
-        let uuid = Builder::from_random_bytes(data).into_uuid();
-        
-        let new_conduct_code = ConductCode {
-            id: uuid,
-            name: conduct_code.name.to_owned(),
-            description: conduct_code.description.to_owned(),
-            qualifications: conduct_code.qualifications.to_owned(),
-            restrictions: conduct_code.restrictions.to_owned(),
-            examples: conduct_code.examples.to_owned(),
-            sensitivity_ids: conduct_code.sensitivity_ids.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some").as_str()).expect("uuid"))).collect(),
-        };
+#[post("/create", data = "<body>")]
+pub fn create(body: NewConductCode<'_>) -> Option<Value> {
+    if body.name != "" {
+        let new_conduct_code = body;
 
-        diesel::insert_into(self::schema::conduct_codes::dsl::conduct_codes)
-            .values(&new_conduct_code)
-            .execute(connection)
-            .expect("Error saving new conduct_code");
+        let conduct_code = ConductCode::create(new_conduct_code);
 
-        Some(json!(new_conduct_code))
+        Some(json!(conduct_code))
     } else {
         None
     }

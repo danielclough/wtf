@@ -1,16 +1,13 @@
 use crate::{
-    models::account::{NewAccount, Account},
-    schema,
-    utils::pg::establish_connection_pg
+    models::account::{NewAccount, Account}
 };
 use rocket::serde::json::{json, Value};
 use diesel::prelude::*;
 
-use rocket::{form::Form, delete};
+use rocket::delete;
 use rocket::{post, get};
 
-use uuid::{Builder, Uuid};
-use rand::prelude::*;
+use uuid::Uuid;
 
 #[get("/list")]
 pub fn list() -> Option<Value> {
@@ -33,12 +30,12 @@ pub fn find_by_id(id: &str) -> Option<Value> {
     Some(json!(account))
 }
 
-// #[get("/email/<email>")]
-// pub fn find_by_email(email: &str) -> Option<Value> {
-//     let account = Account::find_by_email(email);
+#[get("/user/<user>")]
+pub fn find_by_user(user: &str) -> Option<Value> {
+    let user = Account::find_by_user(user);
     
-// Some(json!(account))
-// }
+    Some(json!(user))
+}
 
 
 #[delete("/<id>")]
@@ -57,32 +54,14 @@ pub fn delete(id: &str) -> Option<Value> {
 //     let new_account = Account::update(id.into_inner(), new_account.into_inner());
 // }
 
-#[post("/create", data = "<account>")]
-pub fn create(account: Form<NewAccount>) -> Option<Value> {
-    if account.avatar != "" {
-        let connection = &mut establish_connection_pg();
-        
-        let mut data = [0u8; 16];
-        rand::thread_rng().fill_bytes(&mut data);
-    
-        let uuid = Builder::from_random_bytes(data).into_uuid();
-        
-        let new_account = Account {
-            id: uuid,
-            avatar: account.avatar.to_owned(),
-            level: account.level.to_owned(),
-            preference_id: Uuid::parse_str(&account.preference_id).expect("uuid"),
-            role_ids: account.role_ids.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some")).expect("uuid"))).collect(),
-            sensitivity_ids: account.sensitivity_ids.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some")).expect("uuid"))).collect(),
-            survey_results_id: Uuid::parse_str(&account.survey_results_id).expect("uuid"),
-        };
+#[post("/create", data = "<body>")]
+pub fn create(body: NewAccount<'_>) -> Option<Value> {
+    if true {
+        let new_account = body;
 
-        diesel::insert_into(self::schema::accounts::dsl::accounts)
-            .values(&new_account)
-            .execute(connection)
-            .expect("Error saving new account");
+        let account = Account::create(new_account);
 
-        Some(json!(new_account))
+        Some(json!(account))
     } else {
         None
     }

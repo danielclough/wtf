@@ -56,40 +56,14 @@ pub fn delete(id: &str) -> Option<Value> {
 //     let new_event = Event::update(id.into_inner(), new_event.into_inner());
 // }
 
-#[post("/create", data = "<event>")]
-pub fn create(event: Form<NewEvent>) -> Option<Value> {
-    if event.name != "" {
-        let connection = &mut establish_connection_pg();
-        
-        let mut data = [0u8; 16];
-        rand::thread_rng().fill_bytes(&mut data);
-    
-        let uuid = Builder::from_random_bytes(data).into_uuid();
-        
-        let new_event = Event {
-            id: uuid,
-            name: event.name.to_owned(),
-            description: event.description.to_owned(),
-            imgs: event.imgs.to_owned(),
-            links: event.links.to_owned(),
-            ticketing: event.ticketing.to_owned(),
-            location: event.location.to_owned(),
-            directions: event.directions.to_owned(),
-            map_images: event.map_images.to_owned(),
-            start_time: event.start_time.to_owned(),
-            end_time: event.end_time.to_owned(),
-            conduct_code_ids: event.conduct_code_ids.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some")).expect("uuid"))).collect(),
-            other_expectations: event.other_expectations.to_owned(),
-            account_ids: event.account_ids.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some")).expect("uuid"))).collect(),
-            sensitivity_ids: event.sensitivity_ids.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some")).expect("uuid"))).collect(),
-        };
+#[post("/create", data = "<body>")]
+pub fn create(body: NewEvent<'_>) -> Option<Value> {
+    if body.name != "" {
+        let new_event = body;
 
-        diesel::insert_into(self::schema::events::dsl::events)
-            .values(&new_event)
-            .execute(connection)
-            .expect("Error saving new event");
+        let event = Event::create(new_event);
 
-        Some(json!(new_event))
+        Some(json!(event))
     } else {
         None
     }

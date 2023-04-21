@@ -68,31 +68,14 @@ pub fn delete(id: &str) -> Option<Value> {
 //     let new_role = Role::update(id.into_inner(), new_role.into_inner());
 // }
 
-#[post("/create", data = "<role>")]
-pub fn create(role: Form<NewRole>) -> Option<Value> {
-    if role.title != "" {
-        let connection = &mut establish_connection_pg();
-        
-        let mut data = [0u8; 16];
-        rand::thread_rng().fill_bytes(&mut data);
-    
-        let uuid = Builder::from_random_bytes(data).into_uuid();
-        
-        let new_role = Role {
-            id: uuid,
-            title: role.title.to_owned(),
-            description: role.description.to_owned(),
-            responsibility: role.responsibility.to_owned(),
-            discount: role.discount.to_owned(),
-            seen_by_role: role.seen_by_role.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some")).expect("uuid"))).collect(),
-        };
+#[post("/create", data = "<body>")]
+pub fn create(body: NewRole<'_>) -> Option<Value> {
+    if body.title != "" {
+        let new_role = body;
 
-        diesel::insert_into(self::schema::roles::dsl::roles)
-            .values(&new_role)
-            .execute(connection)
-            .expect("Error saving new role");
+        let role = Role::create(new_role);
 
-        Some(json!(new_role))
+        Some(json!(role))
     } else {
         None
     }

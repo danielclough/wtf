@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { Survey } from "./types";
+	import { page } from '$app/stores';
 
 	export let subject: Survey;
 
+	const account = $page.data.user.id || "";
 	let [img, alt] = subject.image;
 	let answers = Array.from({length: 24});
 	let topic = 0;
-	$: inProgress = false;
-	$: username = "username"
-	$: email = "email"
+	$: inProgress = true;
 	$: question = 0;
 	$: currentTopic = subject.questions[topic].topic;
 	$: currentQuestion = subject.questions[topic].questions;
@@ -34,25 +34,14 @@
 </svelte:head>
 
 <section>
-	<!-- in progress -->
-	<div style="display:{inProgress === true ? 'block' : 'none'}">
-		<p>
-			{username}: {email}
-			<button class="edit" on:click={()=>inProgress=false}>Edit</button>
-		</p>
-	</div>
-	<br />
-
-	<form action="https://formspree.io/f/mwkjwogv" method="POST">
+	<form action="?/submit" method="POST">
 		<!-- start -->
 		<div class="signup" style="display:{inProgress === true ? 'none' : 'flex'}">
-			<label for="username">Username</label>
+			<label for="username">
+				Account
+				<input type="text" id="username" name="username" value={account}>
+			</label>
 			<br />
-			<input type="text" id="username" name="username" on:focus|once={()=>username = ""} bind:value={username}>
-			<br />
-			<label for="username">Email</label>
-			<br />
-			<input type="email" id="email" name="email" on:focus|once={() => email = ""} bind:value={email}>
 			<p on:click={()=>inProgress=true}><underline>Get started!</underline></p>
 		</div>
 		<div class="hidden">

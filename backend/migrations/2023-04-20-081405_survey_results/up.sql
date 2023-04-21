@@ -1,5 +1,6 @@
 CREATE TABLE survey_results (
   id UUID PRIMARY KEY,
+  timestamp VARCHAR NOT NULL,
   aesthetics Text[] NOT NULL,
   cognitive Text[] NOT NULL,
   cosmology Text[] NOT NULL,

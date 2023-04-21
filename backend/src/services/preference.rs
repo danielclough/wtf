@@ -69,29 +69,14 @@ pub fn delete(id: &str) -> Option<Value> {
 // }
 
 
-#[post("/create", data = "<preference>")]
-pub fn create(preference: Form<NewPreference>) -> Option<Value> {
-    if preference.display_name != "" {
-        let connection = &mut establish_connection_pg();
-        
-        let mut data = [0u8; 16];
-        rand::thread_rng().fill_bytes(&mut data);
-    
-        let uuid = Builder::from_random_bytes(data).into_uuid();
-        
-        let new_preference = Preference {
-            id: uuid,
-            browser_theme: preference.browser_theme.to_owned(),
-            display_name: preference.display_name.to_owned(),
-            pronouns: preference.pronouns.to_owned(),
-        };
+#[post("/create", data = "<body>")]
+pub fn create(body: NewPreference<'_>) -> Option<Value> {
+    if body.display_name != "" {
+        let new_preference = body;
 
-        diesel::insert_into(self::schema::preferences::dsl::preferences)
-            .values(&new_preference)
-            .execute(connection)
-            .expect("Error saving new preference");
+        let preference = Preference::create(new_preference);
 
-        Some(json!(new_preference))
+        Some(json!(preference))
     } else {
         None
     }

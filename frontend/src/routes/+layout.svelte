@@ -1,7 +1,8 @@
 <script>
 	import Header from './Header.svelte';
 	import './styles.css';
-</script>
+  import { page } from '$app/stores'
+</script>  
 
 <div class="app">
 	<Header />

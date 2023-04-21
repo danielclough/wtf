@@ -1,6 +1,5 @@
 use crate::{schema::logins, utils::{pg::establish_connection_pg, uuid::new_random_uuid_v4}};
 use diesel::{prelude::*};
-// use rocket::data::FromData;
 use rocket::{request::{self, Request}, serde::json::serde_json};
 use rocket::data::{self, Data, FromData, ToByteUnit};
 use rocket::http::{Status, ContentType};

@@ -57,35 +57,14 @@ pub fn delete(id: &str) -> Option<Value> {
 // }
 
 
-#[post("/create", data = "<sensitivities>")]
-pub fn create(sensitivities: Form<NewSensitivity>) -> Option<Value> {
-    if sensitivities.name != "" {
-        let connection = &mut establish_connection_pg();
-        
-        let mut data = [0u8; 16];
-        rand::thread_rng().fill_bytes(&mut data);
-    
-        let uuid = Builder::from_random_bytes(data).into_uuid();
-        
-        let new_sensitivities = Sensitivity {
-            id: uuid,
-            name: sensitivities.name.to_owned(),
-            description: sensitivities.description.to_owned(),
-            links: sensitivities.links.to_owned(),
-            precautions: sensitivities.precautions.to_owned(),
-            imparing: sensitivities.imparing.to_owned(),
-            life_threatening: sensitivities.life_threatening.to_owned(),
-            dietary: sensitivities.dietary.to_owned(),
-            environmental: sensitivities.environmental.to_owned(),
-            social: sensitivities.social.to_owned(),
-        };
+#[post("/create", data = "<body>")]
+pub fn create(body: NewSensitivity<'_>) -> Option<Value> {
+    if body.name != "" {
+        let new_sensitivities = body;
 
-        diesel::insert_into(self::schema::sensitivities::dsl::sensitivities)
-            .values(&new_sensitivities)
-            .execute(connection)
-            .expect("Error saving new sensitivities");
+        let sensitivities = Sensitivity::create(new_sensitivities);
 
-        Some(json!(new_sensitivities))
+        Some(json!(sensitivities))
     } else {
         None
     }

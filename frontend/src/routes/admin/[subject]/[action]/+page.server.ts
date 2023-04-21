@@ -1,11 +1,11 @@
 /** @type {import('./$types').PageLoad} */
-import { BASIC_AUTH_PW } from '$env/static/private';
+import { BASIC_AUTH_STRING } from '$env/static/private';
 export async function load({ fetch, params }) {
 	const res = await fetch(`https://api.wtf.danielc.us/${params.subject}/${params.action}`, {
-		method: 'POST',
+		method: 'GET',
 		headers: {
 			'Content-Type': 'form/data',
-			'Authorization': `Basic ${Buffer.from('user:' + BASIC_AUTH_PW).toString('base64')}`
+			Authorization: `Basic ${BASIC_AUTH_STRING}`
 		}
 	});
 	const data = await res.json();

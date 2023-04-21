@@ -32,44 +32,22 @@ pub fn find_by_id(id: &str) -> Option<Value> {
     Some(json!(user))
 }
 
-// #[get("/email/<email>")]
-// pub fn find_by_email(email: &str) -> Option<Value> {
-//     let user = User::find_by_email(email);
+#[get("/login/<login>")]
+pub fn find_by_login(login: &str) -> Option<Value> {
+    let user = User::find_by_login(login);
     
-// Some(json!(user})
-// }
+    Some(json!(user))
+}
 
 
-#[post("/create", data = "<user>")]
-pub fn create(user: Form<NewUser>) -> Option<Value> {
-    if user.first_name != "" {
-        let connection = &mut establish_connection_pg();
-        
-        let mut data = [0u8; 16];
-        rand::thread_rng().fill_bytes(&mut data);
-    
-        let uuid = Builder::from_random_bytes(data).into_uuid();
-        
-        let new_user = User {
-            id: uuid,
-            first_name: user.first_name.to_string(),
-            last_name: user.last_name.to_string(),
-            address: user.address.to_owned(),
-            address_verified: vec![Some(false)],
-            email: user.email.to_owned(),
-            email_verified: vec![Some(false)],
-            phone: user.phone.to_owned(),
-            phone_verified: vec![Some(false)],
-            taint: user.taint.to_owned(),
-            login_ids: vec![Some(uuid)],
-        };
+#[post("/create", data = "<body>")]
+pub fn create(body: NewUser<'_>) -> Option<Value> {
+    if body.first_name != "" {
+        let new_user = body;
 
-        diesel::insert_into(self::schema::users::dsl::users)
-            .values(&new_user)
-            .execute(connection)
-            .expect("Error saving new user");
+        let user = User::create(new_user);
 
-        Some(json!(new_user))
+        Some(json!(user))
     } else {
         None
     }

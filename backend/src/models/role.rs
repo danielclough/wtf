@@ -4,19 +4,22 @@ use crate::{
         pg::establish_connection_pg, uuid::new_random_uuid_v4
     }
 };
-use rocket::FromForm;
+use rocket::{request::{self, Request}, serde::json::serde_json};
+use rocket::data::{self, Data, FromData, ToByteUnit};
+use rocket::http::{Status, ContentType};
 use diesel::{prelude::*};
 use serde::{Serialize, Deserialize};
 use uuid::Uuid;
 
+use super::_common::Error;
 
-#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, FromForm, Debug)]
+#[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
 #[diesel(table_name = roles)]
-pub struct NewRole {
-    pub title: String,
-    pub description: String,
-    pub responsibility: String,
-    pub discount: String,
+pub struct NewRole<'r> {
+    pub title: &'r str,
+    pub description: &'r str,
+    pub responsibility: &'r str,
+    pub discount: &'r str,
     pub seen_by_role: Vec<Option<String>>,
 }
 
@@ -71,16 +74,50 @@ impl Role {
         res
     }
 }
-impl NewRole {
+impl NewRole<'_> {
     fn from(role: NewRole) -> Role {
         let uuid = new_random_uuid_v4();
         Role {
             id: uuid,
-            title: role.title,
-            description: role.description,
-            responsibility: role.responsibility,
-            discount: role.discount,
+            title: role.title.to_string(),
+            description: role.description.to_string(),
+            responsibility: role.responsibility.to_string(),
+            discount: role.discount.to_string(),
             seen_by_role: role.seen_by_role.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
         }
+    }
+}
+
+#[rocket::async_trait]
+impl<'r> FromData<'r> for NewRole<'r> {
+    type Error = Error;
+
+    async fn from_data(req: &'r Request<'_>, data: Data<'r>) -> data::Outcome<'r, Self> {
+        use Error::*;
+        use rocket::outcome::Outcome::*;
+
+        // Ensure the content type is correct before opening the data.
+        let new_role_ct = ContentType::new("application", "x-new_role");
+        if req.content_type() != Some(&new_role_ct) {
+            return Forward(data);
+        }
+
+        // Use a configured limit with name 'new_role' or fallback to default.
+        let limit = req.limits().get("new_role").unwrap_or(256.bytes());
+
+        // Read the data into a string.
+        let string = match data.open(limit).into_string().await {
+            Ok(string) if string.is_complete() => string.into_inner(),
+            Ok(_) => return Failure((Status::PayloadTooLarge, TooLarge)),
+            Err(e) => return Failure((Status::InternalServerError, Io(e))),
+        };
+
+        // We store `string` in request-local cache for long-lived borrows.
+        let string = request::local_cache!(req, string);
+        println!("{}", string);
+
+        let data: NewRole = serde_json::from_str(string).expect("works");
+        
+        Success(data)
     }
 }

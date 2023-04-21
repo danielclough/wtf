@@ -8,28 +8,10 @@ use rocket::{post, get};
 
 use uuid::Uuid;
 
-#[post("/create", data = "<survey_result>")]
-pub fn create(survey_result: Form<NewSurveyResult>) -> Option<Value> {
+#[post("/create", data = "<body>")]
+pub fn create(body: NewSurveyResult<'_>) -> Option<Value> {
     if true {
-        
-        let new_survey_result = NewSurveyResult {
-            aesthetics: survey_result.aesthetics.to_owned(),
-            cognitive: survey_result.cognitive.to_owned(),
-            cosmology: survey_result.cosmology.to_owned(),
-            environmental: survey_result.environmental.to_owned(),
-            epistemology: survey_result.epistemology.to_owned(),
-            ethics: survey_result.ethics.to_owned(),
-            history: survey_result.history.to_owned(),
-            isms: survey_result.isms.to_owned(),
-            law: survey_result.law.to_owned(),
-            logic: survey_result.logic.to_owned(),
-            maths: survey_result.maths.to_owned(),
-            ontology: survey_result.ontology.to_owned(),
-            political: survey_result.political.to_owned(),
-            rhetoric: survey_result.rhetoric.to_owned(),
-            science: survey_result.science.to_owned(),
-            theology: survey_result.theology.to_owned(),
-        };
+        let new_survey_result = body;
 
         let survey_result = SurveyResult::create(new_survey_result);
 

@@ -1,16 +1,12 @@
 use crate::{
-    models::argument::{NewArgument, Argument},
-    schema,
-    utils::pg::establish_connection_pg
+    models::argument::{NewArgument, Argument}
 };
-use diesel::prelude::*;
 use rocket::serde::json::{json, Value};
 
-use rocket::{form::Form, delete};
+use rocket::delete;
 use rocket::{post, get};
 
-use uuid::{Builder, Uuid};
-use rand::prelude::*;
+use uuid::Uuid;
 
 #[get("/list")]
 pub fn list() -> Option<Value> {
@@ -57,30 +53,14 @@ pub fn delete(id: &str) -> Option<Value> {
 //     let new_argument = Argument::update(id.into_inner(), new_argument.into_inner());
 // }
 
-#[post("/create", data = "<argument>")]
-pub fn create(argument: Form<NewArgument>) -> Option<Value> {
-    if argument.name != "" {
-        let connection = &mut establish_connection_pg();
-        
-        let mut data = [0u8; 16];
-        rand::thread_rng().fill_bytes(&mut data);
-    
-        let uuid = Builder::from_random_bytes(data).into_uuid();
-        
-        let new_argument = Argument {
-            id: uuid,
-            name: argument.name.to_owned(),
-            description: argument.description.to_owned(),
-            proposition_ids: argument.proposition_ids.iter().map(|x| Some(Uuid::parse_str(&x.to_owned().expect("some")).expect("uuid"))).collect(),
-            relationship: argument.relationship.to_owned(),
-        };
+#[post("/create", data = "<body>")]
+pub fn create(body: NewArgument<'_>) -> Option<Value> {
+    if body.name != "" {
+        let new_argument = body;
 
-        diesel::insert_into(self::schema::arguments::dsl::arguments)
-            .values(&new_argument)
-            .execute(connection)
-            .expect("Error saving new argument");
+        let argument = Argument::create(new_argument);
 
-        Some(json!(new_argument))
+        Some(json!(argument))
     } else {
         None
     }

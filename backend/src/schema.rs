@@ -5,10 +5,11 @@ diesel::table! {
         id -> Uuid,
         avatar -> Varchar,
         level -> Varchar,
-        preference_id -> Uuid,
+        preference_ids -> Array<Nullable<Uuid>>,
         role_ids -> Array<Nullable<Uuid>>,
         sensitivity_ids -> Array<Nullable<Uuid>>,
-        survey_results_id -> Uuid,
+        survey_results_ids -> Array<Nullable<Uuid>>,
+        user_ids -> Array<Nullable<Uuid>>,
     }
 }
 
@@ -115,6 +116,7 @@ diesel::table! {
 diesel::table! {
     survey_results (id) {
         id -> Uuid,
+        timestamp -> Varchar,
         aesthetics -> Array<Nullable<Text>>,
         cognitive -> Array<Nullable<Text>>,
         cosmology -> Array<Nullable<Text>>,

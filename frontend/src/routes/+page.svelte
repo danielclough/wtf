@@ -18,7 +18,7 @@
         Tell me what you think!
     </h2>
     {#each links as link}
-        <a href={link[0]}> {link[1]} </a>
+        <a data-sveltekit-reload href={link[0]}> {link[1]} </a>
     {/each}
 </section>
 

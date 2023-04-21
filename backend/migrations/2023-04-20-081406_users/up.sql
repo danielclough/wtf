@@ -6,7 +6,7 @@ CREATE TABLE users (
   address_verified BOOLEAN[] NOT NULL,
   email Text[] NOT NULL UNIQUE,
   email_verified BOOLEAN[] NOT NULL,
-  phone Text[] NOT NULL UNIQUE,
+  phone Text[] NOT NULL,
   phone_verified BOOLEAN[] NOT NULL,
   taint VARCHAR NOT NULL,
   login_ids UUID[] NOT NULL
