@@ -54,6 +54,11 @@ fn rocket() -> _ {
         .mount("/proposition", routes![services::proposition::find_by_id])
         .mount("/proposition", routes![services::proposition::delete])
 
+        .mount("/relationship", routes![services::relationship::list])
+        .mount("/relationship", routes![services::relationship::create])
+        .mount("/relationship", routes![services::relationship::find_by_id])
+        .mount("/relationship", routes![services::relationship::delete])
+
         .mount("/role", routes![services::role::list])
         .mount("/role", routes![services::role::create])
         .mount("/role", routes![services::role::find_by_id])

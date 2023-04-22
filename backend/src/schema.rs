@@ -88,6 +88,17 @@ diesel::table! {
 }
 
 diesel::table! {
+    relationships (id) {
+        id -> Uuid,
+        dog_cat_bird -> Varchar,
+        ignore_ids -> Array<Nullable<Uuid>>,
+        friend_ids -> Array<Nullable<Uuid>>,
+        frienenmy_ids -> Array<Nullable<Uuid>>,
+        neutral_ids -> Array<Nullable<Uuid>>,
+    }
+}
+
+diesel::table! {
     roles (id) {
         id -> Uuid,
         title -> Varchar,
@@ -160,6 +171,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     logins,
     preferences,
     propositions,
+    relationships,
     roles,
     sensitivities,
     survey_results,

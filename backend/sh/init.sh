@@ -113,6 +113,21 @@ EOF
 diesel migration run
 sleep 1
 
+diesel migration generate relationships
+dir=`find ./migrations -name "*relationships"`
+cat > ${dir}/up.sql << EOF
+CREATE TABLE relationships (
+  id UUID PRIMARY KEY,
+  dog_cat_bird VARCHAR NOT NULL,
+  ignore_ids UUID[] NOT NULL,
+  friend_ids UUID[] NOT NULL,
+  frienenmy_ids UUID[] NOT NULL,
+  neutral_ids UUID[] NOT NULL
+)
+EOF
+diesel migration run
+sleep 1
+
 diesel migration generate roles
 dir=`find ./migrations -name "*roles"`
 cat > ${dir}/up.sql << EOF

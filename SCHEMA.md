@@ -32,6 +32,7 @@ classDiagram
         update(id, new_account) -> Account
         delete(id, account) -> bool
     }
+    Argument --|> Proposition
 
     class ConductCode{
         🔑 id: Uuid
@@ -111,6 +112,7 @@ classDiagram
         links: url[]
         qualifications: String[]
         restrictions: String[]
+        argument_ids: String[]
         find_all() -> Preference[]
         find_by_id(id) -> Preference
         pronouns(id) -> String[]
@@ -119,7 +121,20 @@ classDiagram
         update(id, new_preference) -> Preference
         delete(id, preference) -> bool
     }
-    Proposition --|> Argument
+
+    class Relationship{
+        🔑 id: Uuid
+        ignore_ids: UUID[]
+        friend_ids: UUID[]
+        frienenmy_ids: UUID[]
+        neutral_ids: UUID[]
+        find_all() -> Relationship[]
+        find_by_id(id) -> Relationship
+        create(event) -> Relationship
+        update(id, new_event) -> Relationship
+        delete(id, event) -> bool
+    }
+    Relationship --|> Account
 
     class Role{
         🔑 id: Uuid

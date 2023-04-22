@@ -6,6 +6,7 @@ pub mod event;
 pub mod login;
 pub mod preference;
 pub mod proposition;
+pub mod relationship;
 pub mod role;
 pub mod sensitivities;
 pub mod survey_result;
