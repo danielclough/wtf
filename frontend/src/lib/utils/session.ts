@@ -6,9 +6,8 @@ export interface SessionUser {
 	account_id: string;
 	avatar: string;
 	level: 'beta';
-	preference_ids: UUID;
-	role_ids: UUID;
-	sensitivity_ids: UUID;
-	survey_results_ids: UUID;
-	user_ids: UUID;
+	preference_ids: string;
+	relationship_ids: string;
+	survey_results_ids: string;
+	user_ids: string;
 }

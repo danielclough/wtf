@@ -2,11 +2,8 @@ use crate::{
     models::relationship::{NewRelationship, Relationship}
 };
 use rocket::serde::json::{json, Value};
-use diesel::prelude::*;
-
 use rocket::delete;
 use rocket::{post, get};
-
 use uuid::Uuid;
 
 #[get("/list")]

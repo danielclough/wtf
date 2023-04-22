@@ -1,16 +1,10 @@
 use crate::{
-    models::role::{NewRole, Role},
-    schema,
-    utils::pg::establish_connection_pg
+    models::role::{NewRole, Role}
 };
-use diesel::prelude::*;
-
-use rocket::{form::Form, delete};
+use rocket::delete;
 use rocket::{post, get};
-
 use rocket::serde::json::{json, Value};
-use uuid::{Builder, Uuid};
-use rand::prelude::*;
+use uuid::Uuid;
 
 #[get("/list")]
 pub fn list() -> Option<Value> {

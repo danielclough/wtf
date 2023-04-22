@@ -1,4 +1,4 @@
-import type { SessionUser } from '$lib/utils/security';
+import type { SessionUser } from '$lib/utils/session';
 import jwt from 'jsonwebtoken';
 import { error, type Actions, redirect } from '@sveltejs/kit';
 import { JWT_SECRET } from '$env/static/private';
@@ -27,12 +27,21 @@ export const actions: Actions = {
 				const pw_salt = crypto.getRandomValues(forPwSalt).toString();
 				let pw_hash: string = crypto.scryptSync(password, pw_salt, 16).toString('base64');
 
-				const forMfaSalt = new Uint32Array(3);
-				const mfa_salt = crypto.getRandomValues(forMfaSalt).toString();
-				let mfa_hash: string = crypto.scryptSync(mfa, mfa_salt, 16).toString('base64');
+				let mfa_salt: string;
+				let mfa_hash: string;
+
+				if (mfa === '') {
+					mfa_salt = '';
+					mfa_hash = '';
+				} else {
+					const forMfaSalt = new Uint32Array(3);
+					mfa_salt = crypto.getRandomValues(forMfaSalt).toString();
+					mfa_hash = crypto.scryptSync(mfa, mfa_salt, 16).toString('base64');
+				}
 
 				const loginResponse = await postLogin(
 					'https://api.wtf.danielc.us/login/create',
+					'new_login',
 					JSON.stringify({
 						email,
 						pw_salt,
@@ -42,10 +51,10 @@ export const actions: Actions = {
 					})
 				);
 				const loginResponseJson = await loginResponse.json();
-				const loginData = loginResponseJson.data;
 
 				const userResponse = await postLogin(
 					'https://api.wtf.danielc.us/user/create',
+					'new_user',
 					JSON.stringify({
 						first_name,
 						last_name,
@@ -60,40 +69,36 @@ export const actions: Actions = {
 					})
 				);
 				const userResponseJson = await userResponse.json();
-				const userData = userResponseJson.data;
 
 				const accountResponse = await postLogin(
-					'https://api.wtf.danielc.us/login/create',
+					'https://api.wtf.danielc.us/account/create',
+					'new_account',
 					JSON.stringify({
 						avatar: '',
 						level: 'beta',
-						user_ids: [userResponseJson.id],
-						preference_ids: [userResponseJson.id],
-						role_ids: [userResponseJson.id],
-						sensitivity_ids: [userResponseJson.id],
-						survey_results_ids: [userResponseJson.id]
+						preference_ids: [],
+						relationship_ids: [],
+						survey_results_ids: [],
+						user_ids: [userResponseJson.id]
 					})
 				);
 				const accountResponseJson = await accountResponse.json();
-				const accountData = accountResponseJson.data;
 
 				const sessionUser: SessionUser = {
-					id: loginData.id,
-					first_name: userData.first_name,
-					account_id: accountData.id,
-					avatar: accountData.avatar,
-					level: accountData.level,
-					preference_ids: accountData.preference_ids[0],
-					role_ids: accountData.role_ids[0],
-					sensitivity_ids: accountData.sensitivity_ids[0],
-					survey_results_ids: accountData.survey_results_ids[0],
-					user_ids: accountData.user_ids[0]
+					id: loginResponseJson.id,
+					first_name: userResponseJson.first_name,
+					account_id: accountResponseJson.id,
+					avatar: accountResponseJson.avatar,
+					level: accountResponseJson.level,
+					preference_ids: accountResponseJson.preference_ids[0] || [''],
+					relationship_ids: accountResponseJson.relationship_ids[0] || [''],
+					survey_results_ids: accountResponseJson.survey_results_ids[0] || [''],
+					user_ids: accountResponseJson.user_ids[0]
 				};
 
 				const sessionJwt = jwt.sign(sessionUser, JWT_SECRET);
 
 				cookies.set('session', sessionJwt);
-
 			}
 		} catch (err: unknown) {
 			const message = `Error in /login form: ${err as string}`;
@@ -109,7 +114,9 @@ export const actions: Actions = {
 			const password = form.get('password');
 
 			if (typeof email === 'string' && typeof password === 'string') {
-				const loginResponse: any = await getRocket(`https://api.wtf.danielc.us/login/email/${email}`);
+				const loginResponse: any = await getRocket(
+					`https://api.wtf.danielc.us/login/email/${email}`
+				);
 				const loginResponseJson = await loginResponse.json();
 
 				let pw_check =
@@ -128,22 +135,20 @@ export const actions: Actions = {
 					const accountResponseJson: any = await accountResponse.json();
 
 					const sessionUser: SessionUser = {
-						id: loginResponseJson.id,
+						id: userResponseJson.id,
 						first_name: userResponseJson.first_name,
 						account_id: accountResponseJson.id,
 						avatar: accountResponseJson.avatar,
 						level: accountResponseJson.level,
-						preference_ids: accountResponseJson.preference_ids[0],
-						role_ids: accountResponseJson.role_ids[0],
-						sensitivity_ids: accountResponseJson.sensitivity_ids[0],
-						survey_results_ids: accountResponseJson.survey_results_ids[0],
+						preference_ids: accountResponseJson.preference_ids[0] || [""],
+						relationship_ids: accountResponseJson.relationship_ids[0] || [""],
+						survey_results_ids: accountResponseJson.survey_results_ids[0] || [""],
 						user_ids: accountResponseJson.user_ids[0]
 					};
 
 					const sessionJwt = jwt.sign(sessionUser, JWT_SECRET);
 
 					cookies.set('session', sessionJwt);
-
 				}
 			}
 		} catch (err: unknown) {

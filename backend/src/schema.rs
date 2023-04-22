@@ -6,8 +6,7 @@ diesel::table! {
         avatar -> Varchar,
         level -> Varchar,
         preference_ids -> Array<Nullable<Uuid>>,
-        role_ids -> Array<Nullable<Uuid>>,
-        sensitivity_ids -> Array<Nullable<Uuid>>,
+        relationship_ids -> Array<Nullable<Uuid>>,
         survey_results_ids -> Array<Nullable<Uuid>>,
         user_ids -> Array<Nullable<Uuid>>,
     }
@@ -72,6 +71,8 @@ diesel::table! {
         browser_theme -> Varchar,
         display_name -> Varchar,
         pronouns -> Varchar,
+        role_ids -> Array<Nullable<Uuid>>,
+        sensitivity_ids -> Array<Nullable<Uuid>>,
     }
 }
 

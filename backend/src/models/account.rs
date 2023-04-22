@@ -15,35 +15,31 @@ use super::_common::Error;
 
 #[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
 #[diesel(table_name = accounts)]
-#[diesel(belongs_to(User))]
 #[diesel(belongs_to(Preference))]
-#[diesel(belongs_to(Role))]
-#[diesel(belongs_to(Sensitivity))]
+#[diesel(belongs_to(Relationship))]
 #[diesel(belongs_to(SurveyResults))]
+#[diesel(belongs_to(User))]
 pub struct NewAccount<'r> {
-    pub avatar: &'r str,
-    pub level: &'r str,
+    pub avatar:  &'r str,
+    pub level:  &'r str,
     pub preference_ids: Vec<Option<String>>,
-    pub role_ids: Vec<Option<String>>,
-    pub sensitivity_ids: Vec<Option<String>>,
+    pub relationship_ids: Vec<Option<String>>,
     pub survey_results_ids: Vec<Option<String>>,
     pub user_ids: Vec<Option<String>>,
 }
 
 #[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
-#[diesel(table_name = accounts)]
-#[diesel(belongs_to(User))]
 #[diesel(belongs_to(Preference))]
-#[diesel(belongs_to(Role))]
-#[diesel(belongs_to(Sensitivity))]
+#[diesel(belongs_to(Relationship))]
 #[diesel(belongs_to(SurveyResults))]
+#[diesel(belongs_to(User))]
+#[diesel(table_name = accounts)]
 pub struct Account {
     pub id: Uuid,
     pub avatar: String,
     pub level: String,
     pub preference_ids: Vec<Option<Uuid>>,
-    pub role_ids: Vec<Option<Uuid>>,
-    pub sensitivity_ids: Vec<Option<Uuid>>,
+    pub relationship_ids: Vec<Option<Uuid>>,
     pub survey_results_ids: Vec<Option<Uuid>>,
     pub user_ids: Vec<Option<Uuid>>,
 }
@@ -62,8 +58,8 @@ impl Account {
     pub fn find_by_user(user_id: &str) -> Self {
         let uuid = Uuid::parse_str(user_id).expect("uuid");
         let conn = &mut establish_connection_pg();
-        let user = accounts::table.filter(accounts::user_ids.is_contained_by(vec![uuid])).first(conn).expect("db connection");
-        user
+        let account = accounts::table.filter(accounts::user_ids.is_contained_by(vec![uuid])).first(conn).expect("db connection");
+        account
     }
     pub fn create(account: NewAccount) -> Self {
         let conn = &mut establish_connection_pg();
@@ -94,11 +90,10 @@ impl NewAccount<'_> {
             id: uuid,
             avatar: account.avatar.to_string(),
             level: account.level.to_string(),
-            preference_ids: account.preference_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
-            role_ids: account.role_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
-            sensitivity_ids: account.sensitivity_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
-            survey_results_ids: account.survey_results_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
-            user_ids: account.user_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+            preference_ids: Some(account.preference_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect()).get_or_insert(vec![Some(uuid)]).to_vec(),
+            relationship_ids: Some(account.relationship_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect()).get_or_insert(vec![Some(uuid)]).to_vec(),
+            survey_results_ids: Some(account.survey_results_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect()).get_or_insert(vec![Some(uuid)]).to_vec(),
+            user_ids: Some(account.user_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect()).get_or_insert(vec![Some(uuid)]).to_vec(),
         }
     }
 }
@@ -118,7 +113,7 @@ impl<'r> FromData<'r> for NewAccount<'r> {
         }
 
         // Use a configured limit with name 'new_account' or fallback to default.
-        let limit = req.limits().get("new_account").unwrap_or(512.bytes());
+        let limit = req.limits().get("new_account").unwrap_or(1.mebibytes());
 
         // Read the data into a string.
         let string = match data.open(limit).into_string().await {
@@ -129,9 +124,9 @@ impl<'r> FromData<'r> for NewAccount<'r> {
 
         // We store `string` in request-local cache for long-lived borrows.
         let string = request::local_cache!(req, string);
-        
+        println!("{}", string);
+
         let data: NewAccount = serde_json::from_str(string).expect("works");
-        println!("{:?}", data);
         
         Success(data)
     }

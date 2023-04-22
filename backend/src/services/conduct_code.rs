@@ -1,16 +1,10 @@
 use crate::{
-    models::conduct_code::{NewConductCode, ConductCode},
-    schema,
-    utils::pg::establish_connection_pg
+    models::conduct_code::{NewConductCode, ConductCode}
 };
-use diesel::prelude::*;
 use rocket::serde::json::{json, Value};
-
-use rocket::{form::Form, delete};
+use rocket::delete;
 use rocket::{post, get};
-
-use uuid::{Builder, Uuid};
-use rand::prelude::*;
+use uuid::Uuid;
 
 #[get("/list")]
 pub fn list() -> Option<Value> {

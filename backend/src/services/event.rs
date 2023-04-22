@@ -1,16 +1,11 @@
 use crate::{
-    models::event::{NewEvent, Event},
-    schema,
-    utils::pg::establish_connection_pg
+    models::event::{NewEvent, Event}
 };
-use diesel::prelude::*;
-
 use rocket::serde::json::{json, Value};
-use rocket::{form::Form, delete};
+use rocket::delete;
 use rocket::{post, get};
 
-use uuid::{Builder, Uuid};
-use rand::prelude::*;
+use uuid::Uuid;
 
 #[get("/list")]
 pub fn list() -> Option<Value> {

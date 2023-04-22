@@ -2,11 +2,8 @@ use crate::{
     models::account::{NewAccount, Account}
 };
 use rocket::serde::json::{json, Value};
-use diesel::prelude::*;
-
 use rocket::delete;
 use rocket::{post, get};
-
 use uuid::Uuid;
 
 #[get("/list")]
@@ -14,13 +11,11 @@ pub fn list() -> Option<Value> {
     let accounts = Account::find_all();
 
     if &accounts.len() > &0 {
-        let account = &accounts[0];
-        Some(json!(account))
+        Some(json!(accounts))
     } else {
         None
     }
 }
-
 
 #[get("/<id>")]
 pub fn find_by_id(id: &str) -> Option<Value> {
@@ -32,11 +27,35 @@ pub fn find_by_id(id: &str) -> Option<Value> {
 
 #[get("/user/<user>")]
 pub fn find_by_user(user: &str) -> Option<Value> {
-    let user = Account::find_by_user(user);
+    let account = Account::find_by_user(user);
     
-    Some(json!(user))
+    Some(json!(account))
 }
 
+#[post("/create", data = "<body>")]
+pub fn create(body: NewAccount<'_>) -> Option<Value> {
+    if body.level != "" {
+        let new_account = body;
+
+        let account = Account::create(new_account);
+
+        Some(json!(account))
+    } else {
+        None
+    }
+}
+
+#[get("/delete")]
+pub fn delete_page() -> Option<Value> {
+    let accounts = Account::find_all();
+
+    if &accounts.len() > &0 {
+        let account = &accounts[0];
+        Some(json!(account))
+    } else {
+        None
+    }
+}
 
 #[delete("/<id>")]
 pub fn delete(id: &str) -> Option<Value> {
@@ -54,15 +73,3 @@ pub fn delete(id: &str) -> Option<Value> {
 //     let new_account = Account::update(id.into_inner(), new_account.into_inner());
 // }
 
-#[post("/create", data = "<body>")]
-pub fn create(body: NewAccount<'_>) -> Option<Value> {
-    if true {
-        let new_account = body;
-
-        let account = Account::create(new_account);
-
-        Some(json!(account))
-    } else {
-        None
-    }
-}

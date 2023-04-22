@@ -2,10 +2,8 @@ use crate::{
     models::survey_result::{NewSurveyResult, SurveyResult}
 };
 use rocket::serde::json::{json, Value};
-
-use rocket::{form::Form, delete};
+use rocket::delete;
 use rocket::{post, get};
-
 use uuid::Uuid;
 
 #[post("/create", data = "<body>")]

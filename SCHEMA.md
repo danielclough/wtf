@@ -124,12 +124,17 @@ classDiagram
 
     class Relationship{
         🔑 id: Uuid
+        dog_cat_bird: string
         ignore_ids: UUID[]
         friend_ids: UUID[]
         frienenmy_ids: UUID[]
         neutral_ids: UUID[]
         find_all() -> Relationship[]
         find_by_id(id) -> Relationship
+        ignore_ids(id) -> Relationship
+        friend_ids(id) -> Relationship
+        frienenmy_ids(id) -> Relationship
+        neutral_ids(id) -> Relationship
         create(event) -> Relationship
         update(id, new_event) -> Relationship
         delete(id, event) -> bool

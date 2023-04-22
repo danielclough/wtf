@@ -1,16 +1,10 @@
 use crate::{
-    models::preference::{NewPreference, Preference},
-    schema,
-    utils::pg::establish_connection_pg
+    models::preference::{NewPreference, Preference}
 };
-use diesel::prelude::*;
-
-use rocket::{form::Form, delete};
+use rocket::delete;
 use rocket::{post, get};
-
 use rocket::serde::json::{json, Value};
-use uuid::{Builder, Uuid};
-use rand::prelude::*;
+use uuid::Uuid;
 
 #[get("/list")]
 pub fn list() -> Option<Value> {

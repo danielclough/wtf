@@ -7,7 +7,7 @@ use crate::{
 use rocket::{request::{self, Request}, serde::json::serde_json};
 use rocket::data::{self, Data, FromData, ToByteUnit};
 use rocket::http::{Status, ContentType};
-use diesel::{prelude::*};
+use diesel::prelude::*;
 use serde::{Serialize, Deserialize};
 use uuid::Uuid;
 
@@ -15,20 +15,28 @@ use super::_common::Error;
 
 #[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
 #[diesel(table_name = preferences)]
+#[diesel(belongs_to(Sensitivity))]
+#[diesel(belongs_to(Role))]
 pub struct NewPreference<'r> {
     pub browser_theme: &'r str,
     pub display_name: &'r str,
     pub pronouns: &'r str,
+    pub sensitivity_ids: Vec<Option<String>>,
+    pub role_ids: Vec<Option<String>>,
 }
 
 
 #[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
 #[diesel(table_name = preferences)]
+#[diesel(belongs_to(Sensitivity))]
+#[diesel(belongs_to(Role))]
 pub struct Preference {
     pub id: Uuid,
     pub browser_theme: String,
     pub display_name: String,
     pub pronouns: String,
+    pub sensitivity_ids: Vec<Option<Uuid>>,
+    pub role_ids: Vec<Option<Uuid>>,
 }
 
 
@@ -56,7 +64,7 @@ impl Preference {
             .get_result(conn).expect("db connection");
         preference
     }
-    pub fn update(id: Uuid, preference: NewPreference) -> Self {
+    pub fn update(id: Uuid, preference: Preference) -> Self {
         let conn = &mut establish_connection_pg();
         let preference = diesel::update(preferences::table)
             .filter(preferences::id.eq(id))
@@ -78,6 +86,8 @@ impl NewPreference<'_> {
             browser_theme: preference.browser_theme.to_string(),
             display_name: preference.display_name.to_string(),
             pronouns: preference.pronouns.to_string(),
+            sensitivity_ids: preference.sensitivity_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+            role_ids: preference.role_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
         }
     }
 }

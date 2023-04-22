@@ -1,7 +1,6 @@
 use crate::{
     models::login::{NewLogin, Login},
 };
-
 use rocket::serde::json::{json, Value};
 use rocket::{delete};
 use rocket::{post, get};
