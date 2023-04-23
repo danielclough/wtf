@@ -22,7 +22,7 @@ interface CookieOpts {
 
 export const cookieOpts: CookieOpts = {
 	path: '/',
-	httpOnly: true,
+	httpOnly: false,
 	sameSite: 'strict',
 	secure: false,
 	maxAge: 60 * 60 * 24 * 7
