@@ -16,5 +16,8 @@ export interface SessionUser {
 
 export const cookieOpts = {
 	path: '/',
-	httpOnly: false
+	httpOnly: true,
+	sameSite: 'strict',
+	secure: process.env.NODE_ENV === 'production',
+	maxAge: 60 * 60 * 24 * 7
 };
