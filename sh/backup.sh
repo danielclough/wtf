@@ -1,0 +1,1 @@
+rsync -e 'ssh -p 44322' --exclude-from='.rsync-exclude' -avh daniel@vps.blackcoin.nl:/home/daniel/git/wtf /daniel/ENV
