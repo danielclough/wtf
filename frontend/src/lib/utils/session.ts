@@ -16,5 +16,5 @@ export interface SessionUser {
 
 export const cookieOpts = {
 	path: '/',
-	httpOnly: true
+	httpOnly: false
 };
