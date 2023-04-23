@@ -59,7 +59,7 @@
   </div>
   <Grid />
   <div class="overlayed">
-    <Draggable {data} />  
+    <Draggable {topic} {subject} {data} />  
   </div>
 </div>
 

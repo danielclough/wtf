@@ -11,7 +11,7 @@ pub fn list() -> Option<Value> {
     let roles = Role::find_all();
 
     if &roles.len() > &0 {
-        let role = &roles[0];
+        let role = &roles;
         Some(json!(role))
     } else {
         None

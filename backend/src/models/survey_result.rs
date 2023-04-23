@@ -127,13 +127,13 @@ impl<'r> FromData<'r> for NewSurveyResult<'r> {
         use rocket::outcome::Outcome::*;
 
         // Ensure the content type is correct before opening the data.
-        let new_survey_results_ct = ContentType::new("application", "x-new_survey_results");
+        let new_survey_results_ct = ContentType::new("application", "x-new_survey_result");
         if req.content_type() != Some(&new_survey_results_ct) {
             return Forward(data);
         }
 
         // Use a configured limit with name 'new_survey_results' or fallback to default.
-        let limit = req.limits().get("new_survey_results").unwrap_or(256.bytes());
+        let limit = req.limits().get("new_survey_result").unwrap_or(1.mebibytes());
 
         // Read the data into a string.
         let string = match data.open(limit).into_string().await {

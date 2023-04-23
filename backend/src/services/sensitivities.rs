@@ -11,7 +11,7 @@ pub fn list() -> Option<Value> {
     let sensitivities = Sensitivity::find_all();
 
     if &sensitivities.len() > &0 {
-        let sensitivities = &sensitivities[0];
+        let sensitivities = &sensitivities;
         Some(json!(sensitivities))
     } else {
         None

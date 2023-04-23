@@ -1,6 +1,6 @@
 import { BASIC_AUTH_STRING } from '$env/static/private';
 
-export const postLogin = async (url: string, type: string, body: any) => {
+export const postRocket = async (url: string, type: string, body: any) => {
 	return await fetch(url, {
 		method: 'POST',
 		headers: {

@@ -4,7 +4,7 @@ import { error, type Actions, redirect } from '@sveltejs/kit';
 import { JWT_SECRET } from '$env/static/private';
 
 import crypto from 'crypto';
-import { postLogin, getRocket } from '$lib/utils/rocket';
+import { postRocket, getRocket } from '$lib/utils/rocket';
 
 export const actions: Actions = {
 	register: async ({ cookies, request }) => {
@@ -39,7 +39,7 @@ export const actions: Actions = {
 					mfa_hash = crypto.scryptSync(mfa, mfa_salt, 16).toString('base64');
 				}
 
-				const loginResponse = await postLogin(
+				const loginResponse = await postRocket(
 					'https://api.wtf.danielc.us/login/create',
 					'new_login',
 					JSON.stringify({
@@ -52,7 +52,7 @@ export const actions: Actions = {
 				);
 				const loginResponseJson = await loginResponse.json();
 
-				const userResponse = await postLogin(
+				const userResponse = await postRocket(
 					'https://api.wtf.danielc.us/user/create',
 					'new_user',
 					JSON.stringify({
@@ -70,7 +70,7 @@ export const actions: Actions = {
 				);
 				const userResponseJson = await userResponse.json();
 
-				const accountResponse = await postLogin(
+				const accountResponse = await postRocket(
 					'https://api.wtf.danielc.us/account/create',
 					'new_account',
 					JSON.stringify({

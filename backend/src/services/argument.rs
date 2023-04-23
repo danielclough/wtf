@@ -4,7 +4,7 @@ use crate::{
 use rocket::serde::json::{json, Value};
 
 use rocket::delete;
-use rocket::{post, get};
+use rocket::{post, get, put};
 
 use uuid::Uuid;
 
@@ -13,7 +13,7 @@ pub fn list() -> Option<Value> {
     let arguments = Argument::find_all();
 
     if &arguments.len() > &0 {
-        let argument = &arguments[0];
+        let argument = &arguments;
         Some(json!(argument))
     } else {
         None
@@ -45,13 +45,19 @@ pub fn delete(id: &str) -> Option<Value> {
     None
 }
 
-// #[put("/<id>")]
-// async fn update(
-//     id: web::Path,
-//     new_argument: web::Json,
-// ) -> Option<Value> {
-//     let new_argument = Argument::update(id.into_inner(), new_argument.into_inner());
-// }
+#[put("/<id>", data = "<body>")]
+async fn update(id: &str, body: NewArgument<'_>) -> Option<Value> {
+    if body.name != "" {
+        let uuid = Uuid::parse_str(id).expect("parse uuid");
+        let new_argument = body;
+
+        let argument = Argument::update(uuid, new_argument);
+
+        Some(json!(argument))
+    } else {
+        None
+    }
+}
 
 #[post("/create", data = "<body>")]
 pub fn create(body: NewArgument<'_>) -> Option<Value> {

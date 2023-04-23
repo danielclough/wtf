@@ -24,7 +24,7 @@ pub fn list() -> Option<Value> {
     let survey_results = SurveyResult::find_all();
 
     if &survey_results.len() > &0 {
-        Some(json!(&survey_results[0]))
+        Some(json!(&survey_results))
     } else {
         None
     }

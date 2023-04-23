@@ -5,12 +5,16 @@
     let viewBoxH = 0;
     export let data: any;
 
-    $: ranking = [];
+    export let topic: string;
+    export let subject: any;
+
+    let ranking: string[] = [];
+    $: ranking = ranking;
 
     $: checkDesktop = viewBoxW > viewBoxH;
     $: desktopFontSize = viewBoxW / 80;
     $: mobileFontSize = viewBoxW / 30;
-    $: calcFontHeight = checkDesktop ? desktopFontSize : mobileFontSize
+    $: calcFontHeight = checkDesktop ? desktopFontSize : mobileFontSize;
     onMount(()=> {
         viewBoxW = wW*.9
         viewBoxH = wH*.80
@@ -134,7 +138,6 @@
             }
         }
     ]]> </script>
-
     <!-- {#each data as point, i} -->
     {#each shuffle(data) as point, i}
         <text class="draggable" id="{point}"
@@ -145,19 +148,22 @@
             : mobileFontSize}px" alignment-baseline="middle">{point}</text>
     {/each}
 </svg>
-
-<button style="float:right;font-size:1rem;padding:1rem;" on:click={()=> {
-    let svg = document.getElementById("dragBox")
-    let children = svg?.children
-    if (children != undefined) {
-        for (let child of children) {
-            if (child.nodeName == "text") {
-                let content  = child.innerHTML;
-                let split = content.split(" - ")
-                console.log(split)
+<form action="?/submit" method="POST">
+    <input class="hidden" type="text" id="answers" name="answers" value={[topic, ...ranking]} />
+    <input class="hidden" type="text" id="subject" name="subject" value={subject.title}>
+    <button type="submit" style="float:right;font-size:1rem;padding:1rem;" on:click={()=> {
+        let svg = document.getElementById("dragBox")
+        let children = svg?.children
+        if (children != undefined) {
+            for (let child of children) {
+                if (child.nodeName == "text") {
+                    let content  = child.innerHTML;
+                    let split = content.split(" - ")
+                    ranking = [...ranking, split.join(' ')]
+                }
             }
         }
-    }
-}}>
-    Done
-</button>
+    }}>
+        Done
+    </button>
+</form>

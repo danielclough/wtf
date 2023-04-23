@@ -8,8 +8,9 @@ export interface Survey {
 }
 
 export interface SurveyQuestion {
-    id: number;
-    text: string;
+	id: number;
+	text: string;
+	type: [string];
 }
 
 export interface Copyright {

@@ -52,11 +52,14 @@ impl Argument {
             .get_result(conn).expect("db connection");
         argument
     }
-    pub fn update(id: Uuid, argument: Argument) -> Self {
+    pub fn update(id: Uuid, new_argument: NewArgument) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewArgument::from_existing(id, new_argument);
+
         let argument = diesel::update(arguments::table)
             .filter(arguments::id.eq(id))
-            .set(argument)
+            .set(updated)
             .get_result(conn).expect("db connection");
         argument
     }
@@ -77,6 +80,16 @@ impl NewArgument<'_> {
             relationship: argument.relationship.to_string(),
         }
     }
+    fn from_existing(id: Uuid, argument: NewArgument) -> Argument {
+        Argument {
+            id,
+            name: argument.name.to_string(),
+            description: argument.description,
+            proposition_ids: argument.proposition_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+            relationship: argument.relationship.to_string(),
+        }
+    }
+
 }
 
 #[rocket::async_trait]

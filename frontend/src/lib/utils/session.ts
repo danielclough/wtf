@@ -11,3 +11,10 @@ export interface SessionUser {
 	survey_results_ids: string;
 	user_ids: string;
 }
+
+
+
+export const cookieOpts = {
+	path: '/',
+	httpOnly: true
+};

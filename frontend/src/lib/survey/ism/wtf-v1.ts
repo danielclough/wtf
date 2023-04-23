@@ -13,137 +13,170 @@ export default {
 	},
 	api: 'https://formspree.io/f/mwkjwogv',
 	responses: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree'],
+	isms: [],
 	questions: [
 		{
 			topic: 'YOUR VIEWS ON -ISMS',
 			questions: [
 				{
 					id: 1,
-					text: 'Catholicism'
+					text: 'Catholicism',
+					type: []
 				},
 				{
 					id: 2,
-					text: 'Marxism'
+					text: 'Marxism',
+					type: []
 				},
 				{
 					id: 3,
-					text: 'Nihilism'
+					text: 'Nihilism',
+					type: []
 				},
 				{
 					id: 4,
-					text: 'Atheism'
+					text: 'Atheism',
+					type: []
 				},
 				{
 					id: 5,
-					text: 'Humanism'
+					text: 'Humanism',
+					type: []
 				},
 				{
 					id: 6,
-					text: "Shi'ism"
+					text: "Shi'ism",
+					type: []
 				},
 				{
 					id: 7,
-					text: 'Buddhism'
+					text: 'Buddhism',
+					type: []
 				},
 				{
 					id: 8,
-					text: 'Shintoism'
+					text: 'Shintoism',
+					type: []
 				},
 				{
 					id: 9,
-					text: 'Freudianism'
+					text: 'Freudianism',
+					type: []
 				},
 				{
 					id: 10,
-					text: 'Platonism'
+					text: 'Platonism',
+					type: []
 				},
 				{
 					id: 11,
-					text: 'Stoicism'
+					text: 'Stoicism',
+					type: []
 				},
 				{
 					id: 12,
-					text: 'Hedonism'
+					text: 'Hedonism',
+					type: []
 				},
 				{
 					id: 13,
-					text: 'Romanticism'
+					text: 'Romanticism',
+					type: []
 				},
 				{
 					id: 14,
-					text: 'Post Modernism'
+					text: 'Post Modernism',
+					type: []
 				},
 				{
 					id: 15,
-					text: 'Mormonism'
+					text: 'Mormonism',
+					type: []
 				},
 				{
 					id: 16,
-					text: 'Socialism'
+					text: 'Socialism',
+					type: []
 				},
 				{
 					id: 17,
-					text: 'Liberalism'
+					text: 'Liberalism',
+					type: []
 				},
 				{
 					id: 18,
-					text: 'Satanism'
+					text: 'Satanism',
+					type: []
 				},
 				{
 					id: 19,
-					text: 'Sufism'
+					text: 'Sufism',
+					type: []
 				},
 				{
 					id: 20,
-					text: 'Confucianism'
+					text: 'Confucianism',
+					type: []
 				},
 				{
 					id: 21,
-					text: 'Jainism'
+					text: 'Jainism',
+					type: []
 				},
 				{
 					id: 22,
-					text: 'Sunnism'
+					text: 'Sunnism',
+					type: []
 				},
 				{
 					id: 23,
-					text: 'Hinduism'
+					text: 'Hinduism',
+					type: []
 				},
 				{
 					id: 24,
-					text: 'Taoism'
+					text: 'Taoism',
+					type: []
 				},
 				{
 					id: 25,
-					text: 'Positivism'
+					text: 'Positivism',
+					type: []
 				},
 				{
 					id: 26,
-					text: 'Protestantism'
+					text: 'Protestantism',
+					type: []
 				},
 				{
 					id: 27,
-					text: 'Zoroastrianism'
+					text: 'Zoroastrianism',
+					type: []
 				},
 				{
 					id: 28,
-					text: 'Sikhism'
+					text: 'Sikhism',
+					type: []
 				},
 				{
 					id: 29,
-					text: 'Paganism'
+					text: 'Paganism',
+					type: []
 				},
 				{
 					id: 30,
-					text: 'Protestantism'
+					text: 'Protestantism',
+					type: []
 				},
 				{
 					id: 31,
-					text: 'Rastafarianism'
+					text: 'Rastafarianism',
+					type: []
 				},
 				{
 					id: 32,
-					text: 'Libertarianism'
+					text: 'Libertarianism',
+					type: []
 				}
 			]
 		}

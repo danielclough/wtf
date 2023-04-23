@@ -16,9 +16,10 @@ const unProtectedRoutes: string[] = [
     '/about',
 ];
 
-const admin = '672ac8c5-02a6-47ba-adc0-ff8cd6d3ea86';
+// User ids
+const admin = 'e8e7646b-afbb-4828-bd8a-e2028f58ee10';
 
-export const handle: Handle = async ({ event, resolve }) => {``
+export const handle: Handle = async ({ event, resolve }) => {
 	const session = event.cookies.get('session');
 	if (!session && !unProtectedRoutes.includes(event.url.pathname))
 		return redirect('/login', 'No authenticated user.');
@@ -31,7 +32,7 @@ export const handle: Handle = async ({ event, resolve }) => {``
             const jwtUser = jwt.verify(session, JWT_SECRET);
             if (typeof jwtUser === 'object') {
                 event.locals = jwtUser;
-                if (event.url.pathname.includes('admin') && jwtUser.id !== admin)
+                if (event.url.pathname.includes('admin') && jwtUser.user_ids !== admin)
 					return redirect('/', 'Not Admin');
             }
             

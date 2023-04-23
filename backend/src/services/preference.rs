@@ -39,7 +39,7 @@ pub fn delete_page() -> Option<Value> {
     let preferences = Preference::find_all();
 
     if &preferences.len() > &0 {
-        let preference = &preferences[0];
+        let preference = &preferences;
         Some(json!(preference))
     } else {
         None

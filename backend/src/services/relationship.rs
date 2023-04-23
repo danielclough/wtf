@@ -11,7 +11,7 @@ pub fn list() -> Option<Value> {
     let relationships = Relationship::find_all();
 
     if &relationships.len() > &0 {
-        let relationship = &relationships[0];
+        let relationship = &relationships;
         Some(json!(relationship))
     } else {
         None

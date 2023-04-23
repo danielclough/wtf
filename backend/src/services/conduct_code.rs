@@ -11,7 +11,7 @@ pub fn list() -> Option<Value> {
     let conduct_codes = ConductCode::find_all();
 
     if &conduct_codes.len() > &0 {
-        let conduct_code = &conduct_codes[0];
+        let conduct_code = &conduct_codes;
         Some(json!(conduct_code))
     } else {
         None

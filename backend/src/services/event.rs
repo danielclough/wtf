@@ -12,7 +12,7 @@ pub fn list() -> Option<Value> {
     let events = Event::find_all();
 
     if &events.len() > &0 {
-        let event = &events[0];
+        let event = &events;
         Some(json!(event))
     } else {
         None

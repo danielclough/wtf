@@ -28,7 +28,7 @@ body {
 }
 
 main {
-	min-height: 95vh;
+	min-height: 80vh;
 	margin: 0 1rem;
 }
 
@@ -134,7 +134,7 @@ button:focus:not(:focus-visible) {
 	}
 }
 
-.visually-hidden {
+.hidden {
 	border: 0;
 	clip: rect(0 0 0 0);
 	height: auto;

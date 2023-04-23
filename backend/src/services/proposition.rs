@@ -11,7 +11,7 @@ pub fn list() -> Option<Value> {
     let propositions = Proposition::find_all();
 
     if &propositions.len() > &0 {
-        let proposition = &propositions[0];
+        let proposition = &propositions;
         Some(json!(proposition))
     } else {
         None
