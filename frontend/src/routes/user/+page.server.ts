@@ -1,4 +1,4 @@
-import type { SessionUser } from '$lib/utils/session';
+import { cookieOpts, type SessionUser } from '$lib/utils/session';
 import jwt from 'jsonwebtoken';
 import { error, type Actions, redirect } from '@sveltejs/kit';
 import { JWT_SECRET } from '$env/static/private';
@@ -98,7 +98,7 @@ export const actions: Actions = {
 
 				const sessionJwt = jwt.sign(sessionUser, JWT_SECRET);
 
-				cookies.set('session', sessionJwt);
+				cookies.set('session', sessionJwt, cookieOpts);
 			}
 		} catch (err: unknown) {
 			const message = `Error in /login form: ${err as string}`;
@@ -148,7 +148,7 @@ export const actions: Actions = {
 
 					const sessionJwt = jwt.sign(sessionUser, JWT_SECRET);
 
-					cookies.set('session', sessionJwt);
+					cookies.set('session', sessionJwt, cookieOpts);
 				}
 			}
 		} catch (err: unknown) {
