@@ -12,9 +12,15 @@ export interface SessionUser {
 	user_ids: string;
 }
 
+interface CookieOpts {
+	path: string;
+	httpOnly: boolean;
+	sameSite: boolean | "strict" | "lax" | "none" | undefined;
+	secure: boolean;
+	maxAge: number;
+}
 
-
-export const cookieOpts = {
+export const cookieOpts: CookieOpts = {
 	path: '/',
 	httpOnly: true,
 	sameSite: 'strict',
