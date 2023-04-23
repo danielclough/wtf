@@ -71,11 +71,14 @@ impl User {
             .get_result(conn).expect("db connection");
         user
     }
-    pub fn update(id: Uuid, user: User) -> Self {
+    pub fn update(id: Uuid, new_user: NewUser) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewUser::from_existing(id, new_user);
+
         let user = diesel::update(users::table)
             .filter(users::id.eq(id))
-            .set(user)
+            .set(updated)
             .get_result(conn).expect("db connection");
         user
     }
@@ -90,6 +93,21 @@ impl NewUser<'_> {
         let uuid = new_random_uuid_v4();
         User {
             id: uuid,
+            first_name: user.first_name.to_string(),
+            last_name: user.last_name.to_string(),
+            address: user.address,
+            address_verified: user.address_verified,
+            email: user.email,
+            email_verified: user.email_verified,
+            phone: user.phone,
+            phone_verified: user.phone_verified,
+            taint: user.taint.to_string(),
+            login_ids: user.login_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+        }
+    }
+    fn from_existing(id: Uuid, user: NewUser) -> User {
+        User {
+            id,
             first_name: user.first_name.to_string(),
             last_name: user.last_name.to_string(),
             address: user.address,

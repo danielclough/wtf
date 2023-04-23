@@ -78,11 +78,14 @@ impl Event {
             .get_result(conn).expect("db connection");
         event
     }
-    pub fn update(id: Uuid, event: Event) -> Self {
+    pub fn update(id: Uuid, new_event: NewEvent) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewEvent::from_existing(id, new_event);
+
         let event = diesel::update(events::table)
             .filter(events::id.eq(id))
-            .set(event)
+            .set(updated)
             .get_result(conn).expect("db connection");
         event
     }
@@ -97,6 +100,25 @@ impl NewEvent<'_> {
         let uuid = new_random_uuid_v4();
         Event {
             id: uuid,
+            name: event.name.to_string(),
+            description: event.description,
+            imgs: event.imgs,
+            links: event.links,
+            ticketing: event.ticketing,
+            location: event.location,
+            directions: event.directions,
+            map_images: event.map_images,
+            start_time: event.start_time.to_string(),
+            end_time: event.end_time.to_string(),
+            conduct_code_ids: event.conduct_code_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+            other_expectations: event.other_expectations,
+            account_ids: event.account_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+            sensitivity_ids: event.sensitivity_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+        }
+    }
+    fn from_existing(id: Uuid, event: NewEvent) -> Event {
+        Event {
+            id,
             name: event.name.to_string(),
             description: event.description,
             imgs: event.imgs,

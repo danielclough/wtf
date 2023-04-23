@@ -7,6 +7,6 @@ pub mod preference;
 pub mod proposition;
 pub mod relationship;
 pub mod role;
-pub mod sensitivities;
+pub mod sensitivity;
 pub mod survey_result;
 pub mod user;

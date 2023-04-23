@@ -69,11 +69,14 @@ impl Account {
             .get_result(conn).expect("db connection");
         account
     }
-    pub fn update(id: Uuid, account: Account) -> Self {
+    pub fn update(id: Uuid, new_account: NewAccount) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewAccount::from_existing(id, new_account);
+
         let account = diesel::update(accounts::table)
             .filter(accounts::id.eq(id))
-            .set(account)
+            .set(updated)
             .get_result(conn).expect("db connection");
         account
     }
@@ -86,6 +89,17 @@ impl Account {
 impl NewAccount<'_> {
     fn from(account: NewAccount) -> Account {
         let uuid = new_random_uuid_v4();
+        Account {
+            id: uuid,
+            avatar: account.avatar.to_string(),
+            level: account.level.to_string(),
+            preference_ids: Some(account.preference_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect()).get_or_insert(vec![Some(uuid)]).to_vec(),
+            relationship_ids: Some(account.relationship_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect()).get_or_insert(vec![Some(uuid)]).to_vec(),
+            survey_results_ids: Some(account.survey_results_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect()).get_or_insert(vec![Some(uuid)]).to_vec(),
+            user_ids: Some(account.user_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect()).get_or_insert(vec![Some(uuid)]).to_vec(),
+        }
+    }
+    fn from_existing(uuid: Uuid, account: NewAccount) -> Account {
         Account {
             id: uuid,
             avatar: account.avatar.to_string(),

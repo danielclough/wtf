@@ -3,7 +3,7 @@ use crate::{
 };
 use rocket::serde::json::{json, Value};
 use rocket::delete;
-use rocket::{post, get};
+use rocket::{post, get, put};
 use uuid::Uuid;
 
 #[post("/create", data = "<body>")]
@@ -51,10 +51,16 @@ pub fn delete(id: &str) -> Option<Value> {
     None
 }
 
-// #[put("/<id>")]
-// async fn update(
-//     id: web::Path,
-//     new_survey_result: web::Json,
-// ) -> Option<Value> {
-//     let new_survey_result = SurveyResult::update(id.into_inner(), new_survey_result.into_inner());
-// }
+#[put("/<id>", data = "<body>")]
+pub async fn update(id: &str, body: NewSurveyResult<'_>) -> Option<Value> {
+    if id != "" {
+        let uuid = Uuid::parse_str(id).expect("parse uuid");
+        let new_survey_result = body;
+
+        let survey_result = SurveyResult::update(uuid, new_survey_result);
+
+        Some(json!(survey_result))
+    } else {
+        None
+    }
+}

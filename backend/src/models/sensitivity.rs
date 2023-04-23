@@ -69,11 +69,14 @@ impl Sensitivity {
             .get_result(conn).expect("db connection");
         sensitivity
     }
-    pub fn update(id: Uuid, sensitivity: Sensitivity) -> Self {
+    pub fn update(id: Uuid, new_sensitivity: NewSensitivity) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewSensitivity::from_existing(id, new_sensitivity);
+
         let sensitivity = diesel::update(sensitivities::table)
             .filter(sensitivities::id.eq(id))
-            .set(sensitivity)
+            .set(updated)
             .get_result(conn).expect("db connection");
         sensitivity
     }
@@ -88,6 +91,20 @@ impl NewSensitivity<'_> {
         let uuid = new_random_uuid_v4();
         Sensitivity {
             id: uuid,
+            name: sensitivity.name.to_string(),
+            description: sensitivity.description,
+            links: sensitivity.links,
+            precautions: sensitivity.precautions,
+            imparing: sensitivity.imparing,
+            life_threatening: sensitivity.life_threatening,
+            dietary: sensitivity.dietary,
+            environmental: sensitivity.environmental,
+            social: sensitivity.social,
+        }
+    }
+    fn from_existing(id: Uuid, sensitivity: NewSensitivity) -> Sensitivity {
+        Sensitivity {
+            id,
             name: sensitivity.name.to_string(),
             description: sensitivity.description,
             links: sensitivity.links,

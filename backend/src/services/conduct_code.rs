@@ -3,7 +3,7 @@ use crate::{
 };
 use rocket::serde::json::{json, Value};
 use rocket::delete;
-use rocket::{post, get};
+use rocket::{post, get, put};
 use uuid::Uuid;
 
 #[get("/list")]
@@ -58,6 +58,20 @@ pub fn create(body: NewConductCode<'_>) -> Option<Value> {
         let new_conduct_code = body;
 
         let conduct_code = ConductCode::create(new_conduct_code);
+
+        Some(json!(conduct_code))
+    } else {
+        None
+    }
+}
+
+#[put("/<id>", data = "<body>")]
+pub async fn update(id: &str, body: NewConductCode<'_>) -> Option<Value> {
+    if body.name != "" {
+        let uuid = Uuid::parse_str(id).expect("parse uuid");
+        let new_conduct_code = body;
+
+        let conduct_code = ConductCode::update(uuid, new_conduct_code);
 
         Some(json!(conduct_code))
     } else {

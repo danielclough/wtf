@@ -62,11 +62,14 @@ impl ConductCode {
             .get_result(conn).expect("db connection");
         conduct_code
     }
-    pub fn update(id: Uuid, conduct_code: ConductCode) -> Self {
+    pub fn update(id: Uuid, new_conduct_code: NewConductCode) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewConductCode::from_existing(id, new_conduct_code);
+
         let conduct_code = diesel::update(conduct_codes::table)
             .filter(conduct_codes::id.eq(id))
-            .set(conduct_code)
+            .set(updated)
             .get_result(conn).expect("db connection");
         conduct_code
     }
@@ -81,6 +84,17 @@ impl NewConductCode<'_> {
         let uuid = new_random_uuid_v4();
         ConductCode {
             id: uuid,
+            name: conduct_code.name.to_string(),
+            description: conduct_code.description,
+            qualifications: conduct_code.qualifications,
+            restrictions: conduct_code.restrictions,
+            examples: conduct_code.examples,
+            sensitivity_ids: conduct_code.sensitivity_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some").as_str()).expect("uuid"))).collect(),
+        }
+    }
+    fn from_existing(id: Uuid, conduct_code: NewConductCode) -> ConductCode {
+        ConductCode {
+            id,
             name: conduct_code.name.to_string(),
             description: conduct_code.description,
             qualifications: conduct_code.qualifications,

@@ -45,13 +45,12 @@ pub fn delete(id: &str) -> Option<Value> {
     None
 }
 
-#[put("/<id>", data = "<body>")]
-async fn update(id: &str, body: NewArgument<'_>) -> Option<Value> {
+#[post("/create", data = "<body>")]
+pub fn create(body: NewArgument<'_>) -> Option<Value> {
     if body.name != "" {
-        let uuid = Uuid::parse_str(id).expect("parse uuid");
         let new_argument = body;
 
-        let argument = Argument::update(uuid, new_argument);
+        let argument = Argument::create(new_argument);
 
         Some(json!(argument))
     } else {
@@ -59,12 +58,13 @@ async fn update(id: &str, body: NewArgument<'_>) -> Option<Value> {
     }
 }
 
-#[post("/create", data = "<body>")]
-pub fn create(body: NewArgument<'_>) -> Option<Value> {
+#[put("/<id>", data = "<body>")]
+pub async fn update(id: &str, body: NewArgument<'_>) -> Option<Value> {
     if body.name != "" {
+        let uuid = Uuid::parse_str(id).expect("parse uuid");
         let new_argument = body;
 
-        let argument = Argument::create(new_argument);
+        let argument = Argument::update(uuid, new_argument);
 
         Some(json!(argument))
     } else {

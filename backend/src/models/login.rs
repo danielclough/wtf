@@ -55,11 +55,14 @@ impl Login {
             .get_result(conn).expect("db connection");
         login
     }
-    pub fn update(id: Uuid, login: NewLogin) -> Self {
+    pub fn update(id: Uuid, new_login: NewLogin) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewLogin::from_existing(id, new_login);
+
         let login = diesel::update(logins::table)
             .filter(logins::id.eq(id))
-            .set(login)
+            .set(updated)
             .get_result(conn).expect("db connection");
         login
     }
@@ -75,6 +78,16 @@ impl NewLogin<'_> {
         let uuid = new_random_uuid_v4();
         Login {
             id: uuid,
+            email: login.email.to_string(),
+            pw_salt: login.pw_salt.to_string(),
+            pw_hash: login.pw_hash.to_string(),
+            mfa_salt: login.mfa_salt.to_string(),
+            mfa_hash: login.mfa_hash.to_string(),
+        }
+    }
+    fn from_existing(id: Uuid, login: NewLogin) -> Login {
+        Login {
+            id,
             email: login.email.to_string(),
             pw_salt: login.pw_salt.to_string(),
             pw_hash: login.pw_hash.to_string(),

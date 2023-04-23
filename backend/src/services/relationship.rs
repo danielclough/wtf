@@ -3,7 +3,7 @@ use crate::{
 };
 use rocket::serde::json::{json, Value};
 use rocket::delete;
-use rocket::{post, get};
+use rocket::{post, get, put};
 use uuid::Uuid;
 
 #[get("/list")]
@@ -63,20 +63,26 @@ pub fn delete(id: &str) -> Option<Value> {
     None
 }
 
-// #[put("/<id>")]
-// async fn update(
-//     id: web::Path,
-//     new_relationship: web::Json,
-// ) -> Option<Value> {
-//     let new_relationship = Relationship::update(id.into_inner(), new_relationship.into_inner());
-// }
-
 #[post("/create", data = "<body>")]
 pub fn create(body: NewRelationship<'_>) -> Option<Value> {
     if true {
         let new_relationship = body;
 
         let relationship = Relationship::create(new_relationship);
+
+        Some(json!(relationship))
+    } else {
+        None
+    }
+}
+
+#[put("/<id>", data = "<body>")]
+pub async fn update(id: &str, body: NewRelationship<'_>) -> Option<Value> {
+    if id != "" {
+        let uuid = Uuid::parse_str(id).expect("parse uuid");
+        let new_relationship = body;
+
+        let relationship = Relationship::update(uuid, new_relationship);
 
         Some(json!(relationship))
     } else {

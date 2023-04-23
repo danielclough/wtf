@@ -3,7 +3,7 @@ use crate::{
 };
 use rocket::serde::json::{json, Value};
 use rocket::delete;
-use rocket::{post, get};
+use rocket::{post, get, put};
 use uuid::Uuid;
 
 #[get("/list")]
@@ -43,14 +43,6 @@ pub fn delete(id: &str) -> Option<Value> {
     None
 }
 
-// #[put("/<id>")]
-// async fn update(
-//     id: web::Path,
-//     new_proposition: web::Json,
-// ) -> Option<Value> {
-//     let new_proposition = Proposition::update(id.into_inner(), new_proposition.into_inner());
-// }
-
 
 #[post("/create", data = "<body>")]
 pub fn create(body: NewProposition<'_>) -> Option<Value> {
@@ -58,6 +50,20 @@ pub fn create(body: NewProposition<'_>) -> Option<Value> {
         let new_proposition = body;
 
         let proposition = Proposition::create(new_proposition);
+
+        Some(json!(proposition))
+    } else {
+        None
+    }
+}
+
+#[put("/<id>", data = "<body>")]
+pub async fn update(id: &str, body: NewProposition<'_>) -> Option<Value> {
+    if body.name != "" {
+        let uuid = Uuid::parse_str(id).expect("parse uuid");
+        let new_proposition = body;
+
+        let proposition = Proposition::update(uuid, new_proposition);
 
         Some(json!(proposition))
     } else {

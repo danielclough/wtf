@@ -64,11 +64,14 @@ impl Preference {
             .get_result(conn).expect("db connection");
         preference
     }
-    pub fn update(id: Uuid, preference: Preference) -> Self {
+    pub fn update(id: Uuid, new_preference: NewPreference) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewPreference::from_existing(id, new_preference);
+
         let preference = diesel::update(preferences::table)
             .filter(preferences::id.eq(id))
-            .set(preference)
+            .set(updated)
             .get_result(conn).expect("db connection");
         preference
     }
@@ -83,6 +86,16 @@ impl NewPreference<'_> {
         let uuid = new_random_uuid_v4();
         Preference {
             id: uuid,
+            browser_theme: preference.browser_theme.to_string(),
+            display_name: preference.display_name.to_string(),
+            pronouns: preference.pronouns.to_string(),
+            sensitivity_ids: preference.sensitivity_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+            role_ids: preference.role_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+        }
+    }
+    fn from_existing(id: Uuid, preference: NewPreference) -> Preference {
+        Preference {
+            id,
             browser_theme: preference.browser_theme.to_string(),
             display_name: preference.display_name.to_string(),
             pronouns: preference.pronouns.to_string(),

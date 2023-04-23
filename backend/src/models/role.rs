@@ -60,11 +60,14 @@ impl Role {
             .get_result(conn).expect("db connection");
         role
     }
-    pub fn update(id: Uuid, role: Role) -> Self {
+    pub fn update(id: Uuid, new_role: NewRole) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewRole::from_existing(id, new_role);
+
         let role = diesel::update(roles::table)
             .filter(roles::id.eq(id))
-            .set(role)
+            .set(updated)
             .get_result(conn).expect("db connection");
         role
     }
@@ -77,6 +80,16 @@ impl Role {
 impl NewRole<'_> {
     fn from(role: NewRole) -> Role {
         let uuid = new_random_uuid_v4();
+        Role {
+            id: uuid,
+            title: role.title.to_string(),
+            description: role.description.to_string(),
+            responsibility: role.responsibility.to_string(),
+            discount: role.discount.to_string(),
+            seen_by_role: role.seen_by_role.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+        }
+    }
+    fn from_existing(uuid: Uuid, role: NewRole) -> Role {
         Role {
             id: uuid,
             title: role.title.to_string(),

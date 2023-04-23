@@ -15,7 +15,7 @@ use super::_common::Error;
 
 #[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
 #[diesel(table_name = propositions)]
-#[diesel(belongs_to(Argument))]
+#[diesel(belongs_to(Proposition))]
 pub struct NewProposition<'r> {
     pub name: &'r str,
     pub credence: f32,
@@ -26,7 +26,7 @@ pub struct NewProposition<'r> {
 }
 
 #[derive(Queryable, Insertable, Serialize, Deserialize, AsChangeset, Debug)]
-#[diesel(belongs_to(Argument))]
+#[diesel(belongs_to(Proposition))]
 #[diesel(table_name = propositions)]
 pub struct Proposition {
     pub id: Uuid,
@@ -62,11 +62,14 @@ impl Proposition {
             .get_result(conn).expect("db connection");
         proposition
     }
-    pub fn update(id: Uuid, proposition: Proposition) -> Self {
+    pub fn update(id: Uuid, new_proposition: NewProposition) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewProposition::from_existing(id, new_proposition);
+
         let proposition = diesel::update(propositions::table)
             .filter(propositions::id.eq(id))
-            .set(proposition)
+            .set(updated)
             .get_result(conn).expect("db connection");
         proposition
     }
@@ -81,6 +84,17 @@ impl NewProposition<'_> {
         let uuid = new_random_uuid_v4();
         Proposition {
             id: uuid,
+            name: proposition.name.to_string(),
+            credence: proposition.credence,
+            description: proposition.description,
+            links: proposition.links,
+            qualifications: proposition.qualifications,
+            restrictions: proposition.restrictions,
+        }
+    }
+    fn from_existing(id: Uuid, proposition: NewProposition) -> Proposition {
+        Proposition {
+            id,
             name: proposition.name.to_string(),
             credence: proposition.credence,
             description: proposition.description,

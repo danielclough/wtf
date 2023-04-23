@@ -2,7 +2,7 @@ use crate::{
     models::role::{NewRole, Role}
 };
 use rocket::delete;
-use rocket::{post, get};
+use rocket::{post, get, put};
 use rocket::serde::json::{json, Value};
 use uuid::Uuid;
 
@@ -54,20 +54,26 @@ pub fn delete(id: &str) -> Option<Value> {
     None
 }
 
-// #[put("/<id>")]
-// async fn update(
-//     id: web::Path,
-//     new_role: web::Json,
-// ) -> Option<Value> {
-//     let new_role = Role::update(id.into_inner(), new_role.into_inner());
-// }
-
 #[post("/create", data = "<body>")]
 pub fn create(body: NewRole<'_>) -> Option<Value> {
     if body.title != "" {
         let new_role = body;
 
         let role = Role::create(new_role);
+
+        Some(json!(role))
+    } else {
+        None
+    }
+}
+
+#[put("/<id>", data = "<body>")]
+pub async fn update(id: &str, body: NewRole<'_>) -> Option<Value> {
+    if id != "" {
+        let uuid = Uuid::parse_str(id).expect("parse uuid");
+        let new_role = body;
+
+        let role = Role::update(uuid, new_role);
 
         Some(json!(role))
     } else {

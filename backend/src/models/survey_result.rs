@@ -78,11 +78,14 @@ impl SurveyResult {
             .get_result(conn).expect("db connection");
         survey_results
     }
-    pub fn update(id: Uuid, survey_results: SurveyResult) -> Self {
+    pub fn update(id: Uuid, new_survey_result: NewSurveyResult) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewSurveyResult::from_existing(id, new_survey_result);
+
         let survey_results = diesel::update(survey_results::table)
             .filter(survey_results::id.eq(id))
-            .set(survey_results)
+            .set(updated)
             .get_result(conn).expect("db connection");
         survey_results
     }
@@ -97,6 +100,28 @@ impl NewSurveyResult<'_> {
         let uuid = new_random_uuid_v4();
         SurveyResult {
             id: uuid,
+            timestamp: survey_results.timestamp.to_string(),
+            aesthetics: survey_results.aesthetics,
+            cognitive: survey_results.cognitive,
+            cosmology: survey_results.cosmology,
+            environmental: survey_results.environmental,
+            epistemology: survey_results.epistemology,
+            ethics: survey_results.ethics,
+            history: survey_results.history,
+            isms: survey_results.isms,
+            law: survey_results.law,
+            logic: survey_results.logic,
+            maths: survey_results.maths,
+            ontology: survey_results.ontology,
+            political: survey_results.political,
+            rhetoric: survey_results.rhetoric,
+            science: survey_results.science,
+            theology: survey_results.theology,
+        }
+    }
+    fn from_existing(id: Uuid, survey_results: NewSurveyResult) -> SurveyResult {
+        SurveyResult {
+            id,
             timestamp: survey_results.timestamp.to_string(),
             aesthetics: survey_results.aesthetics,
             cognitive: survey_results.cognitive,

@@ -3,7 +3,7 @@ use crate::{
 };
 use rocket::serde::json::{json, Value};
 use rocket::{delete};
-use rocket::{post, get};
+use rocket::{post, get, put};
 use uuid::Uuid;
 
 #[post("/create", data = "<body>")]
@@ -56,10 +56,16 @@ pub fn delete(id: &str) -> Option<Value> {
     None
 }
 
-// #[put("/<id>")]
-// async fn update(
-//     id: web::Path,
-//     new_login: web::Json,
-// ) -> Option<Value> {
-//     let new_login = Login::update(id.into_inner(), new_login.into_inner());
-// }
+#[put("/<id>", data = "<body>")]
+pub async fn update(id: &str, body: NewLogin<'_>) -> Option<Value> {
+    if id != "" {
+        let uuid = Uuid::parse_str(id).expect("parse uuid");
+        let new_login = body;
+
+        let login = Login::update(uuid, new_login);
+
+        Some(json!(login))
+    } else {
+        None
+    }
+}

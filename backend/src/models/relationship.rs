@@ -77,11 +77,14 @@ impl Relationship {
             .get_result(conn).expect("db connection");
         relationship
     }
-    pub fn update(id: Uuid, relationship: Relationship) -> Self {
+    pub fn update(id: Uuid, new_relationship: NewRelationship) -> Self {
         let conn = &mut establish_connection_pg();
+
+        let updated = NewRelationship::from_existing(id, new_relationship);
+
         let relationship = diesel::update(relationships::table)
             .filter(relationships::id.eq(id))
-            .set(relationship)
+            .set(updated)
             .get_result(conn).expect("db connection");
         relationship
     }
@@ -96,6 +99,16 @@ impl NewRelationship<'_> {
         let uuid = new_random_uuid_v4();
         Relationship {
             id: uuid,
+            dog_cat_bird: relationship.dog_cat_bird.to_string(),
+            ignore_ids: relationship.ignore_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+            friend_ids: relationship.friend_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+            frienenmy_ids: relationship.frienenmy_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+            neutral_ids: relationship.neutral_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
+        }
+    }
+    fn from_existing(id: Uuid, relationship: NewRelationship) -> Relationship {
+        Relationship {
+            id,
             dog_cat_bird: relationship.dog_cat_bird.to_string(),
             ignore_ids: relationship.ignore_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
             friend_ids: relationship.friend_ids.iter().map(|x| Some(Uuid::parse_str(&x.clone().expect("some")).expect("uuid"))).collect(),
