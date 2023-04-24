@@ -80,10 +80,7 @@ pub fn create(body: NewRelationship<'_>) -> Option<Value> {
 pub async fn update(id: &str, body: NewRelationship<'_>) -> Option<Value> {
     if id != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_relationship = body;
-
-        let relationship = Relationship::update(uuid, new_relationship);
-
+        let relationship = Relationship::update(uuid, body);
         Some(json!(relationship))
     } else {
         None

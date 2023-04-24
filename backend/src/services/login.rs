@@ -60,10 +60,7 @@ pub fn delete(id: &str) -> Option<Value> {
 pub async fn update(id: &str, body: NewLogin<'_>) -> Option<Value> {
     if id != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_login = body;
-
-        let login = Login::update(uuid, new_login);
-
+        let login = Login::update(uuid, body);
         Some(json!(login))
     } else {
         None

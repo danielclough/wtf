@@ -61,10 +61,7 @@ pub fn create(body: NewProposition<'_>) -> Option<Value> {
 pub async fn update(id: &str, body: NewProposition<'_>) -> Option<Value> {
     if body.name != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_proposition = body;
-
-        let proposition = Proposition::update(uuid, new_proposition);
-
+        let proposition = Proposition::update(uuid, body);
         Some(json!(proposition))
     } else {
         None

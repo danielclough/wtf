@@ -62,10 +62,7 @@ pub fn create(body: NewArgument<'_>) -> Option<Value> {
 pub async fn update(id: &str, body: NewArgument<'_>) -> Option<Value> {
     if body.name != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_argument = body;
-
-        let argument = Argument::update(uuid, new_argument);
-
+        let argument = Argument::update(uuid, body);
         Some(json!(argument))
     } else {
         None

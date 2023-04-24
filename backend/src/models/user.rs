@@ -137,7 +137,7 @@ impl<'r> FromData<'r> for NewUser<'r> {
         }
 
         // Use a configured limit with name 'new_user' or fallback to default.
-        let limit = req.limits().get("new_user").unwrap_or(256.bytes());
+        let limit = req.limits().get("new_user").unwrap_or(1.mebibytes());
 
         // Read the data into a string.
         let string = match data.open(limit).into_string().await {
@@ -148,9 +148,9 @@ impl<'r> FromData<'r> for NewUser<'r> {
 
         // We store `string` in request-local cache for long-lived borrows.
         let string = request::local_cache!(req, string);
-        println!("{}", string);
-
-        let data: NewUser = serde_json::from_str(string).expect("works");
+        
+        let expect = format!("expect: {}", string);
+        let data: NewUser = serde_json::from_str(string).expect(&expect);
         
         Success(data)
     }

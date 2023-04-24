@@ -55,10 +55,7 @@ pub fn delete(id: &str) -> Option<Value> {
 pub async fn update(id: &str, body: NewSurveyResult<'_>) -> Option<Value> {
     if id != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_survey_result = body;
-
-        let survey_result = SurveyResult::update(uuid, new_survey_result);
-
+        let survey_result = SurveyResult::update(uuid, body);
         Some(json!(survey_result))
     } else {
         None

@@ -3,7 +3,7 @@
         ["/ontology/survey","What Exists?"],
         ["/epistemology/survey","How Do We Know?"],
         ["/ism/survey","*-ism Schism Game"],
-        ["/politics/drag","Rate Political People"],
+        ["/political/drag","Rate Political People"],
     ]
 </script>
 

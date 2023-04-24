@@ -22,6 +22,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /app
 
-COPY --from=builder /rust-docker/target/release/wtf-rocket /app
+COPY --from=builder /rust-docker/target/release/wtf-rocket /rust-docker/Rocket.toml /app/
 
 CMD ["./wtf-rocket"]

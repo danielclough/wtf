@@ -1,7 +1,7 @@
 <script>
     let links = [
-        ["/politics/drag/republicans","Rate Republicans"],
-        ["/politics/drag/democrats","Rate Democrats"],
+        ["/political/drag/republicans","Rate Republicans"],
+        ["/political/drag/democrats","Rate Democrats"],
     ]
 </script>
 

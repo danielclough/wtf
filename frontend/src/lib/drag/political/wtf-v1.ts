@@ -1,5 +1,5 @@
 export default {
-	title: "politics",
+	title: "political",
 	republicans: [
 		'Donald Trump',
 		'Greg Abbott',

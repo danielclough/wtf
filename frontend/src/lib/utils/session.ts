@@ -6,10 +6,10 @@ export interface SessionUser {
 	account_id: string;
 	avatar: string;
 	level: 'beta';
-	preference_ids: string;
-	relationship_ids: string;
-	survey_results_ids: string;
-	user_ids: string;
+	preference_id: string;
+	relationship_id: string;
+	survey_results_id: string;
+	user_id: string;
 }
 
 interface CookieOpts {
@@ -22,8 +22,8 @@ interface CookieOpts {
 
 export const cookieOpts: CookieOpts = {
 	path: '/',
-	httpOnly: false,
+	httpOnly: true,
 	sameSite: 'lax',
-	secure: false,
+	secure: true,
 	maxAge: 60 * 60 * 24 * 7
 };

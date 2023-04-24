@@ -1,8 +1,9 @@
 import { cookieOpts, type SessionUser } from '$lib/utils/session';
 import jwt from 'jsonwebtoken';
-import { error, type Actions, redirect } from '@sveltejs/kit';
 import { JWT_SECRET } from '$env/static/private';
-import { postRocket, getRocket } from '$lib/utils/rocket';
+import { error, type Actions, redirect } from '@sveltejs/kit';
+
+import { putRocket, getRocket, postRocket } from '$lib/utils/rocket';
 
 export const actions: Actions = {
 	submit: async ({ cookies, request }) => {
@@ -11,152 +12,118 @@ export const actions: Actions = {
 			const answers = form.get('answers');
 			const subject = form.get('subject');
 			const session = cookies.get('session');
-			
-			if (!!session && typeof answers === 'string' && typeof subject === 'string') {
 
-				const tmp = subject.split(" ");
+			if (!!session && typeof answers === 'string' && typeof subject === 'string') {
 
 				const jwtUser = jwt.verify(session, JWT_SECRET);
 
-				let resultGetSurveyResults: any = {
-					aesthetics: "",
-					cognitive: "",
-					cosmology: "",
-					environmental: "",
-					epistemology: "",
-					ethics: "",
-					history: "",
-					isms: "",
-					law: "",
-					logic: "",
-					maths: "",
-					ontology: "",
-					political: "",
-					rhetoric: "",
-					science: "",
-					theology: "",
-				};
 				if (typeof jwtUser === 'object') {
+					let resultGetSurveyResults: any = {};
+					// console.log("jwtUser", jwtUser);
 
-					if (jwtUser.survey_results_ids.length > 0 && jwtUser.survey_results_ids !== '') {
-					console.log("jwtUser", jwtUser.survey_results_ids[0]);
+					if (jwtUser.survey_results_id !== '') {
 						const result = await getRocket(
-							`https://api.wtf.danielc.us/survey_result/${jwtUser.survey_results_ids[0]}`
+							`https://api.wtf.danielc.us/survey_result/${jwtUser.survey_results_id}`
 						);
 						resultGetSurveyResults = await result.json();
 					}
-	
-					const timestamp = Date.now().toString();
-					const body = {
-						timestamp,
-						aesthetics: resultGetSurveyResults.aesthetics[0] !== "" && subject === 'aesthetics'
-							?  [...resultGetSurveyResults.aesthetics, answers]
-								?  subject === 'aesthetics'
-									: [answers]
-									: [''],
-						cognitive: resultGetSurveyResults.cognitive[0] !== "" && subject === 'cognitive'
-							?  [...resultGetSurveyResults.cognitive, answers]
-								?  subject === 'cognitive'
-									: [answers]
-									: [''],
-						cosmology: resultGetSurveyResults.cosmology[0] !== "" && subject === 'cosmology'
-							?  [...resultGetSurveyResults.cosmology, answers]
-								?  subject === 'cosmology'
-									: [answers]
-									: [''],
-						environmental: resultGetSurveyResults.environmental[0] !== "" && subject === 'environmental'
-							?  [...resultGetSurveyResults.environmental, answers]
-								?  subject === 'environmental'
-									: [answers]
-									: [''],
-						epistemology: resultGetSurveyResults.epistemology[0] !== "" && subject === 'epistemology'
-							?  [...resultGetSurveyResults.epistemology, answers]
-								?  subject === 'epistemology'
-									: [answers]
-									: [''],
-						ethics: resultGetSurveyResults.ethics[0] !== "" && subject === 'ethics'
-							?  [...resultGetSurveyResults.ethics, answers]
-								?  subject === 'ethics'
-									: [answers]
-									: [''],
-						history: resultGetSurveyResults.history[0] !== "" && subject === 'history'
-							?  [...resultGetSurveyResults.history, answers]
-								?  subject === 'history'
-									: [answers]
-									: [''],
-						isms: resultGetSurveyResults.isms[0] !== "" && subject === 'isms'
-							?  [...resultGetSurveyResults.isms, answers]
-								?  subject === 'isms'
-									: [answers]
-									: [''],
-						law: resultGetSurveyResults.law[0] !== "" && subject === 'law'
-							?  [...resultGetSurveyResults.law, answers]
-								?  subject === 'law'
-									: [answers]
-									: [''],
-						logic: resultGetSurveyResults.logic[0] !== "" && subject === 'logic'
-							?  [...resultGetSurveyResults.logic, answers]
-								?  subject === 'logic'
-									: [answers]
-									: [''],
-						maths: resultGetSurveyResults.maths[0] !== "" && subject === 'maths'
-							?  [...resultGetSurveyResults.maths, answers]
-								?  subject === 'maths'
-									: [answers]
-									: [''],
-						ontology: resultGetSurveyResults.ontology[0] !== "" && subject === 'ontology'
-							?  [...resultGetSurveyResults.ontology, answers]
-								?  subject === 'ontology'
-									: [answers]
-									: [''],
-						political: resultGetSurveyResults.political[0] !== "" && subject === 'political'
-							?  [...resultGetSurveyResults.political, answers]
-								?  subject === 'political'
-									: [answers]
-									: [''],
-						rhetoric: resultGetSurveyResults.rhetoric[0] !== "" && subject === 'rhetoric'
-							?  [...resultGetSurveyResults.rhetoric, answers]
-								?  subject === 'rhetoric'
-									: [answers]
-									: [''],
-						science: resultGetSurveyResults.science[0] !== "" && subject === 'science'
-							?  [...resultGetSurveyResults.science, answers]
-								?  subject === 'science'
-									: [answers]
-									: [''],
-						theology: resultGetSurveyResults.theology[0] !== "" && subject === 'theology'
-							?  [...resultGetSurveyResults.theology, answers]
-								?  subject === 'theology'
-									: [answers]
-									: [''],
+					// console.log('resultGetSurveyResults', resultGetSurveyResults);
+
+					const updateOrNot = (
+						current: string,
+						subject: string,
+						updateString: string,
+						objToUpdate: any
+					) => {
+						console.log(objToUpdate[current], current, subject, updateString);
+						if (objToUpdate[current].length > 1 && current == subject) {
+							return [...objToUpdate[current], updateString];
+						} else if (objToUpdate[current].length > 0) {
+							return [...objToUpdate[current]];
+						} else if (current == subject) {
+							return [updateString];
+						} else {
+							return [];
+						}
 					};
-					console.log(body);
-					const resultCreateResponse = await postRocket(
-						`https://api.wtf.danielc.us/survey_result/create`,
-						'new_survey_result',
-						JSON.stringify(body)
+
+					const body = JSON.stringify({
+						timestamp: Date.now().toString(),
+						aesthetics: updateOrNot('aesthetics', subject, answers, resultGetSurveyResults),
+						cognitive: updateOrNot('cognitive', subject, answers, resultGetSurveyResults),
+						cosmology: updateOrNot('cosmology', subject, answers, resultGetSurveyResults),
+						environmental: updateOrNot(
+							'environmental',
+							subject,
+							answers,
+							resultGetSurveyResults
+						),
+						epistemology: updateOrNot(
+							'epistemology',
+							subject,
+							answers,
+							resultGetSurveyResults
+						),
+						ethics: updateOrNot('ethics', subject, answers, resultGetSurveyResults),
+						history: updateOrNot('history', subject, answers, resultGetSurveyResults),
+						isms: updateOrNot('isms', subject, answers, resultGetSurveyResults),
+						law: updateOrNot('law', subject, answers, resultGetSurveyResults),
+						logic: updateOrNot('logic', subject, answers, resultGetSurveyResults),
+						maths: updateOrNot('maths', subject, answers, resultGetSurveyResults),
+						ontology: updateOrNot('ontology', subject, answers, resultGetSurveyResults),
+						political: updateOrNot('political', subject, answers, resultGetSurveyResults),
+						rhetoric: updateOrNot('rhetoric', subject, answers, resultGetSurveyResults),
+						science: updateOrNot('science', subject, answers, resultGetSurveyResults),
+						theology: updateOrNot('theology', subject, answers, resultGetSurveyResults)
+					});
+
+					// GET ACCOUNT
+					const resultGetAccount = await getRocket(
+						`https://api.wtf.danielc.us/account/${jwtUser.account_id}`
 					);
+					const resultGetAccountJson = await resultGetAccount.json();
+					const accountId = resultGetAccountJson.id;
+					delete resultGetAccountJson.id;
+					resultGetAccountJson.survey_results_ids = [resultGetSurveyResults.id];
+
+					// CHECK FOR EXISTING SURVEY RESULTS (PUT/POST)
+					let resultCreateResponse: any = {};
+					if (!!resultGetSurveyResults.id) {
+						resultCreateResponse = await putRocket(
+							`https://api.wtf.danielc.us/survey_result/${resultGetSurveyResults.id}`,
+							'new_survey_result',
+							body
+						);
+					} else {
+						resultCreateResponse = await postRocket(
+							`https://api.wtf.danielc.us/survey_result/create`,
+							'new_survey_result',
+							body
+						);
+					}
 					const resultCreateResponseJson: any = await resultCreateResponse.json();
-	
-					console.log(
-						resultGetSurveyResults,
-						resultCreateResponseJson,
+
+					// UPDATE ACCOUNT
+					const resultAccountResponse = await putRocket(
+						`https://api.wtf.danielc.us/account/${accountId}`,
+						'new_account',
+						JSON.stringify(resultGetAccountJson)
 					);
-	
+
 					const sessionUser: SessionUser = {
 						id: jwtUser.id,
 						first_name: jwtUser.first_name,
-						account_id: jwtUser.id,
+						account_id: accountId,
 						avatar: jwtUser.avatar,
 						level: jwtUser.level,
-						preference_ids: jwtUser.preference_ids,
-						relationship_ids: jwtUser.relationship_ids,
-						survey_results_ids: resultCreateResponseJson.id,
-						user_ids: jwtUser.user_ids
+						preference_id: jwtUser.preference_ids,
+						relationship_id: jwtUser.relationship_ids,
+						survey_results_id: resultCreateResponseJson.id,
+						user_id: jwtUser.user_id
 					};
-	
+
 					const sessionJwt = jwt.sign(sessionUser, JWT_SECRET);
-	
+
 					cookies.set('session', sessionJwt, cookieOpts);
 				}
 			}

@@ -60,10 +60,7 @@ pub fn create(body: NewSensitivity<'_>) -> Option<Value> {
 pub async fn update(id: &str, body: NewSensitivity<'_>) -> Option<Value> {
     if body.name != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_sensitivity = body;
-
-        let sensitivity = Sensitivity::update(uuid, new_sensitivity);
-
+        let sensitivity = Sensitivity::update(uuid, body);
         Some(json!(sensitivity))
     } else {
         None

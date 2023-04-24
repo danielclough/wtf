@@ -67,13 +67,12 @@ pub fn delete(id: &str) -> Option<Value> {
 }
 
 #[put("/<id>", data = "<body>")]
-pub async fn update(id: &str, body: NewUser<'_>) -> Option<Value> {
+pub fn update(id: &str, body: NewUser<'_>) -> Option<Value> {
+    println!("test\n{}\n{:?}", id, body);
     if id != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_user = body;
-
-        let user = User::update(uuid, new_user);
-
+        let user = User::update(uuid, body);
+        println!("test\n{:?}", user);
         Some(json!(user))
     } else {
         None

@@ -90,10 +90,10 @@ export const actions: Actions = {
 					account_id: accountResponseJson.id,
 					avatar: accountResponseJson.avatar,
 					level: accountResponseJson.level,
-					preference_ids: accountResponseJson.preference_ids[0] || [''],
-					relationship_ids: accountResponseJson.relationship_ids[0] || [''],
-					survey_results_ids: accountResponseJson.survey_results_ids[0] || [''],
-					user_ids: accountResponseJson.user_ids[0]
+					preference_id: accountResponseJson.preference_ids[0] || '',
+					relationship_id: accountResponseJson.relationship_ids[0] || '',
+					survey_results_id: accountResponseJson.survey_results_ids[0] || '',
+					user_id: accountResponseJson.user_ids[0]
 				};
 
 				const sessionJwt = jwt.sign(sessionUser, JWT_SECRET);
@@ -140,10 +140,10 @@ export const actions: Actions = {
 						account_id: accountResponseJson.id,
 						avatar: accountResponseJson.avatar,
 						level: accountResponseJson.level,
-						preference_ids: accountResponseJson.preference_ids[0] || [""],
-						relationship_ids: accountResponseJson.relationship_ids[0] || [""],
-						survey_results_ids: accountResponseJson.survey_results_ids[0] || [""],
-						user_ids: accountResponseJson.user_ids[0]
+						preference_id: accountResponseJson.preference_ids[0] || "",
+						relationship_id: accountResponseJson.relationship_ids[0] || "",
+						survey_results_id: accountResponseJson.survey_results_ids[0] || "",
+						user_id: accountResponseJson.user_ids[0]
 					};
 
 					const sessionJwt = jwt.sign(sessionUser, JWT_SECRET);

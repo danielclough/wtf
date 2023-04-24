@@ -69,10 +69,7 @@ pub fn create(body: NewConductCode<'_>) -> Option<Value> {
 pub async fn update(id: &str, body: NewConductCode<'_>) -> Option<Value> {
     if body.name != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_conduct_code = body;
-
-        let conduct_code = ConductCode::update(uuid, new_conduct_code);
-
+        let conduct_code = ConductCode::update(uuid, body);
         Some(json!(conduct_code))
     } else {
         None

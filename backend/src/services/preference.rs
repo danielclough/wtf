@@ -71,10 +71,7 @@ pub fn create(body: NewPreference<'_>) -> Option<Value> {
 pub async fn update(id: &str, body: NewPreference<'_>) -> Option<Value> {
     if id != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_preference = body;
-
-        let preference = Preference::update(uuid, new_preference);
-
+        let preference = Preference::update(uuid, body);
         Some(json!(preference))
     } else {
         None

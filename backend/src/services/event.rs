@@ -60,10 +60,7 @@ pub fn create(body: NewEvent<'_>) -> Option<Value> {
 pub async fn update(id: &str, body: NewEvent<'_>) -> Option<Value> {
     if body.name != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_event = body;
-
-        let event = Event::update(uuid, new_event);
-
+        let event = Event::update(uuid, body);
         Some(json!(event))
     } else {
         None

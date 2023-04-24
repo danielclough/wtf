@@ -71,10 +71,7 @@ pub fn create(body: NewRole<'_>) -> Option<Value> {
 pub async fn update(id: &str, body: NewRole<'_>) -> Option<Value> {
     if id != "" {
         let uuid = Uuid::parse_str(id).expect("parse uuid");
-        let new_role = body;
-
-        let role = Role::update(uuid, new_role);
-
+        let role = Role::update(uuid, body);
         Some(json!(role))
     } else {
         None
