@@ -36,7 +36,7 @@ export const actions: Actions = {
 						if (objToUpdate[current].length > 1 && current == subject) {
 							return [objToUpdate[current][0], updateString];
 						} else if (objToUpdate[current].length > 0) {
-							return [objToUpdate[current][0]];
+							return [...objToUpdate[current]];
 						} else if (current == subject) {
 							return [updateString];
 						} else {
