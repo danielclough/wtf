@@ -30,6 +30,7 @@ Rules:
 0. One person speaks at a time.
 0. Non-normatively (excluding "positivism").
    - "No should-ing on others" - but evidence of a claim is expected if asked for.
+   - Use logic and data to make arguments.
 
 
 
@@ -68,7 +69,21 @@ Rules:
 ### Values
 
 - Individual Flourishing
-- Collaboration
+- Collaboration (Gricean Pragmatics)
+    - Quantity
+        - Try to be informative.
+        - Do not be more informative than is required.
+    - Quality
+        - Try to convey truth.
+        - Do not say what you believe to be false.
+        - Do not say that for which you lack adequate evidence.
+    - Relation
+        - Try to be relevant.
+    - Manner
+        - Try to be easy to understand.
+        - Avoid obscure, ambiguous, lengthy, disordered statements.
+        - Frame your ideas to facilitate an appropriate reply.
+
 
 ### Problem
 
@@ -165,7 +180,7 @@ classDiagram
     class Planet{
         Life
         NonLife
-        Evolution(NonLife) -> Life
+        NaturalSelection(NonLife) -> Life
     }
     Planet --|> Life
 
@@ -260,11 +275,19 @@ classDiagram
 
 ### Positive Epistemology
 
-It is important to recognize our `Fundamental Ignorance` which leaves open the possibility for new discovery. 
+Why should you accept that life proceeds by a process of Natural Selection and not by a Metaphysical Miracle?  
+
+You "shouldn't".
+
+You may believe whatever you find compelling and and useful, and to consider your beliefs in ways that can be tested.
+
+It is important to recognize our `Fundamental Ignorance` which leaves open the possibility for new discovery.
 
 A valid model is not expected to explain everything.
 
-> Note that we can only update our Knowledge by executing a Test or (Axiomatically) by exploring a Paradigm.
+Valid models should have some predictive power.
+
+> Note: that we can only update our Knowledge by executing a Test or (Axiomatically) by exploring a Paradigm.
 
 ```mermaid
 stateDiagram-v2
@@ -286,13 +309,29 @@ stateDiagram-v2
  - `Analysis` == Consider what the test means in relationship to the working paradigm.
 
 
+#### Bayesian Credence
+
+<iframe width="741" height="417" src="https://www.youtube.com/embed/HZGCoVF3YvM" title="Bayes theorem, the geometry of changing beliefs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ### Positive Ethics
 
  - Ethics is a highly speculative subject.
  - Much of the subject is based on metaphysical concepts.
  - Legal Positivism is a highly relevant.
  - Sociology is dubious, and becoming more positive over time.
+ 
 
 #### Pragmatics
 
-...
+Physics and Biology are rigorous subjects with clear definitions, repeated experiment, and peer review - however many relevant problems are social and not physical in nature.
+
+For this we have Pragmatics:
+
+>  The facts with which pragmatics deals are of various sorts, including:
+> - Facts about the objective facts of the utterance, including: who the speaker is, when the utterance occurred, and where;
+> - Facts about the speaker’s intentions. ...what language the speaker intends to be using, what meaning she intends to be using, whom she intends to refer... and the like. ...what she intends to achieve by saying what she does.
+> - Facts about beliefs of the speaker and those to whom she speaks, and the conversation they are engaged in; what beliefs do they share; what is the focus of the conversation, what are they talking about, etc.
+> - Facts about relevant social institutions, such as promising, marriage ceremonies, courtroom procedures, and the like, which affect what a person accomplishes in or by saying what she does.
+> [--Stanford.edu](https://plato.stanford.edu/entries/pragmatics/)
+
+Pragmatic facts of social life 
