@@ -10,10 +10,17 @@
                 <section>
                     {section[i]}
                 </section>
+                {#each section[i][1] as subSection,j}
+                    <section>
+                        {subSection[i]}
+                    </section>
+                {/each}
             {:else}
-                <section>
-                    {section[i]}
-                </section>
+                {#each section[i] as subSection,j}
+                    <section>
+                        {subSection[i]}
+                    </section>
+                {/each}
             {/if}
         {/each}
     {/if}
