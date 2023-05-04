@@ -1,0 +1,29 @@
+:root {
+    --text_interactive: 3rem;
+  }
+
+button {
+    min-width: 12rem;
+    width: fit-content;
+    height: 4rem;
+    line-height: 4rem;
+    font-size: var(--text_interactive);
+    margin: .5rem;
+}
+button .selected {
+    opacity: 1;
+}
+button .not_selected {
+    opacity: .3;
+}
+
+
+option {
+    font-size: var(--text_interactive);
+}
+
+select {
+    height: 4rem;
+    width: 12rem;
+    font-size: var(--text_interactive);
+}

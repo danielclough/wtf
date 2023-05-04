@@ -1,4 +1,6 @@
+
 <script>
+  import FaceRecognition from '$lib/face-recognition.svelte';
   import SvelteMarkdown from 'svelte-markdown'
 
   const source = `
@@ -122,5 +124,5 @@ It's a good idea when it works, but AI can sort credit later if it's not easy or
 	<meta name="description" content="WTF WTF?" />
 </svelte:head>
 
-
+<FaceRecognition />
   <SvelteMarkdown {source} />

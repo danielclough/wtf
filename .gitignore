@@ -1,3 +1,9 @@
+**/output
+**/wav_files
+**/video_files
+**/phone_files
+
+
 **/target/
 **/.env
 **/pg/.DS_Store
