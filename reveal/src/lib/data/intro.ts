@@ -46,7 +46,7 @@ I am interviewing people to analyze speech and opinion patterns.
             </label>
         </form>
         `
-    },,
+    },
     {
         text: `
             Read each question out loud before answering.
