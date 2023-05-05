@@ -5,23 +5,17 @@
 
 <Slides>
     {#if interview.version === "Verbal v1"}
-        {#each interview.questions as section,i}
-            {#if typeof section[i] === 'string'}
+        {#each interview.questions as section}
+            <section>
+                    {section.subject}
+                {#each section.prompts as prompt}
                 <section>
-                    {section[i]}
-                </section>
-                {#each section[i][1] as subSection,j}
-                    <section>
-                        {subSection[i]}
+                    <p>
+                        {@html prompt}
+                        </p>
                     </section>
                 {/each}
-            {:else}
-                {#each section[i] as subSection,j}
-                    <section>
-                        {subSection[i]}
-                    </section>
-                {/each}
-            {/if}
+            </section>
         {/each}
     {/if}
 </Slides>

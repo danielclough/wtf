@@ -10,11 +10,13 @@ button {
     font-size: var(--text_interactive);
     margin: .5rem;
 }
-button .selected {
+.selected {
     opacity: 1;
+    border: 3px solid goldenrod;
+    box-shadow: 2px 2px 3px goldenrod;
 }
-button .not_selected {
-    opacity: .3;
+.not_selected {
+    opacity: .5;
 }
 
 

@@ -1,68 +1,73 @@
 export default [
     {
-        md: `
-I am going to interview thousands of people to analyze speech and opinion patterns.
+        text: `
+I am interviewing people to analyze speech and opinion patterns.
         `,
         btns: [
             {
                 details: ["Do you have any questions?"],
                 text: ["Yes", "No"],
-                answer: ""
             }
-        ]
+        ],
+        html: ""
     },
     {
-        md: `
+        text: `
 
         `,
         btns: [
             {
-                details: ["Agree not to do/say anything illegal while being recorded?"],
+                details: ["Do you understand that this recording may be published online?"],
                 text: ["Yes", "No"],
-                answer: ""
             }
-        ]
+        ],
+        html: ""
     },
     {
-        md: `
+        text: `
 
         `,
         btns: [
             {
-                details: ["Do you understand that these videos are published on YouTube?"],
+                details: ["Do you want to be contacted if this video is published?"],
                 text: ["Yes", "No"],
-                answer: ""
             }
-        ]
+        ],
+        html: `
+        <form>
+            <label for="first_name">
+                First Name
+                <input type="first_name" id="first_name" name="first_name" >
+            </label>
+            <br>
+            <label for="email">
+                Email
+                <input type="email" id="email" name="email" >
+            </label>
+        </form>
+        `
     },
-    {
-        md: `
+    // {
+    //     text: `
 
-        `,
-        btns: [
-            {
-                details: ["Do you want your face and/or voice to be anonymized before uploading?"],
-                text: ["Anonymize my face", "Anonymize both"],
-                answer: ""
-            },
-            {
-                details: ["Do you require that the the anonymization process be non-reversible by standard software?"],
-                text: ["Standard", "Non-Reversible"],
-                answer: ""
-            }
-        ]
-    },
+    //     `,
+    //     btns: [
+    //         {
+    //             details: ["Do you want your face and/or voice to be anonymized before uploading?"],
+    //             text: ["Anonymize my face", "Anonymize both"],
+    //             html: ""
+    //         },
+    //         {
+    //             details: ["Do you require that the the anonymization process be non-reversible by standard software?"],
+    //             text: ["Standard", "Non-Reversible"],
+    //             html: ""
+    //         }
+    //     ]
+    // },
     {
-        md: `
-
+        text: `
+        Ask questions at any time.
         `,
-        btns: [
-            {
-                details: ["What questions would you like me to ask in the future?"],
-                text: ["Skip", "Suggest Questions"],
-                answer: ""
-            }
-        ]
     }
 
 ]

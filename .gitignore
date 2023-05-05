@@ -1,7 +1,9 @@
-**/output
-**/wav_files
-**/video_files
-**/phone_files
+**/output/
+**/wav_files/
+**/video_files/
+**/phone_files/
+**/audacity/
+**/final/
 
 Recorderjs/
 
