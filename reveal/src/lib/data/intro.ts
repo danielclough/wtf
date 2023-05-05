@@ -1,19 +1,6 @@
 export default [
     {
         text: `
-I am interviewing people to analyze speech and opinion patterns.
-        `,
-        btns: [
-            {
-                details: ["Do you have any questions?"],
-                text: ["Yes", "No"],
-            }
-        ],
-        html: ""
-    },
-    {
-        text: `
-
         `,
         btns: [
             {
@@ -21,7 +8,7 @@ I am interviewing people to analyze speech and opinion patterns.
                 text: ["Yes", "No"],
             }
         ],
-        html: ""
+        html: "Swipe Right 👉"
     },
     {
         text: `
@@ -52,6 +39,11 @@ I am interviewing people to analyze speech and opinion patterns.
             Read each question out loud before answering.
         `,
     },
+    {
+        text: `
+            Ask questions at any time.
+        `,
+    },
     // {
     //     text: `
 
@@ -71,7 +63,7 @@ I am interviewing people to analyze speech and opinion patterns.
     // },
     {
         text: `
-            Ask questions at any time.
+            Face the camera... clap 👏... then press Start!
         `,
     }
 

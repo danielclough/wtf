@@ -16,7 +16,7 @@
 
 {#each current.text as button}
     <button
-        class="{answer === button ? "selected" : "not_selected"}"
+        class="{answer === button ? "selected" : "semi-opaque"}"
         value={button} 
         on:click={()=> {
             answer = button;

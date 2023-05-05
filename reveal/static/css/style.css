@@ -15,7 +15,7 @@ button {
     border: 3px solid goldenrod;
     box-shadow: 2px 2px 3px goldenrod;
 }
-.not_selected {
+.semi-opaque {
     opacity: .5;
 }
 

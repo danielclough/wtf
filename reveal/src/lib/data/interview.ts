@@ -4,8 +4,26 @@ export default {
         {
             subject: `Government`,
             prompts: [
-                `<h1>Do I trust my government?</h1>`,
-                `<h1><small>Is there an</small> institution <small>I trust more than my</small> government?</h1>`
+                `
+                    <h1>Do I trust my government?</h1>
+                    <p class="semi-opaque">👆 Swipe Down 👆</p>
+                `,
+                `
+                    <h1>
+                        <small>
+                            Is there an</small> institution <small>I trust more than my
+                        </small>
+                        government?
+                    </h1>
+
+                    <p class="semi-opaque">
+                        👆
+                        <small>
+                            End of section.
+                        </small>
+                        Swipe Right 👉
+                    </p>
+                `
             ]
         },
         {
@@ -23,7 +41,7 @@ export default {
                 `,
                 `
                     <h1>A Religious Story?</h1>
-                    <p>Karma, Resurrection, etc.</p>
+                    <p>Karma, Miracles, Resurrection, etc.</p>
                 `,
                 `<h1>Covid 19?</h1>`,
                 `
