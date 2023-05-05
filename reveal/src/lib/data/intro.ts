@@ -51,7 +51,7 @@ I am interviewing people to analyze speech and opinion patterns.
         text: `
             Read each question out loud before answering.
         `,
-    }
+    },
     // {
     //     text: `
 
