@@ -46,7 +46,12 @@ I am interviewing people to analyze speech and opinion patterns.
             </label>
         </form>
         `
-    },
+    },,
+    {
+        text: `
+            Read each question out loud before answering.
+        `,
+    }
     // {
     //     text: `
 
@@ -66,7 +71,7 @@ I am interviewing people to analyze speech and opinion patterns.
     // },
     {
         text: `
-        Ask questions at any time.
+            Ask questions at any time.
         `,
     }
 
