@@ -6,7 +6,7 @@
     "distDir": "../build"
   },
   "package": {
-    "productName": "Interviews v1",
+    "productName": "WTF Interviews",
     "version": "0.1.0"
   },
   "tauri": {
@@ -28,7 +28,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "app.netlify.wtf-reveal",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -54,10 +54,10 @@
     },
     "windows": [
       {
-        "fullscreen": false,
+        "fullscreen": true,
         "height": 600,
         "resizable": true,
-        "title": "Interviews v1",
+        "title": "WTF Interviews",
         "width": 800
       }
     ]

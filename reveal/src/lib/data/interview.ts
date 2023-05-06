@@ -32,7 +32,7 @@ export default {
                 `
                     <h1>Standard Cosmology</h1>
                     <p>
-                        Dark Matter, Dark Energy, etc.
+                        Black Holes, Dark Matter, Dark Energy, etc.
                     </p>
                 `,
                 `
@@ -40,8 +40,8 @@ export default {
                     <p><strong>Life</strong> evolves <strong>chaotically</strong> by <strong>random mutation</strong>.</p>
                 `,
                 `
-                    <h1>A Religious Story?</h1>
-                    <p>Karma, Miracles, Resurrection, etc.</p>
+                    <h1>A Religious/Mystical Story?</h1>
+                    <p>Karma, Miracles, Dualism, etc.</p>
                 `,
                 `<h1>Covid 19?</h1>`,
                 `
