@@ -67,11 +67,10 @@ export default {
             subject: `Who / What is a Person?`,
             prompts: [
                 `
-                <img style="position:absolute; top:-3rem;right:0;" src="https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl=https://www.youtube.com/watch?v=GxM9BZeRrUI&pp=ygUKcGVyc29uaG9vZA%3D%3D" alt="video link" />
                 <small>
                     (Watch this
                     <a href="https://www.youtube.com/watch?v=GxM9BZeRrUI&pp=ygUKcGVyc29uaG9vZA%3D%3D">PBS video</a>
-                    to learn about Personhood - 15 sec.)
+                    to learn about Personhood - 16 sec. clip below)
                 </small>
                 <video controls poster="/video/personhood.jpeg" src="/video/personhood.mp4" type="video/mp4" />
                 `,
@@ -88,6 +87,7 @@ export default {
             subject: `Thank You for Participating`,
             prompts: [
                 `
+                    <p> Like, Subscribe, Follow </p>
                     <img style="width:25%;border:none;" src="/images/YOUTUBE-LOGO.png" alt="YouTube Logo" />
                     <img style="width:25%;border:none;" src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://www.youtube.com/channel/UC3uFKCe5MYhI8-iEA9ez2OA" alt="video link" />
                     <img style="width:25%;border:none;" src="/images/YOUTUBE-LOGO.png" alt="YouTube Logo" />
