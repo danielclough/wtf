@@ -70,6 +70,9 @@ export default {
                     <p>Wave Collapse?</p>
                     <p>Hidden Variables?</p>
                 `,
+                `
+                    <h1><small>We live in a </small> Simulation / Hologram?</h1>
+                `,
             ],
         },
         {
