@@ -11,11 +11,26 @@ export default {
                 `
                     <h1>
                         <small>
-                            Is there an</small> institution <small>I trust more than my
+                            Is 
+                        </small>
+                        Mass Surveillance
+                        <small>
+                            by the government
+                        </small>
+                        Justified?
+                    </h1>
+                `,
+                `
+                    <h1>
+                        <small>
+                            Is there an
+                        </small>
+                        institution
+                        <small>
+                            I trust more than my
                         </small>
                         government?
                     </h1>
-
                     <p class="semi-opaque">
                         👆
                         <small>
@@ -23,7 +38,7 @@ export default {
                         </small>
                         Swipe Left 👉
                     </p>
-                `
+                `,
             ]
         },
         {
@@ -43,7 +58,12 @@ export default {
                     <h1>A Mystical Story?</h1>
                     <p>Karma, Miracles, Dualism, etc.</p>
                 `,
-                `<h1>Covid 19?</h1>`,
+                `
+                    <h1>
+                        Covid 19?
+                    </h1>
+                    <p>Germ Theory</p>
+                `,
                 `
                     <h1>Quantum Mechanics?</h1>
                     <p>Many Worlds?</p>
@@ -64,7 +84,7 @@ export default {
             ]
         },
         {
-            subject: `Who / What is a Person?`,
+            subject: `Who / What should be a Legal Person?`,
             prompts: [
                 `
                     <small>
@@ -77,6 +97,7 @@ export default {
                     </div>
                     <video controls poster="/video/personhood.jpeg" src="/video/personhood.mp4" type="video/mp4" />
                 `,
+                `<h1>Superman?</h1>`,
                 `<h1>Corporations?</h1>`,
                 `<h1>AI?</h1>`,
                 `<h1>Intelligent Animals?</h1>`,
