@@ -6,7 +6,7 @@ export default {
             prompts: [
                 `
                     <h1>Do I trust my government?</h1>
-                    <p class="semi-opaque">👆 Swipe Down 👆</p>
+                    <p class="semi-opaque">👆 Swipe Up 👆</p>
                 `,
                 `
                     <h1>
@@ -21,7 +21,7 @@ export default {
                         <small>
                             End of section.
                         </small>
-                        Swipe Right 👉
+                        Swipe Left 👉
                     </p>
                 `
             ]
@@ -73,7 +73,7 @@ export default {
                         to learn about Personhood - 16 sec. clip below)
                     </small>
                     <div style="display:relative">
-                        <div class="semi-opaque left-center" > 👈 Swipe Down on the Side. </div>
+                        <div class="semi-opaque left-center" > 👈 Swipe Up on the Side. </div>
                     </div>
                     <video controls poster="/video/personhood.jpeg" src="/video/personhood.mp4" type="video/mp4" />
                 `,
