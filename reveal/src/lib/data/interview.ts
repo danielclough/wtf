@@ -40,7 +40,7 @@ export default {
                     <p><strong>Life</strong> evolves <strong>chaotically</strong> by <strong>random mutation</strong>.</p>
                 `,
                 `
-                    <h1>A Religious/Mystical Story?</h1>
+                    <h1>A Mystical Story?</h1>
                     <p>Karma, Miracles, Dualism, etc.</p>
                 `,
                 `<h1>Covid 19?</h1>`,
@@ -67,12 +67,15 @@ export default {
             subject: `Who / What is a Person?`,
             prompts: [
                 `
-                <small>
-                    (Watch this
-                    <a href="https://www.youtube.com/watch?v=GxM9BZeRrUI&pp=ygUKcGVyc29uaG9vZA%3D%3D">PBS video</a>
-                    to learn about Personhood - 16 sec. clip below)
-                </small>
-                <video controls poster="/video/personhood.jpeg" src="/video/personhood.mp4" type="video/mp4" />
+                    <small>
+                        (Watch this
+                        <a href="https://www.youtube.com/watch?v=GxM9BZeRrUI&pp=ygUKcGVyc29uaG9vZA%3D%3D">PBS video</a>
+                        to learn about Personhood - 16 sec. clip below)
+                    </small>
+                    <div style="display:relative">
+                        <div class="semi-opaque left-center" > 👈 Swipe Down on the Side. </div>
+                    </div>
+                    <video controls poster="/video/personhood.jpeg" src="/video/personhood.mp4" type="video/mp4" />
                 `,
                 `<h1>Corporations?</h1>`,
                 `<h1>AI?</h1>`,

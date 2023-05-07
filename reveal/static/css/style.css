@@ -19,6 +19,14 @@ button {
     opacity: .5;
 }
 
+.left-center {
+    position: absolute;
+    right: -10%;
+    top: 20%;
+    text-orientation: sideways;
+    writing-mode: vertical-rl; 
+}
+
 
 option {
     font-size: var(--text_interactive);
