@@ -13,7 +13,7 @@
 {/if}
 
 <select bind:value={answerResponse}>
-{#each optionCurrent.text as option}
+{#each optionCurrent.html as option}
     <option value={i+option}>
         {option}
     </option>

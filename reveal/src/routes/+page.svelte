@@ -2,21 +2,21 @@
     import Slides from "$lib/components/slides.svelte";
     import Buttons from "$lib/components/buttons.svelte";
     import intro from "$lib/data/intro";
-    $: displayHtml = false
+    $: displayOpt = false
 </script>
 
 <Slides>
     {#each intro as section,i}
         <section>
-            {section.text}
+            {@html section.html}
             <br>
             {#if !!section.btns}
                 {#each section.btns as current}
-                    <Buttons bind:displayHtml={displayHtml} {current} />
+                    <Buttons bind:displayOpt={displayOpt} {current} />
                 {/each}
             {/if}
-            {#if displayHtml === true }
-                {@html section.html}
+            {#if displayOpt === true }
+                {@html section.opt}
             {/if}
             {#if (intro.length - 1) === i}
                 <a data-sveltekit-reload href="/interview">

@@ -1,6 +1,6 @@
 <script lang="ts">
     export let current: any;
-    export let displayHtml: boolean;
+    export let displayOpt: boolean;
     let answer = "";
 </script>
 
@@ -21,8 +21,8 @@
         on:click={()=> {
             answer = button;
             if (button === "Yes") {
-                displayHtml = true
-            } else displayHtml = false
+                displayOpt = true
+            } else displayOpt = false
     }}>
         {button}
     </button>

@@ -12,7 +12,7 @@
                 <section>
                     <p>
                         {@html prompt}
-                        </p>
+                    </p>
                     </section>
                 {/each}
             </section>

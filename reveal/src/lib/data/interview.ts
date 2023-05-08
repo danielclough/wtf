@@ -1,3 +1,8 @@
+let swipe_up = `
+<div style="display:relative">
+    <div class="semi-opaque left-center" > 👈 Swipe Up on the Side. </div>
+</div>
+`
 export default {
     version: `Verbal v1`,
     questions: [
@@ -6,7 +11,7 @@ export default {
             prompts: [
                 `
                     <h1>Do I trust my government?</h1>
-                    <p class="semi-opaque">👆 Swipe Up 👆</p>
+                    ${swipe_up}
                 `,
                 `
                     <h1>
@@ -90,14 +95,12 @@ export default {
             subject: `Who / What should be a Legal Person?`,
             prompts: [
                 `
+                    ${swipe_up}
                     <small>
                         (Watch this
                         <a href="https://www.youtube.com/watch?v=GxM9BZeRrUI&pp=ygUKcGVyc29uaG9vZA%3D%3D">PBS video</a>
                         to learn about Personhood - 16 sec. clip below)
                     </small>
-                    <div style="display:relative">
-                        <div class="semi-opaque left-center" > 👈 Swipe Up on the Side. </div>
-                    </div>
                     <video controls poster="/video/personhood.jpeg" src="/video/personhood.mp4" type="video/mp4" />
                 `,
                 `<h1>Superman?</h1>`,
