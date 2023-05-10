@@ -1,6 +1,10 @@
 #!/bin/bash
 
-input=$1
+# input='/home/daniel/Documents/audacity_export/'
+input='/home/daniel/git/audacity/final.wav'
+
+# echo "fix Export"
+# exit
 
 file_name=`echo $input | cut -d '.' -f 1 | rev | cut -d'/' -f1 | rev`
 not_wav=`echo $input | cut -d '.' -f 2 | grep -v wav`
@@ -20,7 +24,7 @@ fi
 
 cargo run --release --example wav-splitter -- \
     --output-dir output \
-    --threshold 5 \
+    --threshold 15 \
     --release-time .3 \
     $wav_file
 

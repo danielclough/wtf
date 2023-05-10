@@ -13,7 +13,7 @@ module.exports = {
 		welcomeMsg: '\tTLDR;\n`$roles english`\n\tindicates that you speak english.\n Use the `$roles`\n\t command to learn more.',
 		welcomeMsg2: 'This **#welcome** room exposes you to other **new members**, some of which may be **spam bots**, you will be **removed from this channel** after you have **added a role!** \n\n **Do not trust** any member with a **blue colored name.** \n        **Admins** have **red** names.',
 		exampleRoleMessage: 'Something like, \n `$roles Curious Chinese Javascript Spanish.`',
-		isolationRole: '',
+		isolationRole: '1097005432230379572',
 	},
 	guild: {
 		name: 'WTF',

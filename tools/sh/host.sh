@@ -1,0 +1,1 @@
+rsync -e 'ssh -p 44322' -avh /home/daniel/git/wtf/tools/final/ daniel@vps.blackcoin.nl:/ENV/go-fileserver/static/

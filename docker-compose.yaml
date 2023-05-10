@@ -26,6 +26,29 @@ services:
       # echo $(htpasswd -nB user) | sed -e s/\\$/\\$\\$/g
       - traefik.http.middlewares.wtf_auth.basicauth.users=${BASIC_AUTH}
 
+  wtf_fileserver:
+      container_name: wtf_fileserver
+      # depends_on:
+      #   - wtf_backend_postgres
+      build:
+        context: ./fileserver
+      networks:
+        traefik:
+        wtf_backend_postgres_net:
+          ipv4_address: 172.222.0.21
+      env_file:
+        - ./.env
+      volumes:
+        - ./fileserver/src:/app/src
+        - ./fileserver/public:/rust-docker/public
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik
+        - traefik.http.routers.wtf_fileserver.rule=Host(`static.wtf.danielc.us`)
+        - traefik.http.routers.wtf_fileserver.entrypoints=https
+        - traefik.http.routers.wtf_fileserver.tls.certresolver=simple-resolver
+        - traefik.http.services.wtf_fileserver.loadbalancer.server.port=8910
+
   # wtf_sveltekit:
   #   container_name: wtf_sveltekit
   #   build:
