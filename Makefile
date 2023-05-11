@@ -30,3 +30,9 @@ clean:
 	sudo rm -fr backend/migrations/*
 	# sudo rm -fr backend/src/schema.rs
 
+host:
+	bash tools/sh/host.sh
+
+
+whisper:
+	bash tools/sh/whisper.sh
