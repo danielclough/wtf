@@ -47,6 +47,54 @@ export default {
             ]
         },
         {
+            subject: `Consciousness`,
+            prompts: [
+                `
+                    <h1>
+                        <small>
+                            Should people be free to 
+                        </small>
+                        Alter Consciousness
+                        <small>
+                            with Drugs?
+                        </small>
+                    </h1>
+                    ${swipe_up}
+                `,
+                `
+                    <h1>
+                        <small>
+                            Is it
+                        </small>
+                        Possible
+                        <small>
+                            for Computers to be
+                        </small>
+                        Sentient?
+                    </h1>
+                `,
+                `
+                    <h1>
+                        <small>
+                            What is
+                        </small>
+                        Free Will?
+                        <small>
+                            Does it
+                        </small>
+                        Exist?
+                    </h1>
+                    <p class="semi-opaque">
+                        👆
+                        <small>
+                            End of section.
+                        </small>
+                        Swipe Left 👉
+                    </p>
+                `,
+            ]
+        },
+        {
             subject: `Is it Real?`,
             prompts: [
                 `
@@ -122,7 +170,6 @@ export default {
                     <img style="width:25%;border:none;" src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://www.youtube.com/channel/UC3uFKCe5MYhI8-iEA9ez2OA" alt="video link" />
                     <img style="width:25%;border:none;" src="/images/YOUTUBE-LOGO.png" alt="YouTube Logo" />
                     <br>
-                    <a data-sveltekit-reload href="/"><button>Done!</button></a>
                 `
             ]
         }

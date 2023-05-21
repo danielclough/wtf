@@ -12,31 +12,18 @@ let styles = `
 </style>
 `
 
-export default [
+export default {
+version: `Verbal v1`,
+questions: [
     {
         html: `
-            <h1>
-                <small>
-                    I will read each prompt
-                </small>
-                <br>
-
-                out loud.
-                <br>
-
-            </h1>
-            ${swipe_left}
-        `,
-    },
-    {
-        html: `
-            <h1>
-                I will ask questions
-            </h1>
-        `,
-    },
-    {
-        html: `
+        <h1>
+            <small>
+                Read each prompt
+            </small>
+            <br>
+            out loud.
+        </h1>
         `,
         btns: [
             {
@@ -58,13 +45,13 @@ export default [
         opt: `
             <form>
                 <label for="first_name">
-                    First Name
-                    <input type="first_name" id="first_name" name="first_name" >
+                    My Name Is (spell if tricky)
+                    <input hidden type="first_name" id="first_name" name="first_name" >
                 </label>
                 <br>
                 <label for="email">
-                    Email
-                    <input type="email" id="email" name="email" >
+                    My Email Is (spell if tricky)
+                    <input hidden type="email" id="email" name="email" >
                 </label>
             </form>
         `,
@@ -84,12 +71,7 @@ export default [
     // },
     {
         html: `
-        Face the camera... 
-        <h1>
-            clap 👏
-        </h1>
-        then press Start!
+        Let's Go!
         `,
     }
-
-]
+]}

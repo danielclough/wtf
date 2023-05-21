@@ -5,24 +5,10 @@
     $: displayOpt = false
 </script>
 
-<Slides>
-    {#each intro as section,i}
-        <section>
-            {@html section.html}
-            <br>
-            {#if !!section.btns}
-                {#each section.btns as current}
-                    <Buttons bind:displayOpt={displayOpt} {current} />
-                {/each}
-            {/if}
-            {#if displayOpt === true }
-                {@html section.opt}
-            {/if}
-            {#if (intro.length - 1) === i}
-                <a data-sveltekit-reload href="/interview">
-                    <button>Start</button>
-                </a>
-            {/if}
-        </section>
-    {/each}
-</Slides>
+<a href="/intro">
+    <h1>
+        Get Started
+    </h1>
+</a>
+
+
